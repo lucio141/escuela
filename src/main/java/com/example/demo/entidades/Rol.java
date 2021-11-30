@@ -3,6 +3,7 @@ package com.example.demo.entidades;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @SQLDelete(sql="UPDATE Rol r SET r.alta = false WHERE r.id = ?")
@@ -14,6 +15,8 @@ public class Rol {
     @Column(nullable = false)
     private String nombre;
     private Boolean alta;
+    @OneToMany(mappedBy = "rol")
+    private List<Usuario> usuarios;
 
     public Rol(Integer id, String nombre) {
         this.id = id;

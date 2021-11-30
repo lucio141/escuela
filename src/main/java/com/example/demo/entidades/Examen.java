@@ -7,7 +7,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @SQLDelete(sql = "UPDATE Examen e SET e.alta = false WHERE e.id = ?")
@@ -19,9 +18,9 @@ public class Examen {
     private String tipo;
     @ManyToOne
     private Tematica tematica;
-    @OneToMany
+    @OneToMany(mappedBy = "examen")
     private List<Resultado> resultados;
-    @OneToMany
+    @OneToMany(mappedBy = "examen")
     private List<Pregunta> preguntas;
 
     @CreatedDate
@@ -29,7 +28,6 @@ public class Examen {
     private Date fechaCreacion;
     @LastModifiedDate
     private Date fechaModificacion;
-
     private Boolean alta;
 
     public Examen(Integer id, String tipo, Tematica tematica, List<Resultado> resultados, List<Pregunta> preguntas, Date fechaCreacion, Date fechaModificacion) {

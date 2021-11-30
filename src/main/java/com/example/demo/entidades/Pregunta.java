@@ -12,21 +12,21 @@ public class Pregunta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false)
-    private Tematica tematica;
+    @ManyToOne
+    private Examen examen;
     @Column(nullable = false)
     private Byte dificultad;
     @Column(nullable = false)
     private String enunciado;
-    @Column(nullable = false)
+    @ElementCollection(targetClass=String.class)
     private List<String> resupestas;
     @Column(nullable = false)
     private String respuestaCorrecta;
     private Boolean alta;
 
-    public Pregunta(Integer id, Tematica tematica, Byte dificultad, String enunciado, List<String> resupestas, String respuestaCorrecta) {
+    public Pregunta(Integer id, Examen examen, Byte dificultad, String enunciado, List<String> resupestas, String respuestaCorrecta) {
         this.id = id;
-        this.tematica = tematica;
+        this.examen = examen;
         this.dificultad = dificultad;
         this.enunciado = enunciado;
         this.resupestas = resupestas;
@@ -44,14 +44,6 @@ public class Pregunta {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Tematica getTematica() {
-        return tematica;
-    }
-
-    public void setTematica(Tematica tematica) {
-        this.tematica = tematica;
     }
 
     public Byte getDificultad() {
@@ -92,5 +84,13 @@ public class Pregunta {
 
     public void setAlta(Boolean alta) {
         this.alta = alta;
+    }
+
+    public Examen getExamen() {
+        return examen;
+    }
+
+    public void setExamen(Examen examen) {
+        this.examen = examen;
     }
 }
