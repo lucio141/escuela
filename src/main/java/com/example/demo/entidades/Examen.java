@@ -16,7 +16,6 @@ public class Examen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String tipo;
     private Tematica tematica;
     private List<Resultado> resultados;
