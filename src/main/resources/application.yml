@@ -7,11 +7,18 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+      format-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
   thymeleaf:
     cache: false
   mvc:
     format:
       date: yyyy-MM-dd
+  loggin:
+    level:
+      org:
+        spgringframework:
+          web: debug
