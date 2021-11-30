@@ -3,6 +3,7 @@ package com.example.demo.entidades;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @SQLDelete(sql = "UPDATE Tematica t SET t.alta = false WHERE t.id = ?"
@@ -15,6 +16,8 @@ public class Tematica {
     @Column(nullable = false)
     private String nombre;
     private Boolean alta;
+    @OneToMany(mappedBy = "tematica")
+    private List<Examen> examen;
 
 // CONSTRUCTORS
 
@@ -23,13 +26,14 @@ public class Tematica {
         this.alta = true;
     }
 
-    public Tematica(Integer id, String nombre, Boolean alta) {
+    public Tematica(Integer id, String nombre, Boolean alta, List<Examen> examen) {
         this.id = id;
         this.nombre = nombre;
-        this.alta = true;
+        this.alta = alta;
+        this.examen = examen;
     }
 
-// GETTERS & SETTERS
+    // GETTERS & SETTERS
 
     public Integer getId() {
         return id;
@@ -53,5 +57,13 @@ public class Tematica {
 
     public void setAlta(Boolean alta) {
         this.alta = alta;
+    }
+
+    public List<Examen> getExamen() {
+        return examen;
+    }
+
+    public void setExamen(List<Examen> examen) {
+        this.examen = examen;
     }
 }

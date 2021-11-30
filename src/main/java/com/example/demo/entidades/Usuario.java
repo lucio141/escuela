@@ -15,7 +15,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @ManyToOne
     private Rol rol;
 
     @Column(nullable = false)
@@ -27,6 +27,7 @@ public class Usuario {
     @Column(nullable = false)
     private String contrasenia;
 
+    @OneToMany(mappedBy = "usuario")
     private List<Resultado> resultados;
 
     @CreatedDate
