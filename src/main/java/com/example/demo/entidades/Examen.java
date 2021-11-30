@@ -17,8 +17,11 @@ public class Examen {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String tipo;
+    @ManyToOne
     private Tematica tematica;
+    @OneToMany
     private List<Resultado> resultados;
+    @OneToMany
     private List<Pregunta> preguntas;
 
     @CreatedDate
