@@ -15,7 +15,7 @@ public class Pregunta {
     @ManyToOne
     private Examen examen;
     @Column(nullable = false)
-    private Byte dificultad;
+    private String dificultad;
     @Column(nullable = false)
     private String enunciado;
     @ElementCollection(targetClass=String.class)
@@ -25,7 +25,7 @@ public class Pregunta {
     private Boolean alta;
     private Integer puntaje;
 
-    public Pregunta(Integer id, Examen examen, Byte dificultad, String enunciado, List<String> resupestas, String respuestaCorrecta, Boolean alta, Integer puntaje) {
+    public Pregunta(Integer id, Examen examen, String dificultad, String enunciado, List<String> resupestas, String respuestaCorrecta, Boolean alta, Integer puntaje) {
         this.id = id;
         this.examen = examen;
         this.dificultad = dificultad;
@@ -48,11 +48,11 @@ public class Pregunta {
         this.id = id;
     }
 
-    public Byte getDificultad() {
+    public String getDificultad() {
         return dificultad;
     }
 
-    public void setDificultad(Byte dificultad) {
+    public void setDificultad(String dificultad) {
         this.dificultad = dificultad;
     }
 
