@@ -9,34 +9,28 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@SQLDelete(sql = "UPDATE Usuario u SET u.alta = false WHERE u.id = ?")
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @ManyToOne
     private Rol rol;
-
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String mail;
-
     @Column(nullable = false , unique=true)
     private String nombreUsuario;
-
     @Column(nullable = false)
     private String contrasenia;
-
     @OneToMany(mappedBy = "usuario")
     private List<Resultado> resultados;
 
     @CreatedDate
     @Column(nullable = false , updatable = false)
     private Date fechaCreacion;
-
     @LastModifiedDate
     private Date fechaModificacion;
-
     private Boolean alta;
 
     public Integer getId() {
@@ -112,6 +106,7 @@ public class Usuario {
     }
 
     public Usuario() {
+        this.alta = true;
     }
 
     public Usuario(Integer id, Rol rol, String mail, String nombreUsuario, String contrasenia, List<Resultado> resultados, Date fechaCreacion, Date fechaModificacion) {
@@ -125,5 +120,6 @@ public class Usuario {
         this.fechaModificacion = fechaModificacion;
         this.alta = true;
     }
+
 
 }
