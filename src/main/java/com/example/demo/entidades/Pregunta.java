@@ -23,8 +23,9 @@ public class Pregunta {
     @Column(nullable = false)
     private String respuestaCorrecta;
     private Boolean alta;
+    private Integer puntaje;
 
-    public Pregunta(Integer id, Examen examen, Byte dificultad, String enunciado, List<String> resupestas, String respuestaCorrecta) {
+    public Pregunta(Integer id, Examen examen, Byte dificultad, String enunciado, List<String> resupestas, String respuestaCorrecta, Boolean alta, Integer puntaje) {
         this.id = id;
         this.examen = examen;
         this.dificultad = dificultad;
@@ -32,6 +33,7 @@ public class Pregunta {
         this.resupestas = resupestas;
         this.respuestaCorrecta = respuestaCorrecta;
         this.alta = true;
+        this.puntaje = puntaje;
     }
 
     public Pregunta() {
@@ -84,6 +86,14 @@ public class Pregunta {
 
     public void setAlta(Boolean alta) {
         this.alta = alta;
+    }
+
+    public Integer getPuntaje() {
+        return puntaje;
+    }
+
+    public void setPuntaje(Integer puntaje) {
+        this.puntaje = puntaje;
     }
 
     public Examen getExamen() {

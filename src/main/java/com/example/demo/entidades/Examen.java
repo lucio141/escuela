@@ -15,14 +15,14 @@ public class Examen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String tipo;
+    private String dificultad;
     @ManyToOne
     private Tematica tematica;
     @OneToMany(mappedBy = "examen")
     private List<Resultado> resultados;
     @OneToMany(mappedBy = "examen")
     private List<Pregunta> preguntas;
-
+    private Double notaRequerida;
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private Date fechaCreacion;
@@ -30,12 +30,13 @@ public class Examen {
     private Date fechaModificacion;
     private Boolean alta;
 
-    public Examen(Integer id, String tipo, Tematica tematica, List<Resultado> resultados, List<Pregunta> preguntas, Date fechaCreacion, Date fechaModificacion) {
+    public Examen(Integer id, String dificultad, Tematica tematica, List<Resultado> resultados, List<Pregunta> preguntas, Double notaRequerida, Date fechaCreacion, Date fechaModificacion, Boolean alta) {
         this.id = id;
-        this.tipo = tipo;
+        this.dificultad = dificultad;
         this.tematica = tematica;
         this.resultados = resultados;
         this.preguntas = preguntas;
+        this.notaRequerida = notaRequerida;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
         this.alta = true;
@@ -53,12 +54,12 @@ public class Examen {
         this.id = id;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getDificultad() {
+        return dificultad;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setDificultad(String dificultad) {
+        this.dificultad = dificultad;
     }
 
     public Tematica getTematica() {
@@ -85,6 +86,14 @@ public class Examen {
         this.preguntas = preguntas;
     }
 
+    public Double getNotaRequerida() {
+        return notaRequerida;
+    }
+
+    public void setNotaRequerida(Double notaRequerida) {
+        this.notaRequerida = notaRequerida;
+    }
+
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
@@ -108,5 +117,4 @@ public class Examen {
     public void setAlta(Boolean alta) {
         this.alta = alta;
     }
-    
 }
