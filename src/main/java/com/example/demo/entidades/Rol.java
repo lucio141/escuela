@@ -1,11 +1,15 @@
 package com.example.demo.entidades;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @SQLDelete(sql="UPDATE Rol r SET r.alta = false WHERE r.id = ?")
 public class Rol {
 
@@ -26,29 +30,5 @@ public class Rol {
 
     public Rol() {
         this.alta = true;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Boolean getAlta() {
-        return alta;
-    }
-
-    public void setAlta(Boolean alta) {
-        this.alta = alta;
     }
 }
