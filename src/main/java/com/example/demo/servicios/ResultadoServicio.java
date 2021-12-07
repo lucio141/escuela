@@ -1,6 +1,7 @@
 package com.example.demo.servicios;
 
 import com.example.demo.entidades.Examen;
+import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Resultado;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
@@ -35,20 +36,21 @@ public class ResultadoServicio {
     @Transactional
     public void modificarResultado(Integer id, Short respuestasCorrectas, Short respuestasIncorrectas, Long duracion, Integer puntajeFinal) throws ObjetoNulloExcepcion {
 
-        Resultado resultado = resultadoRepositorio.findById(id).orElse(null);
-        if(resultado==null){
-            throw new ObjetoNulloExcepcion("");
-        }
+        Resultado resultado = obtenerPorId(id);
         resultado.setRespuestasCorrectas(respuestasCorrectas);
         resultado.setRespuestasIncorrectas(respuestasIncorrectas);
         resultado.setDuracion(duracion);
         resultado.setPuntajeFinal(puntajeFinal);
         resultadoRepositorio.save(resultado);
+    }
 
+    @Transactional
+    public List<Resultado> mostrarResultados() {
+        return resultadoRepositorio.findAll();
     }
 
     @Transactional(readOnly = true)
-    public List<Resultado> obtenerResultado(Boolean alta) {
+    public List<Resultado> mostrarResultadosPorAlta(Boolean alta) {
         return resultadoRepositorio.mostrarPorAlta(alta);
     }
 
@@ -64,17 +66,13 @@ public class ResultadoServicio {
     }
 
     @Transactional
-    public void eliminarResultado(int id) {
+    public void eliminar(int id) {
         resultadoRepositorio.deleteById(id);
     }
 
     @Transactional
-    public void recuperarResultado(int id) throws ObjetoNulloExcepcion {
-        Resultado resultado = resultadoRepositorio.findById(id).orElse(null);
-
-        if(resultado==null){
-            throw new ObjetoNulloExcepcion("");
-        }
+    public void darAlta(int id) throws ObjetoNulloExcepcion {
+        Resultado resultado = obtenerPorId(id);
 
         resultadoRepositorio.darAlta(id);
     }

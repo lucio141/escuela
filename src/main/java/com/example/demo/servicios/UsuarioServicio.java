@@ -1,6 +1,7 @@
 package com.example.demo.servicios;
 
 import com.example.demo.dto.InformacionUsuarioDTO;
+import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
@@ -28,27 +29,36 @@ public class UsuarioServicio {
         usuarioRepositorio.save(usuario);
     }
 
-    @Transactional(readOnly = true)
-    public List<Usuario> mostrarUsuarios(Boolean alta){
-        return usuarioRepositorio.mostrarPorAlta(alta);
-    }
-
     @Transactional
-    public Usuario buscarPorId (Integer id){
-        return usuarioRepositorio.findById(id).orElse(null);
-    }
+    public void modificarUsuario(Integer id, String nombreUsuario, String contrasenia, String mail, Rol rol) throws ObjetoNulloExcepcion{
+        Usuario usuario = obtenerPorId(id);
 
-    @Transactional
-    public void editarUsuario(Integer id, String nombreUsuario, String contrasenia, String mail, Rol rol) throws ObjetoNulloExcepcion{
-        Usuario usuario = usuarioRepositorio.findById(id).orElse(null);
-        if (usuario == null){
-            throw new ObjetoNulloExcepcion("");
-        }
         usuario.setNombreUsuario(nombreUsuario);
         usuario.setContrasenia(contrasenia);
         usuario.setMail(mail);
         usuario.setRol(rol);
         usuarioRepositorio.save(usuario);
+    }
+
+    @Transactional
+    public List<Usuario> mostrarUsuarios() {
+        return usuarioRepositorio.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Usuario> mostrarUsuariosPorAlta(Boolean alta){
+        return usuarioRepositorio.mostrarPorAlta(alta);
+    }
+
+    @Transactional
+    public Usuario obtenerPorId (Integer id) throws ObjetoNulloExcepcion {
+        Usuario usuario = usuarioRepositorio.findById(id).orElse(null);
+
+        if (usuario == null) {
+            throw new ObjetoNulloExcepcion("");
+        }
+
+        return usuario;
     }
 
     @Transactional
@@ -64,11 +74,7 @@ public class UsuarioServicio {
     @Transactional(readOnly = true)
     public InformacionUsuarioDTO informacionUsuario(Integer id) throws ObjetoNulloExcepcion{
 
-        Usuario usuario = usuarioRepositorio.findById(id).orElse(null);
-
-        if (usuario == null){
-            throw new ObjetoNulloExcepcion("error");
-        }
+        Usuario usuario = obtenerPorId(id);
 
 
         return Mapper.usuarioEntidadADTO(usuario);
