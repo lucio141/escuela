@@ -13,7 +13,7 @@ import java.util.List;
 public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
 
     @Query("SELECT u FROM Usuario u WHERE u.alta = :alta")
-    List<Usuario> mostrarUsuarios(@Param("alta") Boolean alta);
+    List<Usuario> mostrarPorAlta(@Param("alta") Boolean alta);
 
     @Modifying
     @Query("UPDATE Usuario u SET u.alta = true WHERE u.id = :id")

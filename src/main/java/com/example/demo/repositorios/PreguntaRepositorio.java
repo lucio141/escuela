@@ -1,6 +1,5 @@
 package com.example.demo.repositorios;
 
-import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,9 +13,9 @@ import java.util.List;
 public interface PreguntaRepositorio extends JpaRepository<Pregunta, Integer>{
 
     @Query("SELECT p FROM Pregunta p WHERE alta = :alta")
-    List<Pregunta> mostrarPreguntasFiltradas(@Param("alta") boolean alta);
+    List<Pregunta> mostrarPorAlta(@Param("alta") boolean alta);
 
     @Modifying
     @Query("UPDATE Pregunta p Set p.alta = true WHERE p.id = :alta")
-    void darAltaPregunta(@Param("id") Integer id);
+    void darAlta (@Param("id") Integer id);
 }

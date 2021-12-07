@@ -12,10 +12,10 @@ import java.util.List;
 @Repository
 public interface RolRepositorio extends JpaRepository<Rol, Integer> {
 
+    @Query("from Rol r WHERE r.alta = :alta")
+    List<Rol> mostrarPorAlta(@Param("alta")boolean Alta);
+
     @Modifying
     @Query("UPDATE Rol r SET r.alta= true WHERE r.id = :id")
-    void recuperarRol(@Param("id") Integer id);
-
-    @Query("from Rol r WHERE r.alta = :alta")
-    List<Rol> mostrarRoles(@Param("alta")boolean Alta);
+    void darAlta(@Param("id") Integer id);
 }

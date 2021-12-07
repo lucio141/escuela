@@ -45,7 +45,7 @@ public class TematicaServicio {
     @Transactional(readOnly = true)
     public List<Tematica> mostrarTematica(Boolean alta)
     {
-        return tematicaRepositorio.mostrarTematicas(alta);
+        return tematicaRepositorio.mostrarPorAlta(alta);
     }
 
     @Transactional

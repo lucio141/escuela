@@ -30,7 +30,7 @@ public class UsuarioServicio {
 
     @Transactional(readOnly = true)
     public List<Usuario> mostrarUsuarios(Boolean alta){
-        return usuarioRepositorio.mostrarUsuarios(alta);
+        return usuarioRepositorio.mostrarPorAlta(alta);
     }
 
     @Transactional

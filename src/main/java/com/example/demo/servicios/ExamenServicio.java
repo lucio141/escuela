@@ -52,7 +52,7 @@ public class ExamenServicio {
 
     @Transactional(readOnly = true)
     public List<Examen> obtenerExamenes(Boolean alta) {
-        return examenRepositorio.mostrarExamenes(alta);
+        return examenRepositorio.mostrarPorAlta(alta);
     }
 
     @Transactional
@@ -79,6 +79,6 @@ public class ExamenServicio {
             throw new ObjetoNulloExcepcion("");
         }
 
-        examenRepositorio.recuperarExamen(id);
+        examenRepositorio.darAlta(id);
     }
 }
