@@ -25,7 +25,11 @@ public class Usuario {
     private String mail;
     @Column(nullable = false , unique=true)
     private String nombreUsuario;
-    private String apellidoUsuario;
+    @Column(nullable = false)
+    private String nombre;
+    @Column(nullable = false)
+    private String apellido;
+    private String telefono;
     private Integer edad;
     @Column(nullable = false)
     private String contrasenia;
@@ -43,17 +47,15 @@ public class Usuario {
         this.alta = true;
     }
 
-    public Usuario(Integer id, Rol rol, String mail, String nombreUsuario, String contrasenia, List<Resultado> resultados, Date fechaCreacion, Date fechaModificacion, String apellidoUsuario, Integer edad) {
+    public Usuario(Integer id, Rol rol, String mail, String nombreUsuario, String contrasenia, String apellido, Integer edad, String nombre) {
         this.id = id;
         this.rol = rol;
         this.mail = mail;
         this.nombreUsuario = nombreUsuario;
         this.contrasenia = contrasenia;
-        this.resultados = resultados;
-        this.fechaCreacion = fechaCreacion;
-        this.fechaModificacion = fechaModificacion;
         this.alta = true;
-        this.apellidoUsuario = apellidoUsuario;
+        this.apellido = apellido;
         this.edad = edad;
+        this.nombre = nombre;
     }
 }
