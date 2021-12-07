@@ -4,14 +4,13 @@ import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Resultado;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.repositorios.ExamenRepositorio;
 import com.example.demo.repositorios.ResultadoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Date;
+
 import java.util.List;
 
 @Service
@@ -50,7 +49,7 @@ public class ResultadoServicio {
 
     @Transactional(readOnly = true)
     public List<Resultado> obtenerResultado(Boolean alta) {
-        return resultadoRepositorio.mostrarResultado(alta);
+        return resultadoRepositorio.mostrarPorAlta(alta);
     }
 
     @Transactional
@@ -77,6 +76,6 @@ public class ResultadoServicio {
             throw new ObjetoNulloExcepcion("");
         }
 
-        resultadoRepositorio.darAltaResultado(id);
+        resultadoRepositorio.darAlta(id);
     }
 }

@@ -6,8 +6,9 @@ import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.PreguntaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
 
 @Service
@@ -23,7 +24,7 @@ public class PreguntaServicio {
 
     @Transactional
     public List<Pregunta> mostrarPreguntasFiltradas(Boolean alta) {
-        return  preguntaRepositorio.mostrarPreguntasFiltradas(alta);
+        return  preguntaRepositorio.mostrarPorAlta(alta);
     }
 
     @Transactional
@@ -61,5 +62,16 @@ public class PreguntaServicio {
         pregunta.setPuntaje(puntaje);
         pregunta.setExamen(examen);
         preguntaRepositorio.save(pregunta);
+    }
+
+    @Transactional
+    public void darAlta(int id) throws ObjetoNulloExcepcion {
+        Pregunta pregunta = preguntaRepositorio.findById(id).orElse(null);
+
+        if(pregunta==null){
+            throw new ObjetoNulloExcepcion("");
+        }
+
+        preguntaRepositorio.darAlta(id);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.demo.servicios;
 
-import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Rol;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.RolRepositorio;
@@ -36,7 +35,7 @@ public class RolServicio {
 
     @Transactional(readOnly = true)
     public List<Rol> obtenerRoles(Boolean alta) {
-        return rolRepositorio.mostrarRoles(true);
+        return rolRepositorio.mostrarPorAlta(true);
     }
 
     @Transactional
@@ -63,6 +62,6 @@ public class RolServicio {
             throw new ObjetoNulloExcepcion("");
         }
 
-        rolRepositorio.recuperarRol(id);
+        rolRepositorio.darAlta(id);
     }
 }
