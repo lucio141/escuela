@@ -25,14 +25,14 @@ public class ResultadoControlador {
     @GetMapping
     public ModelAndView mostrarResultado() {
         ModelAndView mav = new ModelAndView("");//falta crear
-        mav.addObject("resultados", resultadoServicio.obtenerResultado(true));
+        mav.addObject("resultados", resultadoServicio.mostrarResultadosPorAlta(true));
         return mav;
     }
 
     @GetMapping("/eliminados")
     public ModelAndView mostrarResultadoeliminados() {
         ModelAndView mav = new ModelAndView("");//falta crear
-        mav.addObject("resultados", resultadoServicio.obtenerResultado(false));
+        mav.addObject("resultados", resultadoServicio.mostrarResultadosPorAlta(false));
         return mav;
     }
 
@@ -80,14 +80,14 @@ public class ResultadoControlador {
 
     @PostMapping("/eliminar/{id}")
     public RedirectView eliminarResultado(@PathVariable Integer id) {
-        resultadoServicio.eliminarResultado(id);
+        resultadoServicio.eliminar(id);
         return new RedirectView("/resultado");
     }
 
     @PostMapping("/recuperar/{id}")
     public RedirectView recuperarResultado(@PathVariable Integer id) {
         try {
-            resultadoServicio.recuperarResultado(id);
+            resultadoServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion e) {
             e.printStackTrace();
         }

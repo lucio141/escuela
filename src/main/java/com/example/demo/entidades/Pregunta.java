@@ -1,5 +1,6 @@
 package com.example.demo.entidades;
 
+import com.example.demo.utilidades.Dificultad;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
@@ -19,7 +20,7 @@ public class Pregunta{
     @ManyToOne
     private Examen examen;
     @Column(nullable = false)
-    private String dificultad;
+    private Dificultad dificultad;
     @Column(nullable = false)
     private String enunciado;
     @ElementCollection(targetClass=String.class)
@@ -29,7 +30,7 @@ public class Pregunta{
     private Boolean alta;
     private Integer puntaje;
 
-    public Pregunta(Integer id, Examen examen, String dificultad, String enunciado, String respuestaCorrecta, Integer puntaje) {
+    public Pregunta(Integer id, Examen examen, Dificultad dificultad, String enunciado, String respuestaCorrecta, Integer puntaje) {
         this.id = id;
         this.examen = examen;
         this.dificultad = dificultad;

@@ -22,7 +22,7 @@ public class RolControlador {
     @GetMapping()
     public ModelAndView mostrarExamenes() {
         ModelAndView mav = new ModelAndView(""); //Falta crear
-        List<Rol> roles = rolServicio.obtenerRoles(true);
+        List<Rol> roles = rolServicio.mostrarRolesPorAlta(true);
 
         mav.addObject("roles", roles);
         mav.addObject("title", "Tabla de roles");
@@ -34,7 +34,7 @@ public class RolControlador {
     public ModelAndView mostrarRolesBaja() {
         ModelAndView mav = new ModelAndView(""); //Falta crear
 
-        List<Rol> roles = rolServicio.obtenerRoles(false);
+        List<Rol> roles = rolServicio.mostrarRolesPorAlta(false);
         mav.addObject("roles", roles);
         mav.addObject("title", "Tabla de examenes baja");
 
@@ -86,14 +86,14 @@ public class RolControlador {
 
     @PostMapping("/eliminar/{id}")
     public RedirectView eliminar(@PathVariable int id) {
-        rolServicio.eliminarRol(id);
+        rolServicio.eliminar(id);
         return new RedirectView("/roles");
     }
 
     @PostMapping("/recuperar/{id}")
     public RedirectView recuperar(@PathVariable int id) {
         try {
-            rolServicio.recuperarRol(id);
+            rolServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());
         }
