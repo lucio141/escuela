@@ -1,7 +1,7 @@
 package com.example.demo.servicios;
 
-import com.example.demo.dto.InformacionUsuarioDTO;
-import com.example.demo.entidades.Pregunta;
+import com.example.demo.dto.UsuarioDTO;
+import com.example.demo.dto.UsuarioInformacionDTO;
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
@@ -21,44 +21,41 @@ public class UsuarioServicio {
 
     @Transactional
     public void crearUsuario(String nombreUsuario, String contrasenia, String mail, Rol rol){
-        Usuario usuario = new Usuario();
-        usuario.setNombreUsuario(nombreUsuario);
-        usuario.setContrasenia(contrasenia);
-        usuario.setMail(mail);
-        usuario.setRol(rol);
-        usuarioRepositorio.save(usuario);
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setNombreUsuario(nombreUsuario);
+        usuarioDTO.setContrasenia(contrasenia);
+        usuarioDTO.setMail(mail);
+        usuarioDTO.setRol(rol);
+        usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
     }
 
     @Transactional
     public void modificarUsuario(Integer id, String nombreUsuario, String contrasenia, String mail, Rol rol) throws ObjetoNulloExcepcion{
-        Usuario usuario = obtenerPorId(id);
-
-        usuario.setNombreUsuario(nombreUsuario);
-        usuario.setContrasenia(contrasenia);
-        usuario.setMail(mail);
-        usuario.setRol(rol);
-        usuarioRepositorio.save(usuario);
+        UsuarioDTO usuarioDTO = obtenerPorId(id);
+        usuarioDTO.setNombreUsuario(nombreUsuario);
+        usuarioDTO.setContrasenia(contrasenia);
+        usuarioDTO.setMail(mail);
+        usuarioDTO.setRol(rol);
+        usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
     }
 
     @Transactional
-    public List<Usuario> mostrarUsuarios() {
-        return usuarioRepositorio.findAll();
+    public List<UsuarioDTO> mostrarUsuarios() {
+        return Mapper.listaUsuarioEntidadADTO(usuarioRepositorio.findAll());
     }
 
     @Transactional(readOnly = true)
-    public List<Usuario> mostrarUsuariosPorAlta(Boolean alta){
-        return usuarioRepositorio.mostrarPorAlta(alta);
+    public List<UsuarioDTO> mostrarUsuariosPorAlta(Boolean alta){
+        return Mapper.listaUsuarioEntidadADTO(usuarioRepositorio.mostrarPorAlta(alta));
     }
 
     @Transactional
-    public Usuario obtenerPorId (Integer id) throws ObjetoNulloExcepcion {
+    public UsuarioDTO obtenerPorId (Integer id) throws ObjetoNulloExcepcion {
         Usuario usuario = usuarioRepositorio.findById(id).orElse(null);
-
         if (usuario == null) {
             throw new ObjetoNulloExcepcion("");
         }
-
-        return usuario;
+        return Mapper.usuarioEntidadADTO(usuario);
     }
 
     @Transactional
@@ -72,11 +69,7 @@ public class UsuarioServicio {
     }
 
     @Transactional(readOnly = true)
-    public InformacionUsuarioDTO informacionUsuario(Integer id) throws ObjetoNulloExcepcion{
-
-        Usuario usuario = obtenerPorId(id);
-
-
-        return Mapper.usuarioEntidadADTO(usuario);
+    public UsuarioInformacionDTO informacionUsuario(Integer id) throws ObjetoNulloExcepcion{
+        return Mapper.usuarioDTOAUsuarioInformacionDTO(obtenerPorId(id));
     }
 }

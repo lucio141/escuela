@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
 import java.util.List;
 
 @Controller
@@ -22,22 +21,16 @@ public class RolControlador {
     @GetMapping()
     public ModelAndView mostrarExamenes() {
         ModelAndView mav = new ModelAndView(""); //Falta crear
-        List<Rol> roles = rolServicio.mostrarRolesPorAlta(true);
-
-        mav.addObject("roles", roles);
+        mav.addObject("roles", rolServicio.mostrarRolesPorAlta(true));
         mav.addObject("title", "Tabla de roles");
-
         return mav;
     }
 
     @GetMapping("/baja")
     public ModelAndView mostrarRolesBaja() {
         ModelAndView mav = new ModelAndView(""); //Falta crear
-
-        List<Rol> roles = rolServicio.mostrarRolesPorAlta(false);
-        mav.addObject("roles", roles);
+        mav.addObject("roles", rolServicio.mostrarRolesPorAlta(false));
         mav.addObject("title", "Tabla de examenes baja");
-
         return mav;
     }
 
@@ -54,7 +47,6 @@ public class RolControlador {
     @GetMapping("/editar/{id}")
     public ModelAndView editarExamen(@PathVariable int id) {
         ModelAndView mav = new ModelAndView(""); // Falta crear
-
         try {
             mav.addObject("rol", rolServicio.obtenerPorId(id));
         } catch (ObjetoNulloExcepcion e) {
