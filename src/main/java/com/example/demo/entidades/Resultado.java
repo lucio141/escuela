@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@SQLDelete(sql="UPDATE Resultado re SET re.alta = false WHERE re.id = ?")
+@SQLDelete(sql="UPDATE Resultado r SET r.alta = false WHERE r.id = ?")
 public class Resultado {
 
     @Id
