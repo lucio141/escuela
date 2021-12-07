@@ -28,33 +28,25 @@ public class TematicaServicio {
     }
 
     @Transactional
-    public void editarTematica(String nombre,Integer id)throws ObjetoNulloExcepcion{
-        Tematica tematica = tematicaRepositorio.findById(id).orElse(null) ;
-        if(tematica == null){
-            throw new ObjetoNulloExcepcion("No se ha encontrado la tematica");
-        }
+    public void modificarTematica(String nombre,Integer id)throws ObjetoNulloExcepcion{
+        Tematica tematica = obtenerPorId(id);
         tematica.setNombre(nombre);
         tematicaRepositorio.save(tematica);
     }
 
     @Transactional
-    public void eliminarTematica(Integer id){
-        tematicaRepositorio.deleteById(id);
+    public List<Tematica> mostrarTematicas() {
+        return tematicaRepositorio.findAll();
     }
 
     @Transactional(readOnly = true)
-    public List<Tematica> mostrarTematica(Boolean alta)
+    public List<Tematica> mostrarTematicasPorAlta(Boolean alta)
     {
         return tematicaRepositorio.mostrarPorAlta(alta);
     }
 
-    @Transactional
-    public void darAlta(Integer id){
-        tematicaRepositorio.darAlta(id);
-    }
-
     @Transactional(readOnly = true)
-    public Tematica buscarPorId(Integer id)throws ObjetoNulloExcepcion{
+    public Tematica obtenerPorId(Integer id)throws ObjetoNulloExcepcion{
         Tematica tematica = tematicaRepositorio.findById(id).orElse(null);
         if(tematica == null){
             throw new ObjetoNulloExcepcion("No se ha encontrado la tematica");
@@ -62,4 +54,19 @@ public class TematicaServicio {
 
         return tematica;
     }
+
+    @Transactional
+    public void eliminar(Integer id){
+        tematicaRepositorio.deleteById(id);
+    }
+
+
+    @Transactional
+    public void darAlta(Integer id) throws ObjetoNulloExcepcion {
+        Tematica tematica = obtenerPorId(id);
+
+        tematicaRepositorio.darAlta(id);
+    }
+
+
 }

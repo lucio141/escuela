@@ -26,7 +26,7 @@ public class TematicaControlador {
     public ModelAndView mostrarTematicas(){
         ModelAndView mav = new ModelAndView(); //Falta HTML
 
-        mav.addObject("tematicas",tematicaServicio.mostrarTematica(true));
+        mav.addObject("tematicas",tematicaServicio.mostrarTematicasPorAlta(true));
         return mav;
     }
 
@@ -34,7 +34,7 @@ public class TematicaControlador {
     public  ModelAndView mostrarTematicasBaja(){
         ModelAndView mav = new ModelAndView(); //Falta HTML
 
-        mav.addObject("tematicas",tematicaServicio.mostrarTematica(false));
+        mav.addObject("tematicas",tematicaServicio.mostrarTematicasPorAlta(false));
 
         return mav;
     }
@@ -50,7 +50,7 @@ public class TematicaControlador {
     public ModelAndView editarTematica(@PathVariable Integer id){
         ModelAndView mav = new ModelAndView(); //FALTA HTML
         try{
-            mav.addObject("tematica",tematicaServicio.buscarPorId(id)) ;
+            mav.addObject("tematica",tematicaServicio.obtenerPorId(id)) ;
         }
         catch( ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());
@@ -70,7 +70,7 @@ public class TematicaControlador {
     public RedirectView editarTematicas( @RequestParam String nombre,@RequestParam Integer id){
 
         try{
-            tematicaServicio.editarTematica(nombre,id);
+            tematicaServicio.modificarTematica(nombre,id);
         }
         catch( ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());
@@ -81,14 +81,18 @@ public class TematicaControlador {
 
     @GetMapping("/registrar/{id}")
     public RedirectView darAlta( @PathVariable Integer id){
-        tematicaServicio.darAlta(id);
+        try {
+            tematicaServicio.darAlta(id);
+        } catch (ObjetoNulloExcepcion e) {
+            e.printStackTrace();
+        }
 
         return new RedirectView("/tematica");
     }
 
     @PostMapping("/eliminar/{id}")
     public RedirectView eliminar(@PathVariable Integer id){
-        tematicaServicio.eliminarTematica(id);
+        tematicaServicio.eliminar(id);
 
         return  new RedirectView("/tematica");
     }

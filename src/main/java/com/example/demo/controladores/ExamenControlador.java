@@ -1,10 +1,10 @@
 package com.example.demo.controladores;
 
 import com.example.demo.entidades.Examen;
-import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.ExamenServicio;
+import com.example.demo.utilidades.Dificultad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class ExamenControlador {
     @GetMapping()
     public ModelAndView mostrarExamenes() {
         ModelAndView mav = new ModelAndView(""); //Falta crear
-        List<Examen> examenes = examenServicio.obtenerExamenes(true);
+        List<Examen> examenes = examenServicio.mostrarExamenesPorAlta(true);
 
         mav.addObject("examenes", examenes);
         mav.addObject("title", "Tabla de examenes");
@@ -35,7 +35,7 @@ public class ExamenControlador {
     public ModelAndView mostrarExamenesBaja() {
         ModelAndView mav = new ModelAndView(""); //Falta crear
 
-        List<Examen> examenes = examenServicio.obtenerExamenes(false);
+        List<Examen> examenes = examenServicio.mostrarExamenesPorAlta(false);
         mav.addObject("examenes", examenes);
         mav.addObject("title", "Tabla de examenes baja");
 
@@ -68,16 +68,16 @@ public class ExamenControlador {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam String dificultad, @RequestParam Tematica tematica, @RequestParam List< Pregunta > preguntas, @RequestParam Double notaRequerida) {
-        examenServicio.crearExamen(dificultad,tematica,preguntas,notaRequerida);
+    public RedirectView guardar(@RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam Double notaRequerida) {
+        examenServicio.crearExamen(dificultad,tematica,notaRequerida);
 
         return new RedirectView("/examen");
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam Integer id, @RequestParam String dificultad, @RequestParam Tematica tematica, @RequestParam List< Pregunta > preguntas, @RequestParam Double notaRequerida) {
+    public RedirectView modificar(@RequestParam Integer id, @RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam Double notaRequerida) {
         try {
-            examenServicio.modificarExamen(id, dificultad, tematica, preguntas, notaRequerida);
+            examenServicio.modificarExamen(id, dificultad, tematica, notaRequerida);
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());
         }
@@ -87,14 +87,14 @@ public class ExamenControlador {
 
     @PostMapping("/eliminar/{id}")
     public RedirectView eliminar(@PathVariable int id) {
-        examenServicio.eliminarExamen(id);
+        examenServicio.eliminar(id);
         return new RedirectView("/examen");
     }
 
     @PostMapping("/recuperar/{id}")
     public RedirectView recuperar(@PathVariable int id) {
         try {
-            examenServicio.recuperarExamen(id);
+            examenServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());
         }

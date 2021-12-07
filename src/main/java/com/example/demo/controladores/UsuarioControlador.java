@@ -20,7 +20,7 @@ public class UsuarioControlador {
     @GetMapping
     public ModelAndView mostrarUsuarios(){
         ModelAndView mav = new ModelAndView("");// Vista de Usuarios FALTA
-        mav.addObject("usuario", usuarioServicio.mostrarUsuarios(true));
+        mav.addObject("usuario", usuarioServicio.mostrarUsuariosPorAlta(true));
         mav.addObject("titulo", "Usuarios");
         return mav;
     }
@@ -28,7 +28,7 @@ public class UsuarioControlador {
     @GetMapping("/baja")
     public ModelAndView mostrarUsuariosBaja(){
         ModelAndView mav = new ModelAndView("");// Vista de Usuarios FALTA
-        mav.addObject("usuario", usuarioServicio.mostrarUsuarios(false));
+        mav.addObject("usuario", usuarioServicio.mostrarUsuariosPorAlta(false));
         mav.addObject("titulo", "Usuarios");
         return mav;
     }
@@ -45,7 +45,11 @@ public class UsuarioControlador {
     @GetMapping("/editar/{id}")
     public ModelAndView editarUsuario(@PathVariable Integer id){
         ModelAndView mav = new ModelAndView("client-form");
-        mav.addObject("usuario", usuarioServicio.buscarPorId(id));
+        try {
+            mav.addObject("usuario", usuarioServicio.obtenerPorId(id));
+        } catch (ObjetoNulloExcepcion e) {
+            e.printStackTrace();
+        }
         mav.addObject("titulo", "Editar Usuario");
         mav.addObject("accion", "editar");
         return mav;
@@ -61,9 +65,9 @@ public class UsuarioControlador {
     public RedirectView actualizarUsuario(@RequestParam Integer id, @RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam String mail, @RequestParam Rol rol){
 
         try{
-            usuarioServicio.editarUsuario(id, nombreUsuario, contrasenia, mail, rol);
+            usuarioServicio.modificarUsuario(id, nombreUsuario, contrasenia, mail, rol);
         }catch (ObjetoNulloExcepcion e){
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
         return new RedirectView("/usuario");
     }

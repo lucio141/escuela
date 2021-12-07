@@ -4,6 +4,7 @@ import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.PreguntaRepositorio;
+import com.example.demo.utilidades.Dificultad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,42 +19,7 @@ public class PreguntaServicio {
     private PreguntaRepositorio preguntaRepositorio;
 
     @Transactional
-    public List<Pregunta> mostrarPreguntas() {
-        return preguntaRepositorio.findAll();
-    }
-
-    @Transactional
-    public List<Pregunta> mostrarPreguntasFiltradas(Boolean alta) {
-        return  preguntaRepositorio.mostrarPorAlta(alta);
-    }
-
-    @Transactional
-    public Pregunta buscarPregunta(Integer id) {
-        return preguntaRepositorio.findById(id).orElse(null);
-    }
-
-    @Transactional
-    public void eliminarPregunta(Integer id) {
-        preguntaRepositorio.deleteById(id);
-    }
-
-    @Transactional
-    public void modificarPregunta(String dificultad, String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen, Integer id) throws ObjetoNulloExcepcion {
-        Pregunta pregunta = preguntaRepositorio.findById(id).orElse(null);
-        if (pregunta == null) {
-            throw new ObjetoNulloExcepcion("");
-        }
-        pregunta.setDificultad(dificultad);
-        pregunta.setEnunciado(enunciado);
-        pregunta.setResupestas(respuestas);
-        pregunta.setRespuestaCorrecta(respuestaCorrecta);
-        pregunta.setPuntaje(puntaje);
-        pregunta.setExamen(examen);
-        preguntaRepositorio.save(pregunta);
-    }
-
-    @Transactional
-    public void crearPregunta(String dificultad, String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen) {
+    public void crearPregunta(Dificultad dificultad, String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen) {
         Pregunta pregunta = new Pregunta();
         pregunta.setDificultad(dificultad);
         pregunta.setEnunciado(enunciado);
@@ -65,12 +31,50 @@ public class PreguntaServicio {
     }
 
     @Transactional
-    public void darAlta(int id) throws ObjetoNulloExcepcion {
+    public void modificarPregunta(Dificultad dificultad, String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen, Integer id) throws ObjetoNulloExcepcion {
+        Pregunta pregunta = obtenerPorId(id);
+
+        pregunta.setDificultad(dificultad);
+        pregunta.setEnunciado(enunciado);
+        pregunta.setResupestas(respuestas);
+        pregunta.setRespuestaCorrecta(respuestaCorrecta);
+        pregunta.setPuntaje(puntaje);
+        pregunta.setExamen(examen);
+        preguntaRepositorio.save(pregunta);
+    }
+
+    @Transactional
+    public List<Pregunta> mostrarPreguntas() {
+        return preguntaRepositorio.findAll();
+    }
+
+    @Transactional
+    public List<Pregunta> mostrarPreguntasPorAlta(Boolean alta) {
+        return  preguntaRepositorio.mostrarPorAlta(alta);
+    }
+
+    @Transactional
+    public Pregunta obtenerPorId(Integer id) throws ObjetoNulloExcepcion {
         Pregunta pregunta = preguntaRepositorio.findById(id).orElse(null);
 
-        if(pregunta==null){
+        if (pregunta == null) {
             throw new ObjetoNulloExcepcion("");
         }
+
+        return pregunta;
+    }
+
+    @Transactional
+    public void eliminar(Integer id) {
+        preguntaRepositorio.deleteById(id);
+    }
+
+
+
+
+    @Transactional
+    public void darAlta(int id) throws ObjetoNulloExcepcion {
+        Pregunta pregunta = obtenerPorId(id);
 
         preguntaRepositorio.darAlta(id);
     }
