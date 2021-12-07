@@ -5,12 +5,16 @@ package com.example.demo.entidades;
     Clase que representa la plantilla de datos con que se va manejar
     toda esta la seccion
  */
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @SQLDelete(sql = "UPDATE Tematica t SET t.alta = false WHERE t.id = ?")
 public class Tematica {
 
@@ -27,42 +31,9 @@ public class Tematica {
         this.alta = true;
     }
 
-    public Tematica(Integer id, String nombre, List<Examen> examen) {
+    public Tematica(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
         this.alta = true;
-        this.examen = examen;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Boolean getAlta() {
-        return alta;
-    }
-
-    public void setAlta(Boolean alta) {
-        this.alta = alta;
-    }
-
-    public List<Examen> getExamen() {
-        return examen;
-    }
-
-    public void setExamen(List<Examen> examen) {
-        this.examen = examen;
     }
 }
