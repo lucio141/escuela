@@ -52,7 +52,7 @@ public class ExamenServicio {
 
     @Transactional(readOnly = true)
     public List<Examen> obtenerExamenes(Boolean alta) {
-        return examenRepositorio.mostrarExamenes(true);
+        return examenRepositorio.mostrarExamenes(alta);
     }
 
     @Transactional

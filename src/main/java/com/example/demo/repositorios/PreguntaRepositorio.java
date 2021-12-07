@@ -13,10 +13,10 @@ import java.util.List;
 @Repository
 public interface PreguntaRepositorio extends JpaRepository<Pregunta, Integer>{
 
-    @Query("SELECT p FROM Pregunta p WHERE p.alta = :alta")
+    @Query("SELECT p FROM Pregunta p WHERE alta = :alta")
     List<Pregunta> mostrarPreguntasFiltradas(@Param("alta") boolean alta);
 
     @Modifying
-    @Query("UPDATE Pregunta p SET p.alta = true WHERE p.id = :id")
+    @Query("UPDATE Pregunta p Set p.alta = true WHERE p.id = :alta")
     void darAltaPregunta(@Param("id") Integer id);
 }
