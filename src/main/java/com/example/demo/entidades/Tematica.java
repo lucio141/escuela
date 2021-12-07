@@ -1,5 +1,10 @@
 package com.example.demo.entidades;
 
+
+/*
+    Clase que representa la plantilla de datos con que se va manejar
+    toda esta la seccion
+ */
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
@@ -22,10 +27,10 @@ public class Tematica {
         this.alta = true;
     }
 
-    public Tematica(Integer id, String nombre, Boolean alta, List<Examen> examen) {
+    public Tematica(Integer id, String nombre, List<Examen> examen) {
         this.id = id;
         this.nombre = nombre;
-        this.alta = alta;
+        this.alta = true;
         this.examen = examen;
     }
 
