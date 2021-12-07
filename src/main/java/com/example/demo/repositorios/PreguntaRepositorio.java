@@ -16,6 +16,6 @@ public interface PreguntaRepositorio extends JpaRepository<Pregunta, Integer>{
     List<Pregunta> mostrarPorAlta(@Param("alta") boolean alta);
 
     @Modifying
-    @Query("UPDATE Pregunta p Set p.alta = true WHERE p.id = :alta")
+    @Query("UPDATE Pregunta p Set p.alta = true WHERE p.id = :id")
     void darAlta (@Param("id") Integer id);
 }
