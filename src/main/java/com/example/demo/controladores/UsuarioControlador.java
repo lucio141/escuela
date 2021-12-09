@@ -3,6 +3,7 @@ package com.example.demo.controladores;
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.servicios.RolServicio;
 import com.example.demo.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,12 @@ public class UsuarioControlador {
     @Autowired
     private UsuarioServicio usuarioServicio;
 
+    @Autowired
+    private RolServicio rolServicio;
+
     @GetMapping
     public ModelAndView mostrarUsuarios(){
-        ModelAndView mav = new ModelAndView("usuario");// Vista de Usuarios FALTA
+        ModelAndView mav = new ModelAndView("usuario");//
         mav.addObject("usuario", usuarioServicio.mostrarUsuariosPorAlta(true));
         mav.addObject("titulo", "Usuarios");
         return mav;
@@ -35,8 +39,9 @@ public class UsuarioControlador {
 
     @GetMapping("/crear")
     public ModelAndView crearUsuario(){
-        ModelAndView mav = new ModelAndView("");// Vista de Formulario de Usuario FALTA
+        ModelAndView mav = new ModelAndView("usuario-formulario");
         mav.addObject("usuario", new Usuario());
+        mav.addObject("roles", rolServicio.mostrarRolesPorAlta(true));
         mav.addObject("titulo", "Crear Usuario");
         mav.addObject("accion", "guardar");
         return mav;
