@@ -20,7 +20,7 @@ public class RolControlador {
 
     @GetMapping()
     public ModelAndView mostrarExamenes() {
-        ModelAndView mav = new ModelAndView(""); //Falta crear
+        ModelAndView mav = new ModelAndView("rol-lista"); //Falta crear
         mav.addObject("roles", rolServicio.mostrarRolesPorAlta(true));
         mav.addObject("title", "Tabla de roles");
         return mav;
@@ -36,7 +36,7 @@ public class RolControlador {
 
     @GetMapping("/crear")
     public ModelAndView crearRol() {
-        ModelAndView mav = new ModelAndView("");//Falta crear
+        ModelAndView mav = new ModelAndView("rol-formulario");//Falta crear
 
         mav.addObject("rol", new Rol());
         mav.addObject("title", "Crear Rol");
@@ -46,7 +46,7 @@ public class RolControlador {
 
     @GetMapping("/editar/{id}")
     public ModelAndView editarExamen(@PathVariable int id) {
-        ModelAndView mav = new ModelAndView(""); // Falta crear
+        ModelAndView mav = new ModelAndView("rol-formulario"); // Falta crear
         try {
             mav.addObject("rol", rolServicio.obtenerPorId(id));
         } catch (ObjetoNulloExcepcion e) {
@@ -62,7 +62,7 @@ public class RolControlador {
     public RedirectView guardar(@RequestParam String nombre) {
         rolServicio.crearRol(nombre);
 
-        return new RedirectView("/roles");
+        return new RedirectView("/rol");
     }
 
     @PostMapping("/modificar")
@@ -73,13 +73,13 @@ public class RolControlador {
             System.out.println(e.getMessage());
         }
 
-        return new RedirectView("/roles");
+        return new RedirectView("/rol");
     }
 
     @PostMapping("/eliminar/{id}")
     public RedirectView eliminar(@PathVariable int id) {
         rolServicio.eliminar(id);
-        return new RedirectView("/roles");
+        return new RedirectView("/rol");
     }
 
     @PostMapping("/recuperar/{id}")
@@ -89,7 +89,7 @@ public class RolControlador {
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());
         }
-        return new RedirectView("/roles");
+        return new RedirectView("/rol");
     }
 
 }

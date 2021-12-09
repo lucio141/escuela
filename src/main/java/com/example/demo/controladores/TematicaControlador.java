@@ -41,21 +41,23 @@ public class TematicaControlador {
 
     @GetMapping("/crear")
     public ModelAndView crearTematica(){
-        ModelAndView mav = new ModelAndView(); //FALTA HTML
+        ModelAndView mav = new ModelAndView("tematica-formulario"); //FALTA HTML
         mav.addObject("tematica",new Tematica() );
+        mav.addObject("action","guardar");
         return mav;
     }
 
+
     @GetMapping("/editar/{id}")
     public ModelAndView editarTematica(@PathVariable Integer id){
-        ModelAndView mav = new ModelAndView(); //FALTA HTML
+        ModelAndView mav = new ModelAndView("tematica-formulario"); //FALTA HTML
         try{
             mav.addObject("tematica",tematicaServicio.obtenerPorId(id)) ;
         }
         catch( ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());
         }
-
+        mav.addObject("action","modificar");
         return mav;
     }
 
@@ -66,7 +68,7 @@ public class TematicaControlador {
         return new RedirectView("/tematica");
     }
 
-    @PostMapping("/editar")
+    @PostMapping("/modificar")
     public RedirectView editarTematicas( @RequestParam String nombre,@RequestParam Integer id){
 
         try{
