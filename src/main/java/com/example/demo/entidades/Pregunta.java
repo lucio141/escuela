@@ -4,6 +4,7 @@ import com.example.demo.utilidades.Dificultad;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @SQLDelete(sql="UPDATE Pregunta p SET p.alta = false WHERE p.id = ?")
+@EntityListeners(AuditingEntityListener.class)
 public class Pregunta{
 
     @Id

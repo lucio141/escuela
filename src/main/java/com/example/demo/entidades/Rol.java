@@ -3,6 +3,7 @@ package com.example.demo.entidades;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @SQLDelete(sql="UPDATE Rol r SET r.alta = false WHERE r.id = ?")
+@EntityListeners(AuditingEntityListener.class)
 public class Rol {
 
     @Id
