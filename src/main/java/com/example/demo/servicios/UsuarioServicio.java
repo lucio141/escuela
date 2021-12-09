@@ -10,6 +10,7 @@ import com.example.demo.utilidades.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,11 +21,15 @@ public class UsuarioServicio {
     private UsuarioRepositorio usuarioRepositorio;
 
     @Transactional
-    public void crearUsuario(String nombreUsuario, String contrasenia, String mail, Rol rol){
+    public void crearUsuario(String nombre, String apellido, String nombreUsuario, String contrasenia, Integer edad, String mail, String telefono, Rol rol){
         UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setNombre(nombre);
+        usuarioDTO.setApellido(apellido);
         usuarioDTO.setNombreUsuario(nombreUsuario);
         usuarioDTO.setContrasenia(contrasenia);
+        usuarioDTO.setEdad(edad);
         usuarioDTO.setMail(mail);
+        usuarioDTO.setTelefono(telefono);
         usuarioDTO.setRol(rol);
         usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
     }

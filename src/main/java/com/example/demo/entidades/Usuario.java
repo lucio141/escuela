@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @SQLDelete(sql = "UPDATE Usuario u SET u.alta = false WHERE u.id = ?")
+@EntityListeners(AuditingEntityListener.class)
 public class Usuario {
 
     @Id

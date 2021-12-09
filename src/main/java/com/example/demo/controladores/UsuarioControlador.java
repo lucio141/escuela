@@ -49,7 +49,7 @@ public class UsuarioControlador {
 
     @GetMapping("/editar/{id}")
     public ModelAndView editarUsuario(@PathVariable Integer id){
-        ModelAndView mav = new ModelAndView("client-form");
+        ModelAndView mav = new ModelAndView("usuario-formulario");
         try {
             mav.addObject("usuario", usuarioServicio.obtenerPorId(id));
         } catch (ObjetoNulloExcepcion e) {
@@ -61,8 +61,8 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardarUsuario(@RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam String mail, @RequestParam Rol rol) {
-        usuarioServicio.crearUsuario(nombreUsuario, contrasenia, mail, rol);
+    public RedirectView guardarUsuario(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam Integer edad, @RequestParam String mail, @RequestParam String telefono, @RequestParam Rol rol) {
+        usuarioServicio.crearUsuario(nombre, apellido, nombreUsuario, contrasenia, edad, mail, telefono, rol);
         return new RedirectView("/usuario");
     }
 
