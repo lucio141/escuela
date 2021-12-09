@@ -24,7 +24,7 @@ public class TematicaControlador {
 
     @GetMapping
     public ModelAndView mostrarTematicas(){
-        ModelAndView mav = new ModelAndView(); //Falta HTML
+        ModelAndView mav = new ModelAndView("tematica"); //Falta HTML
 
         mav.addObject("tematicas",tematicaServicio.mostrarTematicasPorAlta(true));
         return mav;
