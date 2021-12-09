@@ -19,7 +19,7 @@ public class UsuarioControlador {
 
     @GetMapping
     public ModelAndView mostrarUsuarios(){
-        ModelAndView mav = new ModelAndView("");// Vista de Usuarios FALTA
+        ModelAndView mav = new ModelAndView("usuario");// Vista de Usuarios FALTA
         mav.addObject("usuario", usuarioServicio.mostrarUsuariosPorAlta(true));
         mav.addObject("titulo", "Usuarios");
         return mav;
