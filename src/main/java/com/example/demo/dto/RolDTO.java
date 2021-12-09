@@ -12,5 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RolDTO implements Serializable {
+    private Integer id;
     private String nombre;
 }

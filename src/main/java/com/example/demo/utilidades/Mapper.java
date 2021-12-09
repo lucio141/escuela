@@ -69,6 +69,7 @@ public class Mapper {
     public static RolDTO rolEntidadADTO(Rol rol){
         RolDTO rolDTO = new RolDTO();
         rolDTO.setNombre(rol.getNombre());
+        rolDTO.setId(rol.getId());
         return rolDTO;
     }
 
