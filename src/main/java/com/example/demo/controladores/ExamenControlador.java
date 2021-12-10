@@ -24,9 +24,8 @@ public class ExamenControlador {
     public ModelAndView mostrarExamenes() {
         ModelAndView mav = new ModelAndView(""); //Falta crear
         List<Examen> examenes = examenServicio.mostrarExamenesPorAlta(true);
-
         mav.addObject("examenes", examenes);
-        mav.addObject("title", "Tabla de examenes");
+        mav.addObject("titulo", "Tabla de examenes");
 
         return mav;
     }
@@ -37,7 +36,7 @@ public class ExamenControlador {
 
         List<Examen> examenes = examenServicio.mostrarExamenesPorAlta(false);
         mav.addObject("examenes", examenes);
-        mav.addObject("title", "Tabla de examenes baja");
+        mav.addObject("titulo", "Tabla de examenes baja");
 
         return mav;
     }
@@ -47,8 +46,8 @@ public class ExamenControlador {
         ModelAndView mav = new ModelAndView("");//Falta crear
 
         mav.addObject("examen", new Examen());
-        mav.addObject("title", "Crear Examen");
-        mav.addObject("action", "guardar");
+        mav.addObject("titulo", "Crear Examen");
+        mav.addObject("accion", "guardar");
         return mav;
     }
 
@@ -62,20 +61,20 @@ public class ExamenControlador {
             System.out.println(e.getMessage());
         }
 
-        mav.addObject("title", "editar Examen");
-        mav.addObject("action", "modificar");
+        mav.addObject("titulo", "editar Examen");
+        mav.addObject("accion", "modificar");
         return mav;
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam Double notaRequerida) {
+    public RedirectView guardar(@RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida) {
         examenServicio.crearExamen(dificultad,tematica,notaRequerida);
 
         return new RedirectView("/examen");
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam Integer id, @RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam Double notaRequerida) {
+    public RedirectView modificar(@RequestParam int id, @RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida) {
         try {
             examenServicio.modificarExamen(id, dificultad, tematica, notaRequerida);
         } catch (ObjetoNulloExcepcion e) {
