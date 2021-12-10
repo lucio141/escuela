@@ -7,6 +7,7 @@ import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.UsuarioRepositorio;
 import com.example.demo.utilidades.Mapper;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UsuarioServicio {
 
-    @Autowired
-    private UsuarioRepositorio usuarioRepositorio;
+    private final UsuarioRepositorio usuarioRepositorio;
 
     @Transactional
     public void crearUsuario(String nombre, String apellido, String nombreUsuario, String contrasenia, Integer edad, String mail, String telefono, Rol rol){

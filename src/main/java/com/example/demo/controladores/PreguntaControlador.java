@@ -5,7 +5,7 @@ import com.example.demo.entidades.Pregunta;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.PreguntaServicio;
 import com.example.demo.utilidades.Dificultad;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,11 +14,11 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.List;
 
 @Controller
-@RequestMapping("/pregunta")
+@AllArgsConstructor
+@RequestMapping("examen/{examenId}/pregunta")
 public class PreguntaControlador{
 
-    @Autowired
-    PreguntaServicio preguntaServicio = new PreguntaServicio();
+    private final PreguntaServicio preguntaServicio;
 
     @GetMapping
     public ModelAndView mostrarPreguntas() {

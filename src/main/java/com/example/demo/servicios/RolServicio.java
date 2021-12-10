@@ -5,17 +5,16 @@ import com.example.demo.entidades.Rol;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.RolRepositorio;
 import com.example.demo.utilidades.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class RolServicio {
 
-    @Autowired
-    private RolRepositorio rolRepositorio;
+    private final RolRepositorio rolRepositorio;
 
     public void crearRol(String nombre) {
         RolDTO rolDTO = new RolDTO();

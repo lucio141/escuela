@@ -2,23 +2,17 @@ package com.example.demo.servicios;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.TematicaRepositorio;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
-/*
-Esta clase maneja toda la logica necesaria para el negocio
- */
-
 @Service
+@AllArgsConstructor
 public class TematicaServicio {
 
-
-    @Autowired
-    private TematicaRepositorio tematicaRepositorio;
+    private final TematicaRepositorio tematicaRepositorio;
 
     @Transactional
     public void crearTematica(String nombre){
