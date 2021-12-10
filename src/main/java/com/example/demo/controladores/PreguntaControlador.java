@@ -39,13 +39,13 @@ public class PreguntaControlador{
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam Integer puntaje, @RequestParam Examen examen) {
+    public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen) {
         preguntaServicio.crearPregunta(dificultad, enunciado, respuestas, respuestaCorrecta, puntaje, examen);
         return new RedirectView("/pregunta");
     }
 
     @GetMapping("/editar/{id}")
-    public ModelAndView editarPregunta(@PathVariable Integer id) {
+    public ModelAndView editarPregunta(@PathVariable int id) {
         ModelAndView mav = new ModelAndView("pregunta-formulario");
         try {
             mav.addObject("pregunta", preguntaServicio.obtenerPorId(id));
@@ -58,7 +58,7 @@ public class PreguntaControlador{
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam Integer puntaje, @RequestParam Examen examen, @RequestParam Integer id) {
+    public RedirectView modificar(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, @RequestParam int id) {
         try{
             preguntaServicio.modificarPregunta(dificultad, enunciado, respuestas, respuestaCorrecta, puntaje, examen, id);
         }catch(ObjetoNulloExcepcion e) {
@@ -68,7 +68,7 @@ public class PreguntaControlador{
     }
 
     @PostMapping("/eliminar/{id}")
-    public RedirectView eliminarPregunta(@PathVariable Integer id) {
+    public RedirectView eliminarPregunta(@PathVariable int id) {
         preguntaServicio.eliminar(id);
         return new RedirectView("/pregunta");
     }

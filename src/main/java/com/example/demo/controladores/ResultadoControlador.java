@@ -27,6 +27,7 @@ public class ResultadoControlador {
     public ModelAndView mostrarResultado() {
         ModelAndView mav = new ModelAndView("");//falta crear
         mav.addObject("resultados", resultadoServicio.mostrarResultadosPorAlta(true));
+        mav.addObject("titulo", "Tabla de Resultados");
         return mav;
     }
 
@@ -34,6 +35,7 @@ public class ResultadoControlador {
     public ModelAndView mostrarResultadoeliminados() {
         ModelAndView mav = new ModelAndView("");//falta crear
         mav.addObject("resultados", resultadoServicio.mostrarResultadosPorAlta(false));
+        mav.addObject("titulo", "Tabla de Resultados dados de baja");
         return mav;
     }
 
@@ -49,13 +51,13 @@ public class ResultadoControlador {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardarResultado(@RequestParam Examen examen, @RequestParam Usuario usuario, @RequestParam Short respuestasCorrectas, @RequestParam Short respuestasIncorrectas, @RequestParam Long duracion, @RequestParam Integer puntajeFinal) {
+    public RedirectView guardarResultado(@RequestParam Examen examen, @RequestParam Usuario usuario, @RequestParam short respuestasCorrectas, @RequestParam short respuestasIncorrectas, @RequestParam long duracion, @RequestParam int puntajeFinal) {
         resultadoServicio.crearResultado(examen,usuario,respuestasCorrectas,respuestasIncorrectas,duracion,puntajeFinal);
         return new RedirectView("/resultado");
     }
 
     @GetMapping("/editar/{id}")
-    public ModelAndView editarResultado(@PathVariable Integer id) {
+    public ModelAndView editarResultado(@PathVariable int id) {
         ModelAndView mav = new ModelAndView("");
         try {
             mav.addObject("Resultado", resultadoServicio.obtenerPorId(id));
@@ -68,7 +70,7 @@ public class ResultadoControlador {
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificarPregunta(@RequestParam Integer id, @RequestParam Short respuestasCorrectas, @RequestParam Short respuestasIncorrectas, @RequestParam Long duracion, @RequestParam Integer puntajeFinal) {
+    public RedirectView modificar(@RequestParam int id, @RequestParam short respuestasCorrectas, @RequestParam short respuestasIncorrectas, @RequestParam long duracion, @RequestParam int puntajeFinal) {
 
         try {
             resultadoServicio.modificarResultado(id,respuestasCorrectas,respuestasIncorrectas,duracion,puntajeFinal);
@@ -80,13 +82,13 @@ public class ResultadoControlador {
     }
 
     @PostMapping("/eliminar/{id}")
-    public RedirectView eliminarResultado(@PathVariable Integer id) {
+    public RedirectView eliminarResultado(@PathVariable int id) {
         resultadoServicio.eliminar(id);
         return new RedirectView("/resultado");
     }
 
     @PostMapping("/recuperar/{id}")
-    public RedirectView recuperarResultado(@PathVariable Integer id) {
+    public RedirectView recuperarResultado(@PathVariable int id) {
         try {
             resultadoServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion e) {

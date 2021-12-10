@@ -1,8 +1,10 @@
 package com.example.demo.utilidades;
 
+import com.example.demo.dto.CategoriaDTO;
 import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.dto.RolDTO;
 import com.example.demo.dto.UsuarioInformacionDTO;
+import com.example.demo.entidades.Categoria;
 import com.example.demo.entidades.Resultado;
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
@@ -14,6 +16,7 @@ public class Mapper {
 
     public static UsuarioDTO usuarioEntidadADTO (Usuario usuario){
         UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setId(usuario.getId());
         usuarioDTO.setNombreUsuario(usuario.getNombreUsuario());
         usuarioDTO.setNombre(usuario.getNombre());
         usuarioDTO.setApellido(usuario.getApellido());
@@ -79,5 +82,28 @@ public class Mapper {
                rolesDTO.add(rolEntidadADTO(rol));
         }
         return rolesDTO;
+    }
+
+    public static Categoria categoriaDTOAEntidad(CategoriaDTO categoriaDTO){
+        Categoria categoria = new Categoria();
+        categoria.setNombre(categoriaDTO.getNombre());
+        categoria.setTematicas(categoriaDTO.getTematicas());
+        return categoria;
+    }
+
+    public static CategoriaDTO categoriaEntidadADTO(Categoria categoria){
+        CategoriaDTO categoriaDTO = new CategoriaDTO();
+        categoriaDTO.setId(categoria.getId());
+        categoriaDTO.setNombre(categoria.getNombre());
+        categoriaDTO.setTematicas(categoria.getTematicas());
+        return categoriaDTO;
+    }
+
+    public static List<CategoriaDTO> listaCategoriaEntidadADTO (List<Categoria> categorias){
+        List<CategoriaDTO> categoriasDTO = new ArrayList<>();
+        for (Categoria categoria: categorias) {
+            categoriasDTO.add(categoriaEntidadADTO(categoria));
+        }
+        return categoriasDTO;
     }
 }

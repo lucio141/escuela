@@ -18,14 +18,13 @@ import org.springframework.web.servlet.view.RedirectView;
 public class UsuarioControlador {
 
     private final UsuarioServicio usuarioServicio;
-
     private final RolServicio rolServicio;
 
     @GetMapping
     public ModelAndView mostrarUsuarios(){
         ModelAndView mav = new ModelAndView("usuario");//
         mav.addObject("usuario", usuarioServicio.mostrarUsuariosPorAlta(true));
-        mav.addObject("titulo", "Usuarios");
+        mav.addObject("titulo", "Tabla de Usuarios");
         return mav;
     }
 
@@ -33,7 +32,7 @@ public class UsuarioControlador {
     public ModelAndView mostrarUsuariosBaja(){
         ModelAndView mav = new ModelAndView("");// Vista de Usuarios FALTA
         mav.addObject("usuario", usuarioServicio.mostrarUsuariosPorAlta(false));
-        mav.addObject("titulo", "Usuarios");
+        mav.addObject("titulo", "Tabla de Usuarios Baja");
         return mav;
     }
 
@@ -56,7 +55,7 @@ public class UsuarioControlador {
             e.printStackTrace();
         }
         mav.addObject("titulo", "Editar Usuario");
-        mav.addObject("accion", "editar");
+        mav.addObject("accion", "modificar");
         return mav;
     }
 
@@ -66,8 +65,8 @@ public class UsuarioControlador {
         return new RedirectView("/usuario");
     }
 
-    @PostMapping("/editar")
-    public RedirectView actualizarUsuario(@RequestParam Integer id, @RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam String mail, @RequestParam Rol rol){
+    @PostMapping("/modificar")
+    public RedirectView modificar(@RequestParam Integer id, @RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam String mail, @RequestParam Rol rol){
 
         try{
             usuarioServicio.modificarUsuario(id, nombreUsuario, contrasenia, mail, rol);

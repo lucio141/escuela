@@ -1,10 +1,5 @@
 package com.example.demo.entidades;
 
-
-/*
-    Clase que representa la plantilla de datos con que se va manejar
-    toda esta la seccion
- */
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
@@ -28,14 +23,17 @@ public class Tematica {
     private Boolean alta;
     @OneToMany(mappedBy = "tematica")
     private List<Examen> examen;
+    @ManyToOne
+    private Categoria categoria;
 
     public Tematica() {
         this.alta = true;
     }
 
-    public Tematica(Integer id, String nombre) {
+    public Tematica(Integer id, String nombre, Categoria categoria) {
         this.id = id;
         this.nombre = nombre;
         this.alta = true;
+        this.categoria = categoria;
     }
 }

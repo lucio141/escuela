@@ -21,6 +21,7 @@ public class TematicaControlador {
         ModelAndView mav = new ModelAndView("tematica"); //Falta HTML
 
         mav.addObject("tematicas",tematicaServicio.mostrarTematicasPorAlta(true));
+        mav.addObject("titulo", "Tabla de Tematicas");
         return mav;
     }
 
@@ -29,7 +30,7 @@ public class TematicaControlador {
         ModelAndView mav = new ModelAndView(); //Falta HTML
 
         mav.addObject("tematicas",tematicaServicio.mostrarTematicasPorAlta(false));
-
+        mav.addObject("titulo", "Tabla de Tematicas Baja");
         return mav;
     }
 
@@ -37,11 +38,13 @@ public class TematicaControlador {
     public ModelAndView crearTematica(){
         ModelAndView mav = new ModelAndView(); //FALTA HTML
         mav.addObject("tematica",new Tematica() );
+        mav.addObject("titulo", "Crear Tematica");
+        mav.addObject("accion", "guardar");
         return mav;
     }
 
     @GetMapping("/editar/{id}")
-    public ModelAndView editarTematica(@PathVariable Integer id){
+    public ModelAndView editarTematica(@PathVariable int id){
         ModelAndView mav = new ModelAndView(); //FALTA HTML
         try{
             mav.addObject("tematica",tematicaServicio.obtenerPorId(id)) ;
@@ -49,7 +52,8 @@ public class TematicaControlador {
         catch( ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());
         }
-
+        mav.addObject("titulo", "Editar Tematica");
+        mav.addObject("accion", "modificar");
         return mav;
     }
 
@@ -60,8 +64,8 @@ public class TematicaControlador {
         return new RedirectView("/tematica");
     }
 
-    @PostMapping("/editar")
-    public RedirectView editarTematicas( @RequestParam String nombre,@RequestParam Integer id){
+    @PostMapping("/modificar")
+    public RedirectView modificar( @RequestParam String nombre,@RequestParam int id){
 
         try{
             tematicaServicio.modificarTematica(nombre,id);
@@ -74,7 +78,7 @@ public class TematicaControlador {
     }
 
     @GetMapping("/registrar/{id}")
-    public RedirectView darAlta( @PathVariable Integer id){
+    public RedirectView recuperar( @PathVariable int id){
         try {
             tematicaServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion e) {
@@ -85,7 +89,7 @@ public class TematicaControlador {
     }
 
     @PostMapping("/eliminar/{id}")
-    public RedirectView eliminar(@PathVariable Integer id){
+    public RedirectView eliminar(@PathVariable int id){
         tematicaServicio.eliminar(id);
 
         return  new RedirectView("/tematica");

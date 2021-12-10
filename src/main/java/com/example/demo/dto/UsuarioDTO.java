@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UsuarioDTO implements Serializable {
 
+    private Integer id;
     private String nombreUsuario;
     private String nombre;
     private String apellido;
