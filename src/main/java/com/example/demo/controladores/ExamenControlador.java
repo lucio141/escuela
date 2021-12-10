@@ -5,7 +5,7 @@ import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.utilidades.Dificultad;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,10 +15,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/examen")
+@AllArgsConstructor
 public class ExamenControlador {
 
-    @Autowired
-    private ExamenServicio examenServicio;
+    private final ExamenServicio examenServicio;
 
     @GetMapping()
     public ModelAndView mostrarExamenes() {

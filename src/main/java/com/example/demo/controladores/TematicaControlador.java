@@ -3,24 +3,18 @@ package com.example.demo.controladores;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.TematicaServicio;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-
-/*
-Esta clase se encarga de gestionar la comunicacion entre el usuario y la
-aplicacion
- */
-
 @Controller
+@AllArgsConstructor
 @RequestMapping("/tematica")
 public class TematicaControlador {
 
-    @Autowired
-    private TematicaServicio tematicaServicio;
+    private final TematicaServicio tematicaServicio;
 
     @GetMapping
     public ModelAndView mostrarTematicas(){
@@ -96,6 +90,4 @@ public class TematicaControlador {
 
         return  new RedirectView("/tematica");
     }
-
-
 }

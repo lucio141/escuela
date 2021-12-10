@@ -5,6 +5,7 @@ import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.ExamenRepositorio;
 import com.example.demo.utilidades.Dificultad;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ExamenServicio {
 
-    @Autowired
-    private ExamenRepositorio examenRepositorio;
+    private final ExamenRepositorio examenRepositorio;
 
     @Transactional
     public void crearExamen(Dificultad dificultad, Tematica tematica, Double notaRequerida) {
