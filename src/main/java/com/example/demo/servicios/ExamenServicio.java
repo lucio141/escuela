@@ -1,6 +1,7 @@
 package com.example.demo.servicios;
 
 import com.example.demo.entidades.Examen;
+import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.ExamenRepositorio;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ExamenServicio {
 
     private final ExamenRepositorio examenRepositorio;
+    private final PreguntaServicio preguntaServicio;
 
     @Transactional
     public void crearExamen(Dificultad dificultad, Tematica tematica, Double notaRequerida) {
@@ -65,14 +67,25 @@ public class ExamenServicio {
     }
 
     @Transactional
-    public void eliminar(int id) {
+    public Examen ObtenerUltimoExamen(){
+        return examenRepositorio.mostrarUltimoExamen();
+    }
+
+    @Transactional
+    public void eliminar(int id) throws ObjetoNulloExcepcion {
+        Examen e = this.obtenerPorId(id);
+        for (Pregunta pregunta: e.getPreguntas()) {
+            if(pregunta.getAlta()){
+                preguntaServicio.eliminar(pregunta.getId());
+            }
+        }
         examenRepositorio.deleteById(id);
     }
 
     @Transactional
     public void darAlta(int id) throws ObjetoNulloExcepcion {
-        Examen examen = obtenerPorId(id);
-
         examenRepositorio.darAlta(id);
     }
+
+
 }

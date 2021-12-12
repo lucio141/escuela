@@ -76,7 +76,11 @@ public class CategoriaControlador {
 
     @PostMapping("/eliminar/{id}")
     public RedirectView eliminar(@PathVariable int id) {
-        categoriaServicio.eliminar(id);
+        try {
+            categoriaServicio.eliminar(id);
+        } catch (ObjetoNulloExcepcion e) {
+            e.printStackTrace();
+        }
         return new RedirectView("/categoria");
     }
 

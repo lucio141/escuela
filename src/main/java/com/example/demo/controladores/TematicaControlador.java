@@ -90,7 +90,11 @@ public class TematicaControlador {
 
     @PostMapping("/eliminar/{id}")
     public RedirectView eliminar(@PathVariable int id){
-        tematicaServicio.eliminar(id);
+        try {
+            tematicaServicio.eliminar(id);
+        } catch (ObjetoNulloExcepcion e) {
+            e.printStackTrace();
+        }
 
         return  new RedirectView("/tematica");
     }

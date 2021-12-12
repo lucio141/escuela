@@ -12,10 +12,13 @@ import java.util.List;
 @Repository
 public interface ExamenRepositorio extends JpaRepository<Examen, Integer>{
 
-    @Query("from Examen e WHERE e.alta = :alta")
+    @Query("SELECT e FROM Examen e WHERE e.alta = :alta")
     List<Examen> mostrarPorAlta(@Param("alta")boolean Alta);
 
     @Modifying
     @Query("UPDATE Examen e SET e.alta= true WHERE e.id = :id")
     void darAlta(@Param("id") Integer id);
+
+    @Query("SELECT e FROM Examen e ORDER BY id DESC LIMIT 1")
+    Examen mostrarUltimoExamen();
 }
