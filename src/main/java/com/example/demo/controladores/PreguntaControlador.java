@@ -26,8 +26,9 @@ public class PreguntaControlador{
     @GetMapping
     public ModelAndView mostrarPreguntas(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("pregunta");
-        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+        Map<String,?> map = RequestContextUtils.getInputFlashMap(request);
 
+        mav.addObject("examen" , map.get("examen"));
         mav.addObject("preguntasValidas", preguntaServicio.mostrarPreguntasPorAlta(true));
         mav.addObject("preguntasEliminadas", preguntaServicio.mostrarPreguntasPorAlta(false));
         return mav;
@@ -37,9 +38,9 @@ public class PreguntaControlador{
     public ModelAndView crearPregunta(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("pregunta-formulario");
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
-        
+
+        mav.addObject("examen" , map.get("examen"));
         mav.addObject("pregunta", new Pregunta());
-        //mav.addObject("examenes" , examenServicio.mostrarExamenes()); POR AGREGAR
         mav.addObject("titulo", "Crear Pregunta");
         mav.addObject("accion", "guardar");
         return mav;
