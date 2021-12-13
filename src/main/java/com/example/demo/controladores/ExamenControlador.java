@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
@@ -67,26 +68,33 @@ public class ExamenControlador {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida) {
+    public RedirectView guardar(@RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, RedirectAttributes atributosFash) {
         examenServicio.crearExamen(dificultad,tematica,notaRequerida);
 
-        return new RedirectView("/examen");
+        atributosFash.addFlashAttribute("examen", examenServicio.ObtenerUltimoExamen());
+        return new RedirectView("/../pregunta");
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam int id, @RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida) {
+    public RedirectView modificar(@RequestParam int id, @RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, RedirectAttributes atributosFlash) {
         try {
             examenServicio.modificarExamen(id, dificultad, tematica, notaRequerida);
+            atributosFlash.addFlashAttribute("examen", examenServicio.obtenerPorId(id));
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());
         }
 
-        return new RedirectView("/examen");
+
+        return new RedirectView("/../pregunta");
     }
 
     @PostMapping("/eliminar/{id}")
     public RedirectView eliminar(@PathVariable int id) {
-        examenServicio.eliminar(id);
+        try {
+            examenServicio.eliminar(id);
+        } catch (ObjetoNulloExcepcion e) {
+            e.printStackTrace();
+        }
         return new RedirectView("/examen");
     }
 

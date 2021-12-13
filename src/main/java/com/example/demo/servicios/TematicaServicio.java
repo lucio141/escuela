@@ -1,6 +1,8 @@
 package com.example.demo.servicios;
+import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.ExamenRepositorio;
 import com.example.demo.repositorios.TematicaRepositorio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.List;
 public class TematicaServicio {
 
     private final TematicaRepositorio tematicaRepositorio;
+    private final ExamenServicio examenServicio;
 
     @Transactional
     public void crearTematica(String nombre){
@@ -50,15 +53,21 @@ public class TematicaServicio {
     }
 
     @Transactional
-    public void eliminar(Integer id){
+    public void eliminar(Integer id) throws ObjetoNulloExcepcion {
+        Tematica t = this.obtenerPorId(id);
+
+        for (Examen examen: t.getExamen()) {
+            if(examen.getAlta()){
+                examenServicio.eliminar(examen.getId());
+            }
+        }
+
         tematicaRepositorio.deleteById(id);
     }
 
 
     @Transactional
     public void darAlta(Integer id) throws ObjetoNulloExcepcion {
-        Tematica tematica = obtenerPorId(id);
-
         tematicaRepositorio.darAlta(id);
     }
 

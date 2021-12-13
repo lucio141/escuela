@@ -26,6 +26,7 @@ public class Mapper {
         usuarioDTO.setContrasenia(usuario.getContrasenia());
         usuarioDTO.setRol(usuario.getRol());
         usuarioDTO.setResultados(usuario.getResultados());
+        usuarioDTO.setId(usuario.getId());
         return usuarioDTO;
     }
 
@@ -40,6 +41,7 @@ public class Mapper {
         usuario.setContrasenia(usuarioDTO.getContrasenia());
         usuario.setRol(usuarioDTO.getRol());
         usuario.setResultados(usuarioDTO.getResultados());
+        usuario.setId(usuarioDTO.getId());
         return usuario;
     }
 
@@ -52,6 +54,7 @@ public class Mapper {
         usuarioInformacionDTO.setEdad(usuarioDTO.getEdad());
         usuarioInformacionDTO.setResultados(usuarioDTO.getResultados());
         usuarioInformacionDTO.setTelefono(usuarioDTO.getTelefono());
+        usuarioInformacionDTO.setId(usuarioDTO.getId());
         return usuarioInformacionDTO;
     }
 
@@ -66,6 +69,7 @@ public class Mapper {
     public static Rol rolDTOAEntidad(RolDTO rolDTO){
         Rol rol = new Rol();
         rol.setNombre(rolDTO.getNombre());
+        rol.setId(rolDTO.getId());
         return rol;
     }
 

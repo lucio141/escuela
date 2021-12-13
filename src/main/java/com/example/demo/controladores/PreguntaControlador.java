@@ -9,9 +9,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @AllArgsConstructor
@@ -21,16 +24,20 @@ public class PreguntaControlador{
     private final PreguntaServicio preguntaServicio;
 
     @GetMapping
-    public ModelAndView mostrarPreguntas() {
+    public ModelAndView mostrarPreguntas(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("pregunta");
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+
         mav.addObject("preguntasValidas", preguntaServicio.mostrarPreguntasPorAlta(true));
         mav.addObject("preguntasEliminadas", preguntaServicio.mostrarPreguntasPorAlta(false));
         return mav;
     }
 
     @GetMapping("/crear")
-    public ModelAndView crearPregunta() {
+    public ModelAndView crearPregunta(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("pregunta-formulario");
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+        
         mav.addObject("pregunta", new Pregunta());
         //mav.addObject("examenes" , examenServicio.mostrarExamenes()); POR AGREGAR
         mav.addObject("titulo", "Crear Pregunta");
@@ -39,7 +46,7 @@ public class PreguntaControlador{
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen) {
+    public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, HttpServletRequest request) {
         preguntaServicio.crearPregunta(dificultad, enunciado, respuestas, respuestaCorrecta, puntaje, examen);
         return new RedirectView("/pregunta");
     }
