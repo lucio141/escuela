@@ -1,9 +1,9 @@
 package com.example.demo.controladores;
 
-
-import com.example.demo.entidades.Rol;
+import com.example.demo.entidades.Categoria;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.servicios.RolServicio;
+import com.example.demo.servicios.CategoriaServicio;
+import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,46 +12,46 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/rol")
-public class RolControlador {
+@RequestMapping("/categoria")
+public class CategoriaControlador {
 
-    private final RolServicio rolServicio;
+    private final CategoriaServicio categoriaServicio;
+    private final TematicaServicio tematicaServicio;
 
     @GetMapping()
-    public ModelAndView mostrarRoles() {
+    public ModelAndView mostrarCategorias() {
         ModelAndView mav = new ModelAndView(""); //Falta crear
-        mav.addObject("roles", rolServicio.mostrarRolesPorAlta(true));
-        mav.addObject("titulo", "Tabla de roles");
+        mav.addObject("categorias", categoriaServicio.mostrarCategoriasPorAlta(true));
+        mav.addObject("titulo", "Tabla de Categorias");
         return mav;
     }
 
     @GetMapping("/baja")
-    public ModelAndView mostrarRolesBaja() {
+    public ModelAndView mostrarCategoriasBaja() {
         ModelAndView mav = new ModelAndView(""); //Falta crear
-        mav.addObject("roles", rolServicio.mostrarRolesPorAlta(false));
-        mav.addObject("titulo", "Tabla de examenes baja");
+        mav.addObject("categorias", categoriaServicio.mostrarCategoriasPorAlta(false));
+        mav.addObject("titulo", "Tabla de categorias baja");
         return mav;
     }
 
     @GetMapping("/crear")
-    public ModelAndView crearRol() {
+    public ModelAndView crearCategoria() {
         ModelAndView mav = new ModelAndView("");//Falta crear
-
-        mav.addObject("rol", new Rol());
-        mav.addObject("titulo", "Crear Rol");
+        mav.addObject("categoria", new Categoria());
+        mav.addObject("tematicas", tematicaServicio.mostrarTematicasPorAlta(true));
+        mav.addObject("titulo", "Crear Categoria");
         mav.addObject("accion", "guardar");
         return mav;
     }
 
     @GetMapping("/editar/{id}")
-    public ModelAndView editarRol(@PathVariable int id) {
+    public ModelAndView editarCategoria(@PathVariable int id) {
         ModelAndView mav = new ModelAndView(""); // Falta crear
         try {
-            mav.addObject("rol", rolServicio.obtenerPorId(id));
+            mav.addObject("categoria", categoriaServicio.obtenerPorId(id));
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());
         }
-
         mav.addObject("titulo", "editar Examen");
         mav.addObject("accion", "modificar");
         return mav;
@@ -59,36 +59,39 @@ public class RolControlador {
 
     @PostMapping("/guardar")
     public RedirectView guardar(@RequestParam String nombre) {
-        rolServicio.crearRol(nombre);
-
-        return new RedirectView("/roles");
+        categoriaServicio.crearCategoria(nombre);
+        return new RedirectView("/categoria");
     }
 
     @PostMapping("/modificar")
     public RedirectView modificar(@RequestParam int id, @RequestParam String nombre) {
         try {
-            rolServicio.modificarRol(id,nombre);
+            categoriaServicio.modificarCategoria(id,nombre);
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());
         }
 
-        return new RedirectView("/roles");
+        return new RedirectView("/categoria");
     }
 
     @PostMapping("/eliminar/{id}")
     public RedirectView eliminar(@PathVariable int id) {
-        rolServicio.eliminar(id);
-        return new RedirectView("/roles");
+        try {
+            categoriaServicio.eliminar(id);
+        } catch (ObjetoNulloExcepcion e) {
+            e.printStackTrace();
+        }
+        return new RedirectView("/categoria");
     }
 
     @PostMapping("/recuperar/{id}")
     public RedirectView recuperar(@PathVariable int id) {
         try {
-            rolServicio.darAlta(id);
+            categoriaServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());
         }
-        return new RedirectView("/roles");
+        return new RedirectView("/categoria");
     }
 
 }

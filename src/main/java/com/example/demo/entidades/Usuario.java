@@ -1,15 +1,21 @@
 package com.example.demo.entidades;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @SQLDelete(sql = "UPDATE Usuario u SET u.alta = false WHERE u.id = ?")
+@EntityListeners(AuditingEntityListener.class)
 public class Usuario {
 
     @Id
@@ -22,6 +28,12 @@ public class Usuario {
     @Column(nullable = false , unique=true)
     private String nombreUsuario;
     @Column(nullable = false)
+    private String nombre;
+    @Column(nullable = false)
+    private String apellido;
+    private String telefono;
+    private Integer edad;
+    @Column(nullable = false)
     private String contrasenia;
     @OneToMany(mappedBy = "usuario")
     private List<Resultado> resultados;
@@ -33,93 +45,19 @@ public class Usuario {
     private Date fechaModificacion;
     private Boolean alta;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public Rol getRol() {
-        return rol;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public String getNombreUsuario() {
-        return nombreUsuario;
-    }
-
-    public String getContrasenia() {
-        return contrasenia;
-    }
-
-    public List<Resultado> getResultados() {
-        return resultados;
-    }
-
-    public Date getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public Date getFechaModificacion() {
-        return fechaModificacion;
-    }
-
-    public Boolean getAlta() {
-        return alta;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setRol(Rol rol) {
-        this.rol = rol;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
-    }
-
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
-    }
-
-    public void setResultados(List<Resultado> resultados) {
-        this.resultados = resultados;
-    }
-
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public void setFechaModificacion(Date fechaModificacion) {
-        this.fechaModificacion = fechaModificacion;
-    }
-
-    public void setAlta(Boolean alta) {
-        this.alta = alta;
-    }
-
     public Usuario() {
         this.alta = true;
     }
 
-    public Usuario(Integer id, Rol rol, String mail, String nombreUsuario, String contrasenia, List<Resultado> resultados, Date fechaCreacion, Date fechaModificacion) {
+    public Usuario(Integer id, Rol rol, String mail, String nombreUsuario, String contrasenia, String apellido, Integer edad, String nombre) {
         this.id = id;
         this.rol = rol;
         this.mail = mail;
         this.nombreUsuario = nombreUsuario;
         this.contrasenia = contrasenia;
-        this.resultados = resultados;
-        this.fechaCreacion = fechaCreacion;
-        this.fechaModificacion = fechaModificacion;
         this.alta = true;
+        this.apellido = apellido;
+        this.edad = edad;
+        this.nombre = nombre;
     }
-
-
 }

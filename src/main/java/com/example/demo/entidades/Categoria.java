@@ -2,8 +2,6 @@ package com.example.demo.entidades;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,9 +9,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@SQLDelete(sql="UPDATE Rol r SET r.alta = false WHERE r.id = ?")
-@EntityListeners(AuditingEntityListener.class)
-public class Rol {
+public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,16 +17,17 @@ public class Rol {
     @Column(nullable = false)
     private String nombre;
     private Boolean alta;
-    @OneToMany(mappedBy = "rol")
-    private List<Usuario> usuarios;
+    @OneToMany(mappedBy = "categoria")
+    private List<Tematica> tematicas;
 
-    public Rol(Integer id, String nombre) {
+    public Categoria(Integer id, String nombre, List<Tematica> tematicas) {
         this.id = id;
         this.nombre = nombre;
         this.alta = true;
+        this.tematicas = tematicas;
     }
 
-    public Rol() {
+    public Categoria() {
         this.alta = true;
     }
 }

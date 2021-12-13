@@ -12,14 +12,10 @@ import java.util.List;
 @Repository
 public interface PreguntaRepositorio extends JpaRepository<Pregunta, Integer>{
 
-    @Query("SELECT p FROM Pregunta p WHERE alta = true")
-    List<Pregunta> mostrarPreguntas();
-
-    @Query("SELECT p FROM Pregunta p WHERE alta = false")
-    List<Pregunta> mostrarPreguntasEliminadas();
+    @Query("SELECT p FROM Pregunta p WHERE alta = :alta")
+    List<Pregunta> mostrarPorAlta(@Param("alta") boolean alta);
 
     @Modifying
-    @Query("UPDATE Pregunta p SET p.dificultad = :dificultad , p.enunciado = :enunciado , p.respuestas = :respuestas , p.respuestaCorrecta = :respuestaCorrecta , p.puntaje = :puntaje WHERE p.id = :id")
-    void modificar(@Param("dificultad") Byte dificultad, @Param("enunciado") String enunciado, @Param("respuestas") List<String> respuestas, @Param("respuestaCorrecta") String respuestaCorrecta, @Param("puntaje") Integer puntaje, @Param("id") Integer id );
-
+    @Query("UPDATE Pregunta p Set p.alta = true WHERE p.id = :id")
+    void darAlta (@Param("id") Integer id);
 }

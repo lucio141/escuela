@@ -1,12 +1,18 @@
 package com.example.demo.entidades;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @SQLDelete(sql = "UPDATE Tematica t SET t.alta = false WHERE t.id = ?")
+@EntityListeners(AuditingEntityListener.class)
 public class Tematica {
 
     @Id
@@ -17,47 +23,17 @@ public class Tematica {
     private Boolean alta;
     @OneToMany(mappedBy = "tematica")
     private List<Examen> examen;
+    @ManyToOne
+    private Categoria categoria;
 
     public Tematica() {
         this.alta = true;
     }
 
-    public Tematica(Integer id, String nombre, Boolean alta, List<Examen> examen) {
+    public Tematica(Integer id, String nombre, Categoria categoria) {
         this.id = id;
         this.nombre = nombre;
-        this.alta = alta;
-        this.examen = examen;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Boolean getAlta() {
-        return alta;
-    }
-
-    public void setAlta(Boolean alta) {
-        this.alta = alta;
-    }
-
-    public List<Examen> getExamen() {
-        return examen;
-    }
-
-    public void setExamen(List<Examen> examen) {
-        this.examen = examen;
+        this.alta = true;
+        this.categoria = categoria;
     }
 }
