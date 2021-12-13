@@ -10,7 +10,7 @@
 </head>
 <body>
     <form class="g-5 needs-validation" autocomplete="off" novalidate method="POST"
-                                      th:action="@{/usuario/__${action}__}" th:object="${usuario}">
+                                      th:action="@{/usuario/__${accion}__}" th:object="${usuario}">
                                     <input th:field="*{id}" type="hidden"/>
                                     <div class="col-md-12 position-relative">
                                         <label for="validationTooltip01" class="form-label">Nombre</label>
@@ -48,7 +48,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12 position-relative">
-                                        <label for="validationTooltip01" class="form-label">Edad</label>
+                                        <label for="validationTooltip01" class="form-label">Mail</label>
                                         <input type="text" class="form-control" id="validationTooltip01" required th:field="*{mail}">
                                         <div class="invalid-tooltip">
                                             Inserte un mail por favor
@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="col-12 d-flex justify-content-center">    
                                        <button class="btn btn-primary mt-5" type="submit" 
-                                               th:text="${action == 'save'} ? 'Crear Cliente' : 'Guardar cambios'">Enviar</button>
+                                               th:text="${accion == 'guardar'} ? 'Crear Cliente' : 'Guardar cambios'">Enviar</button>
                                     </div>
                                 </form>
 </body>

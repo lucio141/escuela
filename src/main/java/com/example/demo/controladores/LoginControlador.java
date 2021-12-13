@@ -16,7 +16,7 @@ public class LoginControlador {
 
     @GetMapping("/login")
     public ModelAndView login (){
-        ModelAndView mav = new ModelAndView(); //Falta HTML
+        ModelAndView mav = new ModelAndView("login");
         return mav;
     }
 
