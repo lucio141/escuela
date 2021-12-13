@@ -9,17 +9,27 @@ import com.example.demo.repositorios.UsuarioRepositorio;
 import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class UsuarioServicio {
+public class UsuarioServicio implements UserDetailsService {
 
     private final UsuarioRepositorio usuarioRepositorio;
+
+    private final BCryptPasswordEncoder encoder;
+
+    private final String MENSAJE = "El nombre de usuario ingresado no existe %s";
 
     @Transactional
     public void crearUsuario(String nombre, String apellido, String nombreUsuario, String contrasenia, Integer edad, String mail, String telefono, Rol rol){
@@ -27,7 +37,7 @@ public class UsuarioServicio {
         usuarioDTO.setNombre(nombre);
         usuarioDTO.setApellido(apellido);
         usuarioDTO.setNombreUsuario(nombreUsuario);
-        usuarioDTO.setContrasenia(contrasenia);
+        usuarioDTO.setContrasenia(encoder.encode(contrasenia));
         usuarioDTO.setEdad(edad);
         usuarioDTO.setMail(mail);
         usuarioDTO.setTelefono(telefono);
@@ -77,5 +87,13 @@ public class UsuarioServicio {
     @Transactional(readOnly = true)
     public UsuarioInformacionDTO informacionUsuario(Integer id) throws ObjetoNulloExcepcion{
         return Mapper.usuarioDTOAUsuarioInformacionDTO(obtenerPorId(id));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException {
+        Usuario usuario = usuarioRepositorio.findByNombreUsuario(nombreUsuario)
+                                            .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE, nombreUsuario)));
+
+        return new User(usuario.getNombreUsuario(), usuario.getContrasenia(), Collections.emptyList());
     }
 }

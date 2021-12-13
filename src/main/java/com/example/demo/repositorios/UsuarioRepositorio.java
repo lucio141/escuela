@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
@@ -18,4 +19,6 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
     @Modifying
     @Query("UPDATE Usuario u SET u.alta = true WHERE u.id = :id")
     void darAlta (@Param("id") Integer id);
+
+    Optional<Usuario> findByNombreUsuario(String nombreUsuario);
 }
