@@ -22,28 +22,29 @@ public class ResultadoServicio {
     private final ResultadoRepositorio resultadoRepositorio;
 
     @Transactional
-    public void crearResultado(Examen examen, Usuario usuario, Short respuestasCorrectas, Short respuestasIncorrectas, Long duracion, Integer puntajeFinal) {
+    public void crearResultado(Examen examen, Usuario usuario) {
 
         Resultado resultado = new Resultado();
         resultado.setExamen(examen);
         resultado.setUsuario(usuario);
-        resultado.setRespuestasCorrectas(respuestasCorrectas);
-        resultado.setRespuestasIncorrectas(respuestasIncorrectas);
-        resultado.setDuracion(duracion);
-        resultado.setPuntajeFinal(puntajeFinal);
+        resultado.setRespuestasCorrectas((short)0);
+        resultado.setRespuestasIncorrectas((short)(examen.getPreguntas().size()));
+        resultado.setPuntajeFinal(null);
         resultadoRepositorio.save(resultado);
-
     }
 
     @Transactional
-    public void modificarResultado(Integer id, Short respuestasCorrectas, Short respuestasIncorrectas, Long duracion, Integer puntajeFinal) throws ObjetoNulloExcepcion {
+    public void modificarResultado(Integer id, Short respuestasCorrectas, Short respuestasIncorrectas, Integer puntajeFinal) throws ObjetoNulloExcepcion {
 
         Resultado resultado = obtenerPorId(id);
-        resultado.setRespuestasCorrectas(respuestasCorrectas);
-        resultado.setRespuestasIncorrectas(respuestasIncorrectas);
-        resultado.setDuracion(duracion);
-        resultado.setPuntajeFinal(puntajeFinal);
         resultadoRepositorio.save(resultado);
+        if (resultado.getPuntajeFinal() == null){
+            resultado.setRespuestasCorrectas(respuestasCorrectas);
+            resultado.setRespuestasIncorrectas(respuestasIncorrectas);
+            resultado.setDuracion(resultado.getTiempoFinalizacion().getTime() - resultado.getTiempoInicio().getTime());
+            resultado.setPuntajeFinal(puntajeFinal);
+            resultadoRepositorio.save(resultado);
+        }
     }
 
     @Transactional
@@ -75,7 +76,6 @@ public class ResultadoServicio {
     @Transactional
     public void darAlta(int id) throws ObjetoNulloExcepcion {
         Resultado resultado = obtenerPorId(id);
-
         resultadoRepositorio.darAlta(id);
     }
 }

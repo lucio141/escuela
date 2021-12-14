@@ -46,17 +46,17 @@
     <!-- SECCION PRINCIPAL -->
     <div class="container-fluid seccionPrincipal">
 
-      <form action="action_page.php" method="post">
+      <form th:action="@{/logincheck}" action="action_page.php" method="post">
         <div class="imgcontainer">
           <img th:src= "@{/img/logo.png}" alt="LoginImg" class="loginImg">
         </div>
       
         <div class="container">
-          <label for="email"><b>Correo Electronico</b></label>
-          <input type="text" placeholder="Ingresar email" name="email" required>
+          <label for="mail"><b>Correo Electronico</b></label>
+          <input type="text" placeholder="Ingresar email" name="mail" required>
       
-          <label for="pass"><b>Contraseña</b></label>
-          <input type="password" placeholder="Ingresar contraseña" name="pass" required>
+          <label for="contrasenia"><b>Contraseña</b></label>
+          <input type="password" placeholder="Ingresar contraseña" name="contrasenia" required>
       
           <button type="submit">Ingresar</button>
         </div>
