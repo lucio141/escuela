@@ -1,9 +1,13 @@
 package com.example.demo.controladores;
 
+import com.example.demo.dto.CategoriaDTO;
+import com.example.demo.entidades.Categoria;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.servicios.CategoriaServicio;
 import com.example.demo.servicios.ExamenServicio;
+import com.example.demo.servicios.TematicaServicio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,14 +24,17 @@ import java.util.List;
 public class ExamenControlador {
 
     private final ExamenServicio examenServicio;
+    private final CategoriaServicio categoriaServicio;
+    private final TematicaServicio tematicaServicio;
 
     @GetMapping()
     public ModelAndView mostrarExamenes() {
-        ModelAndView mav = new ModelAndView(""); //Falta crear
+        ModelAndView mav = new ModelAndView("examen"); //Falta crear
         List<Examen> examenes = examenServicio.mostrarExamenesPorAlta(true);
         mav.addObject("examenes", examenes);
         mav.addObject("titulo", "Tabla de examenes");
-
+        mav.addObject("categorias", categoriaServicio.mostrarCategorias());
+        mav.addObject("tematicas", tematicaServicio.mostrarTematicas());
         return mav;
     }
 
