@@ -16,7 +16,7 @@ public class LoginControlador {
 
     @GetMapping("/login")
     public ModelAndView login (){
-        ModelAndView mav = new ModelAndView("loginCoda");
+        ModelAndView mav = new ModelAndView("login");
         return mav;
     }
 
