@@ -57,6 +57,23 @@ public class TematicaControlador {
         return mav;
     }
 
+
+    @GetMapping("/{id}")
+    public ModelAndView ingresarTematica(@PathVariable int id){
+        ModelAndView mav = new ModelAndView("tematica"); //FALTA HTML
+        try{
+            mav.addObject("tematica",tematicaServicio.obtenerPorId(id)) ;
+
+        }
+        catch( ObjetoNulloExcepcion e){
+            System.out.println(e.getMessage());
+        }
+
+        return mav;
+    }
+
+
+
     @PostMapping("/guardar")
     public RedirectView guardarTematicas(@RequestParam String nombre){
         tematicaServicio.crearTematica(nombre);
