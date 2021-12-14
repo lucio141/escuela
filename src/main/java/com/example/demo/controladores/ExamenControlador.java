@@ -30,12 +30,24 @@ public class ExamenControlador {
     @GetMapping()
     public ModelAndView mostrarExamenes() {
         ModelAndView mav = new ModelAndView("examen"); //Falta crear
-        List<Examen> examenes = examenServicio.mostrarExamenesPorAlta(true);
-        mav.addObject("examenes", examenes);
+        mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(true));
         mav.addObject("titulo", "Tabla de examenes");
         mav.addObject("categorias", categoriaServicio.mostrarCategorias());
         mav.addObject("tematicas", tematicaServicio.mostrarTematicas());
         return mav;
+    }
+
+    @GetMapping("/{id}")
+    public ModelAndView mostrarExamen(@PathVariable int id) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("resultados", examenServicio.top5(id));
+        try{
+            mav.addObject("titulo", examenServicio.obtenerPorId(id).getNombre());
+        }catch (ObjetoNulloExcepcion e){
+            System.out.println(e.getMessage());
+        }
+        return mav;
+
     }
 
     @GetMapping("/baja")
@@ -75,17 +87,17 @@ public class ExamenControlador {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, RedirectAttributes atributosFash) {
-        examenServicio.crearExamen(dificultad,tematica,notaRequerida);
+    public RedirectView guardar(@RequestParam String dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes atributosFash) {
+        examenServicio.crearExamen(dificultad,tematica,notaRequerida, nombre);
 
         atributosFash.addFlashAttribute("examen", examenServicio.ObtenerUltimoExamen());
         return new RedirectView("/../pregunta");
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam int id, @RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, RedirectAttributes atributosFlash) {
+    public RedirectView modificar(@RequestParam int id, @RequestParam String dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes atributosFlash) {
         try {
-            examenServicio.modificarExamen(id, dificultad, tematica, notaRequerida);
+            examenServicio.modificarExamen(id, dificultad, tematica, notaRequerida, nombre);
             atributosFlash.addFlashAttribute("examen", examenServicio.obtenerPorId(id));
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());

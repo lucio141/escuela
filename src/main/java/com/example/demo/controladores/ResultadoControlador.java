@@ -51,8 +51,8 @@ public class ResultadoControlador {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardarResultado(@RequestParam Examen examen, @RequestParam Usuario usuario, @RequestParam short respuestasCorrectas, @RequestParam short respuestasIncorrectas, @RequestParam long duracion, @RequestParam int puntajeFinal) {
-        resultadoServicio.crearResultado(examen,usuario,respuestasCorrectas,respuestasIncorrectas,duracion,puntajeFinal);
+    public RedirectView guardarResultado(@RequestParam Examen examen, @RequestParam Usuario usuario) {
+        resultadoServicio.crearResultado(examen,usuario);
         return new RedirectView("/resultado");
     }
 
@@ -70,10 +70,10 @@ public class ResultadoControlador {
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam int id, @RequestParam short respuestasCorrectas, @RequestParam short respuestasIncorrectas, @RequestParam long duracion, @RequestParam int puntajeFinal) {
+    public RedirectView modificar(@RequestParam int id, @RequestParam short respuestasCorrectas, @RequestParam short respuestasIncorrectas, @RequestParam int puntajeFinal) {
 
         try {
-            resultadoServicio.modificarResultado(id,respuestasCorrectas,respuestasIncorrectas,duracion,puntajeFinal);
+            resultadoServicio.modificarResultado(id,respuestasCorrectas,respuestasIncorrectas,puntajeFinal);
         } catch (ObjetoNulloExcepcion e) {
             e.printStackTrace();
         }
