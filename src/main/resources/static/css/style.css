@@ -324,5 +324,27 @@ padding: 5%;
 
 
 
+.botonComenzarExamen{
+
+    background-color: #00efe3 !important;
+     color: rgb(255, 255, 255) !important;
+     transition: all 100ms ease;
+
+
+
+}
+
+
+.botonComenzarExamen:hover{
+
+
+
+    background-color: #ff51c2!important;
+    color: rgb(255, 255, 255) !important;
+
+}
+
+
+
 
 
