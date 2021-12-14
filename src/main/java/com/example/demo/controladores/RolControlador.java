@@ -19,7 +19,7 @@ public class RolControlador {
 
     @GetMapping()
     public ModelAndView mostrarRoles() {
-        ModelAndView mav = new ModelAndView(""); //Falta crear
+        ModelAndView mav = new ModelAndView("rol"); //Falta crear
         mav.addObject("roles", rolServicio.mostrarRolesPorAlta(true));
         mav.addObject("titulo", "Tabla de roles");
         return mav;
@@ -27,7 +27,7 @@ public class RolControlador {
 
     @GetMapping("/baja")
     public ModelAndView mostrarRolesBaja() {
-        ModelAndView mav = new ModelAndView(""); //Falta crear
+        ModelAndView mav = new ModelAndView("rol"); //Falta crear
         mav.addObject("roles", rolServicio.mostrarRolesPorAlta(false));
         mav.addObject("titulo", "Tabla de examenes baja");
         return mav;
@@ -35,7 +35,7 @@ public class RolControlador {
 
     @GetMapping("/crear")
     public ModelAndView crearRol() {
-        ModelAndView mav = new ModelAndView("");//Falta crear
+        ModelAndView mav = new ModelAndView("rol-formulario");//Falta crear
 
         mav.addObject("rol", new Rol());
         mav.addObject("titulo", "Crear Rol");
@@ -45,7 +45,7 @@ public class RolControlador {
 
     @GetMapping("/editar/{id}")
     public ModelAndView editarRol(@PathVariable int id) {
-        ModelAndView mav = new ModelAndView(""); // Falta crear
+        ModelAndView mav = new ModelAndView("rol-formulario"); // Falta crear
         try {
             mav.addObject("rol", rolServicio.obtenerPorId(id));
         } catch (ObjetoNulloExcepcion e) {
