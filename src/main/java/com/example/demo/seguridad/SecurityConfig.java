@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/css/*", "/img/*", "/assets/*").permitAll()
-                .antMatchers("/**").authenticated() //poner permitAll() cuando creemos el 1er usuario, desp poner authenticated()
+                .antMatchers("/**").permitAll() //poner permitAll() cuando creemos el 1er usuario, desp poner authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
