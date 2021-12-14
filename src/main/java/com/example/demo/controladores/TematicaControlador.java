@@ -18,7 +18,7 @@ public class TematicaControlador {
 
     @GetMapping
     public ModelAndView mostrarTematicas(){
-        ModelAndView mav = new ModelAndView("tematica"); //Falta HTML
+        ModelAndView mav = new ModelAndView("tematicas"); //Falta HTML
 
         mav.addObject("tematicas",tematicaServicio.mostrarTematicasPorAlta(true));
         mav.addObject("titulo", "Tabla de Tematicas");
@@ -27,7 +27,7 @@ public class TematicaControlador {
 
     @GetMapping("/baja")
     public  ModelAndView mostrarTematicasBaja(){
-        ModelAndView mav = new ModelAndView(); //Falta HTML
+        ModelAndView mav = new ModelAndView("tematicas"); //Falta HTML
 
         mav.addObject("tematicas",tematicaServicio.mostrarTematicasPorAlta(false));
         mav.addObject("titulo", "Tabla de Tematicas Baja");
@@ -36,7 +36,7 @@ public class TematicaControlador {
 
     @GetMapping("/crear")
     public ModelAndView crearTematica(){
-        ModelAndView mav = new ModelAndView(); //FALTA HTML
+        ModelAndView mav = new ModelAndView("tematica-formulario"); //FALTA HTML
         mav.addObject("tematica",new Tematica() );
         mav.addObject("titulo", "Crear Tematica");
         mav.addObject("accion", "guardar");
@@ -45,7 +45,7 @@ public class TematicaControlador {
 
     @GetMapping("/editar/{id}")
     public ModelAndView editarTematica(@PathVariable int id){
-        ModelAndView mav = new ModelAndView(); //FALTA HTML
+        ModelAndView mav = new ModelAndView("tematica-formulario"); //FALTA HTML
         try{
             mav.addObject("tematica",tematicaServicio.obtenerPorId(id)) ;
         }
