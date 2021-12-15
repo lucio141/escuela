@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -44,5 +45,26 @@ public class Pregunta{
 
     public Pregunta() {
         this.alta = true;
+    }
+
+    @Override
+    public String toString() {
+        return "Pregunta{" +
+                "examen=" + examen.getId() +
+                ", enunciado='" + enunciado.toLowerCase().trim() + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Pregunta)) {
+            return false;
+        }
+        return this.hashCode() == o.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.toString().toLowerCase().hashCode();
     }
 }

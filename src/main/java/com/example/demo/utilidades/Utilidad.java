@@ -45,13 +45,13 @@ public class Utilidad {
     Por ejemplo, validacionCadena(""); devolvería false porque contiene un espacio.
     un caso favorable del ejemplo anterior seria: validacionNombreUsuario("Juan-Carlo"); devuelve true.
     */
-    public Boolean validacionCadena(String cadena) throws ValidacionCampExcepcion {
+    public void validacionCadena(String cadena) throws ValidacionCampExcepcion {
         Pattern regex = Pattern.compile("^[a-zA-Z\\\\s]*$");
         Matcher matcher = regex.matcher(cadena);
+
         if (!matcher.matches()) {
             throw new ValidacionCampExcepcion("El formato de cadena es inconrrecto");
         }
-        return true;
     }
 
     /*
