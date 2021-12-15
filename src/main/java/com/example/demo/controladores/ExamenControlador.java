@@ -10,6 +10,7 @@ import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.TematicaServicio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,6 @@ public class ExamenControlador {
     private final ExamenServicio examenServicio;
     private final CategoriaServicio categoriaServicio;
     private final TematicaServicio tematicaServicio;
-    private final Dificultad dificultad;
 
     @GetMapping()
     public ModelAndView mostrarExamenes(HttpServletRequest request) {
@@ -86,7 +86,7 @@ public class ExamenControlador {
     public ModelAndView crearExamen() {
         ModelAndView mav = new ModelAndView("examen-formulario");// LO ESTA HACIENDO JACKY CREO
         mav.addObject("examen", new Examen());
-        mav.addObject("dificultades", dificultad.values());
+        mav.addObject("dificultades", Dificultad.values());
         mav.addObject("titulo", "Crear Examen");
         mav.addObject("accion", "guardar");
         return mav;
@@ -99,7 +99,7 @@ public class ExamenControlador {
 
         try {
             mav.addObject("examen", examenServicio.obtenerPorId(id));
-            mav.addObject("dificultades", dificultad.values());
+            mav.addObject("dificultades", Dificultad.values());
         } catch (ObjetoNulloExcepcion nulo) {
             System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
