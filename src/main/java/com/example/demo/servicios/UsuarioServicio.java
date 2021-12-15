@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +26,9 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class UsuarioServicio implements UserDetailsService {
+
+
+    private final EmailServicio emailServicio;
 
     private final UsuarioRepositorio usuarioRepositorio;
 
@@ -44,6 +47,7 @@ public class UsuarioServicio implements UserDetailsService {
         usuarioDTO.setMail(mail);
         usuarioDTO.setTelefono(telefono);
         usuarioDTO.setRol(rol);
+        emailServicio.enviar(usuarioDTO.getMail());
         usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
     }
 
