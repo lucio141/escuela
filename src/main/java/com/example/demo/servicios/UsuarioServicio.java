@@ -47,7 +47,7 @@ public class UsuarioServicio implements UserDetailsService {
         usuarioDTO.setMail(mail);
         usuarioDTO.setTelefono(telefono);
         usuarioDTO.setRol(rol);
-        emailServicio.enviar(usuarioDTO.getMail());
+        emailServicio.enviarNuevoUsuario(usuarioDTO);
         usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
     }
 
