@@ -30,4 +30,24 @@ public class Categoria {
     public Categoria() {
         this.alta = true;
     }
+
+    @Override
+    public String toString() {
+        return "Categoria{" +
+                "nombre='" + nombre + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Categoria)) {
+            return false;
+        }
+        return this.hashCode() == o.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.toString().toLowerCase().hashCode();
+    }
 }

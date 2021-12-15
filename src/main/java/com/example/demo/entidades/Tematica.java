@@ -36,4 +36,24 @@ public class Tematica {
         this.alta = true;
         this.categoria = categoria;
     }
+
+    @Override
+    public String toString() {
+        return "Tematica{" +
+                "nombre='" + nombre + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Tematica)) {
+            return false;
+        }
+        return this.hashCode() == o.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.toString().toLowerCase().hashCode();
+    }
 }
