@@ -1,23 +1,24 @@
 package com.example.demo.controladores;
 
-import com.example.demo.dto.CategoriaDTO;
-import com.example.demo.entidades.Categoria;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Tematica;
+import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.servicios.CategoriaServicio;
 import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.TematicaServicio;
-import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/examen")
@@ -29,21 +30,39 @@ public class ExamenControlador {
     private final TematicaServicio tematicaServicio;
 
     @GetMapping()
-    public ModelAndView mostrarExamenes() {
-        ModelAndView mav = new ModelAndView("examen"); //Falta crear
-        mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(true));
+    public ModelAndView mostrarExamenes(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("examen");
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+
+        if(map != null){
+            mav.addObject("errorNulo", map.get("errorNulo"));
+            mav.addObject("padreNulo", map.get("padreNulo"));
+            //mav.addObject("exito", map.get("success"));
+        }
+
         mav.addObject("titulo", "Tabla de examenes");
+        mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(true));
         mav.addObject("categorias", categoriaServicio.mostrarCategorias());
         mav.addObject("tematicas", tematicaServicio.mostrarTematicas());
         return mav;
     }
 
     @GetMapping("/{id}")
-    public ModelAndView mostrarExamen(@PathVariable int id) {
+    public ModelAndView mostrarExamen(@PathVariable int id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("resultados", examenServicio.top5(id));
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+
+        if(map != null){
+            mav.addObject("errorNulo", map.get("errorNulo"));
+            mav.addObject("padreNulo", map.get("padreNulo"));
+            mav.addObject("errorEliminado", map.get("errorEliminado"));
+            mav.addObject("errorRepetido", map.get("errorRepetido"));
+            //mav.addObject("exito", map.get("success"));
+        }
+
         try{
             mav.addObject("titulo", examenServicio.obtenerPorId(id).getNombre());
+            mav.addObject("resultados", examenServicio.top5(id));
         }catch (ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());
         }
@@ -54,20 +73,16 @@ public class ExamenControlador {
     @GetMapping("/baja")
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarExamenesBaja() {
-        ModelAndView mav = new ModelAndView(""); //Falta crear
-
-        List<Examen> examenes = examenServicio.mostrarExamenesPorAlta(false);
-        mav.addObject("examenes", examenes);
+        ModelAndView mav = new ModelAndView(""); //DECIDE DONATO
+        mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(false));
         mav.addObject("titulo", "Tabla de examenes baja");
-
         return mav;
     }
 
     @GetMapping("/crear")
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearExamen() {
-        ModelAndView mav = new ModelAndView("");//Falta crear
-
+        ModelAndView mav = new ModelAndView("examen-formulario");// LO ESTA HACIENDO JACKY CREO
         mav.addObject("examen", new Examen());
         mav.addObject("titulo", "Crear Examen");
         mav.addObject("accion", "guardar");
@@ -76,13 +91,14 @@ public class ExamenControlador {
 
     @GetMapping("/editar/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView editarExamen(@PathVariable int id) {
+    public ModelAndView editarExamen(@PathVariable int id, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView(""); // Falta crear
 
         try {
             mav.addObject("examen", examenServicio.obtenerPorId(id));
-        } catch (ObjetoNulloExcepcion e) {
-            System.out.println(e.getMessage());
+        } catch (ObjetoNulloExcepcion nulo) {
+            System.out.println(nulo.getMessage());
+            attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
         }
 
         mav.addObject("titulo", "editar Examen");
@@ -92,47 +108,60 @@ public class ExamenControlador {
 
     @PostMapping("/guardar")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardar(@RequestParam String dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes atributosFash) {
-        examenServicio.crearExamen(dificultad,tematica,notaRequerida, nombre);
-
-        atributosFash.addFlashAttribute("examen", examenServicio.ObtenerUltimoExamen());
-        return new RedirectView("/../pregunta");
+    public RedirectView guardar(@RequestParam String dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
+        try {
+            examenServicio.crearExamen(dificultad,tematica,notaRequerida, nombre);
+            attributes.addFlashAttribute("examen", examenServicio.ObtenerUltimoExamen());
+        }catch (ObjetoNulloExcepcion nulo){
+            System.out.println(nulo.getMessage());
+            attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
+        }
+        return new RedirectView("/pregunta");
     }
 
     @PostMapping("/modificar")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView modificar(@RequestParam int id, @RequestParam String dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes atributosFlash) {
+    public RedirectView modificar(@RequestParam int id, @RequestParam String dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
         try {
             examenServicio.modificarExamen(id, dificultad, tematica, notaRequerida, nombre);
-            atributosFlash.addFlashAttribute("examen", examenServicio.obtenerPorId(id));
-        } catch (ObjetoNulloExcepcion e) {
-            System.out.println(e.getMessage());
+            attributes.addFlashAttribute("examen", examenServicio.obtenerPorId(id));
+            return new RedirectView("/examen/{" + id + "}");
+        } catch(ObjetoNulloExcepcion nulo) {
+            System.out.println(nulo.getMessage());
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            return new RedirectView("/examen");
+        }catch (ObjetoRepetidoExcepcion repetido){
+            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+            System.out.println(repetido.getMessage());
+            return new RedirectView("/examen");
+        }catch (ObjetoEliminadoExcepcion eliminado){
+            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+            System.out.println(eliminado.getMessage());
+            return new RedirectView("/examen");
         }
-
-
-        return new RedirectView("/../pregunta");
     }
 
     @PostMapping("/eliminar/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView eliminar(@PathVariable int id) {
+    public RedirectView eliminar(@PathVariable int id, RedirectAttributes attributes) {
         try {
             examenServicio.eliminar(id);
-        } catch (ObjetoNulloExcepcion e) {
-            e.printStackTrace();
+        } catch (ObjetoNulloExcepcion nulo) {
+            nulo.printStackTrace();
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
         return new RedirectView("/examen");
     }
 
     @PostMapping("/recuperar/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView recuperar(@PathVariable int id) {
+    public RedirectView recuperar(@PathVariable int id, RedirectAttributes attributes) {
         try {
             examenServicio.darAlta(id);
-        } catch (ObjetoNulloExcepcion e) {
-            System.out.println(e.getMessage());
+        } catch (ObjetoNulloExcepcion nulo) {
+            System.out.println(nulo.getMessage());
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
         return new RedirectView("/examen");
     }
-
 }

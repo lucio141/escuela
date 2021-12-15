@@ -5,6 +5,7 @@ import com.example.demo.entidades.Pregunta;
 import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
+import com.example.demo.excepciones.PadreNuloExcepcion;
 import com.example.demo.repositorios.ExamenRepositorio;
 import com.example.demo.repositorios.PreguntaRepositorio;
 import com.example.demo.utilidades.Dificultad;
@@ -25,10 +26,9 @@ public class PreguntaServicio {
     private final ExamenServicio examenservicio;
 
     @Transactional
-    public void crearPregunta(Dificultad dificultad, String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen) throws ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion, ObjetoNulloExcepcion {
+    public void crearPregunta(Dificultad dificultad, String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen) throws ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion, ObjetoNulloExcepcion, PadreNuloExcepcion{
 
         Pregunta pregunta = new Pregunta();
-
         pregunta.setDificultad(dificultad);
         pregunta.setEnunciado(enunciado);
         pregunta.setResupestas(respuestas);
@@ -37,7 +37,7 @@ public class PreguntaServicio {
         try {
             pregunta.setExamen(examenservicio.obtenerPorId(examen.getId()));
         } catch (ObjetoNulloExcepcion e) {
-            throw new ObjetoNulloExcepcion("Error al buscar el Examen");
+            throw new PadreNuloExcepcion("Error al buscar el Examen");
         }
 
         if(mostrarPreguntasPorAlta(true).contains(pregunta)) {
@@ -59,7 +59,6 @@ public class PreguntaServicio {
         pregunta.setResupestas(respuestas);
         pregunta.setRespuestaCorrecta(respuestaCorrecta);
         pregunta.setPuntaje(puntaje);
-        pregunta.setExamen(examen);
 
         if(!preguntaAux.equals(pregunta)){
             if(mostrarPreguntasPorAlta(true).contains(pregunta)) {
@@ -79,7 +78,7 @@ public class PreguntaServicio {
 
     @Transactional
     public List<Pregunta> mostrarPreguntasPorAlta(Boolean alta) {
-        return  preguntaRepositorio.mostrarPorAlta(alta);
+        return preguntaRepositorio.mostrarPorAlta(alta);
     }
 
     @Transactional
@@ -87,19 +86,17 @@ public class PreguntaServicio {
         Pregunta pregunta = preguntaRepositorio.findById(id).orElse(null);
 
         if (pregunta == null) {
-            throw new ObjetoNulloExcepcion("");
+            throw new ObjetoNulloExcepcion("No se encontro la pregunta");
         }
 
         return pregunta;
     }
 
     @Transactional
-    public void eliminar(Integer id) {
+    public void eliminar(Integer id) throws ObjetoNulloExcepcion {
+        Pregunta pregunta = obtenerPorId(id);
         preguntaRepositorio.deleteById(id);
     }
-
-
-
 
     @Transactional
     public void darAlta(int id) throws ObjetoNulloExcepcion {

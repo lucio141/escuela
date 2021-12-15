@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 /*Esta clase contiene metodos de utilidad, tales como las validaciones con regex,etc*/
 
 public class Utilidad {
+
     /*
     descripcion de la validacion
     El nombre de usuario debe tener :
