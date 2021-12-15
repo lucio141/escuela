@@ -7,6 +7,7 @@ import com.example.demo.servicios.CategoriaServicio;
 import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,6 +25,7 @@ public class CategoriaControlador {
     private final ExamenServicio examenServicio;
 
     @GetMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarCategorias() {
         ModelAndView mav = new ModelAndView("categoria"); //Falta crear
         List<Examen> examenes = examenServicio.mostrarExamenesPorAlta(true);
@@ -35,6 +37,7 @@ public class CategoriaControlador {
     }
 
     @GetMapping("/baja")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarCategoriasBaja() {
         ModelAndView mav = new ModelAndView(""); //Falta crear
         mav.addObject("categorias", categoriaServicio.mostrarCategoriasPorAlta(false));
@@ -43,6 +46,7 @@ public class CategoriaControlador {
     }
 
     @GetMapping("/crear")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearCategoria() {
         ModelAndView mav = new ModelAndView("");//Falta crear
         mav.addObject("categoria", new Categoria());
@@ -53,6 +57,7 @@ public class CategoriaControlador {
     }
 
     @GetMapping("/editar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarCategoria(@PathVariable int id) {
         ModelAndView mav = new ModelAndView(""); // Falta crear
         try {
@@ -66,12 +71,14 @@ public class CategoriaControlador {
     }
 
     @PostMapping("/guardar")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView guardar(@RequestParam String nombre) {
         categoriaServicio.crearCategoria(nombre);
         return new RedirectView("/categoria");
     }
 
     @PostMapping("/modificar")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@RequestParam int id, @RequestParam String nombre) {
         try {
             categoriaServicio.modificarCategoria(id,nombre);
@@ -83,6 +90,7 @@ public class CategoriaControlador {
     }
 
     @PostMapping("/eliminar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminar(@PathVariable int id) {
         try {
             categoriaServicio.eliminar(id);
@@ -93,6 +101,7 @@ public class CategoriaControlador {
     }
 
     @PostMapping("/recuperar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView recuperar(@PathVariable int id) {
         try {
             categoriaServicio.darAlta(id);
