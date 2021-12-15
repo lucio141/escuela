@@ -10,6 +10,7 @@ import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.TematicaServicio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,6 +52,7 @@ public class ExamenControlador {
     }
 
     @GetMapping("/baja")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarExamenesBaja() {
         ModelAndView mav = new ModelAndView(""); //Falta crear
 
@@ -62,6 +64,7 @@ public class ExamenControlador {
     }
 
     @GetMapping("/crear")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearExamen() {
         ModelAndView mav = new ModelAndView("");//Falta crear
 
@@ -72,6 +75,7 @@ public class ExamenControlador {
     }
 
     @GetMapping("/editar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarExamen(@PathVariable int id) {
         ModelAndView mav = new ModelAndView(""); // Falta crear
 
@@ -87,6 +91,7 @@ public class ExamenControlador {
     }
 
     @PostMapping("/guardar")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView guardar(@RequestParam String dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes atributosFash) {
         examenServicio.crearExamen(dificultad,tematica,notaRequerida, nombre);
 
@@ -95,6 +100,7 @@ public class ExamenControlador {
     }
 
     @PostMapping("/modificar")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@RequestParam int id, @RequestParam String dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes atributosFlash) {
         try {
             examenServicio.modificarExamen(id, dificultad, tematica, notaRequerida, nombre);
@@ -108,6 +114,7 @@ public class ExamenControlador {
     }
 
     @PostMapping("/eliminar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminar(@PathVariable int id) {
         try {
             examenServicio.eliminar(id);
@@ -118,6 +125,7 @@ public class ExamenControlador {
     }
 
     @PostMapping("/recuperar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView recuperar(@PathVariable int id) {
         try {
             examenServicio.darAlta(id);

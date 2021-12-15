@@ -5,6 +5,7 @@ import com.example.demo.entidades.Rol;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.RolServicio;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,6 +19,7 @@ public class RolControlador {
     private final RolServicio rolServicio;
 
     @GetMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarRoles() {
         ModelAndView mav = new ModelAndView("rol"); //Falta crear
         mav.addObject("roles", rolServicio.mostrarRolesPorAlta(true));
@@ -26,6 +28,7 @@ public class RolControlador {
     }
 
     @GetMapping("/baja")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarRolesBaja() {
         ModelAndView mav = new ModelAndView("rol"); //Falta crear
         mav.addObject("roles", rolServicio.mostrarRolesPorAlta(false));
@@ -34,6 +37,7 @@ public class RolControlador {
     }
 
     @GetMapping("/crear")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearRol() {
         ModelAndView mav = new ModelAndView("rol-formulario");//Falta crear
 
@@ -44,6 +48,7 @@ public class RolControlador {
     }
 
     @GetMapping("/editar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarRol(@PathVariable int id) {
         ModelAndView mav = new ModelAndView("rol-formulario"); // Falta crear
         try {
@@ -58,6 +63,7 @@ public class RolControlador {
     }
 
     @PostMapping("/guardar")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView guardar(@RequestParam String nombre) {
         rolServicio.crearRol(nombre);
 
@@ -65,6 +71,7 @@ public class RolControlador {
     }
 
     @PostMapping("/modificar")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@RequestParam int id, @RequestParam String nombre) {
         try {
             rolServicio.modificarRol(id,nombre);
@@ -76,12 +83,14 @@ public class RolControlador {
     }
 
     @PostMapping("/eliminar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminar(@PathVariable int id) {
         rolServicio.eliminar(id);
         return new RedirectView("/roles");
     }
 
     @PostMapping("/recuperar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView recuperar(@PathVariable int id) {
         try {
             rolServicio.darAlta(id);

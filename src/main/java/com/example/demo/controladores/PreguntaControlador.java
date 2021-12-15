@@ -6,6 +6,7 @@ import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.PreguntaServicio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,22 +25,34 @@ public class PreguntaControlador{
     private final PreguntaServicio preguntaServicio;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarPreguntas(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("pregunta");
         Map<String,?> map = RequestContextUtils.getInputFlashMap(request);
 
-        mav.addObject("examen" , map.get("examen"));
+        try{
+            mav.addObject("examen" , map.get("examen"));
+        }catch (NullPointerException e){
+            System.out.println(e.getMessage());
+        }
+
         mav.addObject("preguntasValidas", preguntaServicio.mostrarPreguntasPorAlta(true));
         mav.addObject("preguntasEliminadas", preguntaServicio.mostrarPreguntasPorAlta(false));
         return mav;
     }
 
     @GetMapping("/crear")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearPregunta(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("pregunta-formulario");
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
 
-        mav.addObject("examen" , map.get("examen"));
+        try{
+            mav.addObject("examen" , map.get("examen"));
+        }catch (NullPointerException e){
+            System.out.println(e.getMessage());
+        }
+
         mav.addObject("pregunta", new Pregunta());
         mav.addObject("titulo", "Crear Pregunta");
         mav.addObject("accion", "guardar");
@@ -47,12 +60,14 @@ public class PreguntaControlador{
     }
 
     @PostMapping("/guardar")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, HttpServletRequest request) {
         preguntaServicio.crearPregunta(dificultad, enunciado, respuestas, respuestaCorrecta, puntaje, examen);
         return new RedirectView("/pregunta");
     }
 
     @GetMapping("/editar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarPregunta(@PathVariable int id) {
         ModelAndView mav = new ModelAndView("pregunta-formulario");
         try {
@@ -66,6 +81,7 @@ public class PreguntaControlador{
     }
 
     @PostMapping("/modificar")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, @RequestParam int id) {
         try{
             preguntaServicio.modificarPregunta(dificultad, enunciado, respuestas, respuestaCorrecta, puntaje, examen, id);
@@ -76,6 +92,7 @@ public class PreguntaControlador{
     }
 
     @PostMapping("/eliminar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminarPregunta(@PathVariable int id) {
         preguntaServicio.eliminar(id);
         return new RedirectView("/pregunta");

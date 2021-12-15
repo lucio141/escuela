@@ -9,6 +9,7 @@ import com.example.demo.servicios.PreguntaServicio;
 import com.example.demo.servicios.ResultadoServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,6 +33,7 @@ public class ResultadoControlador {
     }
 
     @GetMapping("/eliminados")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarResultadoeliminados() {
         ModelAndView mav = new ModelAndView("");//falta crear
         mav.addObject("resultados", resultadoServicio.mostrarResultadosPorAlta(false));
@@ -82,12 +84,14 @@ public class ResultadoControlador {
     }
 
     @PostMapping("/eliminar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminarResultado(@PathVariable int id) {
         resultadoServicio.eliminar(id);
         return new RedirectView("/resultado");
     }
 
     @PostMapping("/recuperar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView recuperarResultado(@PathVariable int id) {
         try {
             resultadoServicio.darAlta(id);

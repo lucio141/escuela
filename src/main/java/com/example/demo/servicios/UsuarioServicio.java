@@ -9,6 +9,8 @@ import com.example.demo.repositorios.UsuarioRepositorio;
 import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -94,6 +96,7 @@ public class UsuarioServicio implements UserDetailsService {
         Usuario usuario = usuarioRepositorio.findByNombreUsuario(nombreUsuario)
                                             .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE, nombreUsuario)));
 
-        return new User(usuario.getNombreUsuario(), usuario.getContrasenia(), Collections.emptyList());
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
+        return new User(usuario.getNombreUsuario(), usuario.getContrasenia(), Collections.singletonList(authority));
     }
 }
