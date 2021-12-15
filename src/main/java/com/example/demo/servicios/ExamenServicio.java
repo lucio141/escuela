@@ -8,6 +8,7 @@ import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.repositorios.ExamenRepositorio;
+import com.example.demo.repositorios.PreguntaRepositorio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import java.util.List;
 public class ExamenServicio {
 
     private final ExamenRepositorio examenRepositorio;
-    private final PreguntaServicio preguntaServicio;
+    private final PreguntaRepositorio preguntaRepositorio;
 
     @Transactional
     public void crearExamen(String dificultad, Tematica tematica, Double notaRequerida, String nombre) {
@@ -96,7 +97,7 @@ public class ExamenServicio {
 
         for (Pregunta pregunta: examen.getPreguntas()) {
             if(pregunta.getAlta()){
-                preguntaServicio.eliminar(pregunta.getId());
+                preguntaRepositorio.deleteById(id);
             }
         }
 
