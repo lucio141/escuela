@@ -2,7 +2,10 @@ package com.example.demo.servicios;
 
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
+import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
+import com.example.demo.repositorios.ExamenRepositorio;
 import com.example.demo.repositorios.PreguntaRepositorio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
@@ -19,21 +22,37 @@ public class PreguntaServicio {
 
     private final PreguntaRepositorio preguntaRepositorio;
 
+    private final ExamenServicio examenservicio;
+
     @Transactional
-    public void crearPregunta(Dificultad dificultad, String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen) {
+    public void crearPregunta(Dificultad dificultad, String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen) throws ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion, ObjetoNulloExcepcion {
+
         Pregunta pregunta = new Pregunta();
+
         pregunta.setDificultad(dificultad);
         pregunta.setEnunciado(enunciado);
         pregunta.setResupestas(respuestas);
         pregunta.setRespuestaCorrecta(respuestaCorrecta);
         pregunta.setPuntaje(puntaje);
-        pregunta.setExamen(examen);
+        try {
+            pregunta.setExamen(examenservicio.obtenerPorId(examen.getId()));
+        } catch (ObjetoNulloExcepcion e) {
+            throw new ObjetoNulloExcepcion("Error al buscar el Examen");
+        }
+
+        if(mostrarPreguntasPorAlta(true).contains(pregunta)) {
+            throw new ObjetoRepetidoExcepcion("Se encontró una pregunta con el mismo enunciado");
+        }else if(mostrarPreguntasPorAlta(false).contains(pregunta)) {
+            throw new ObjetoEliminadoExcepcion("Se encontró una pregunta eliminada con el mismo enunciado");
+        }
+
         preguntaRepositorio.save(pregunta);
     }
 
     @Transactional
-    public void modificarPregunta(Dificultad dificultad, String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen, Integer id) throws ObjetoNulloExcepcion {
+    public void modificarPregunta(Dificultad dificultad, String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen, Integer id) throws ObjetoNulloExcepcion, ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion {
         Pregunta pregunta = obtenerPorId(id);
+        Pregunta preguntaAux = pregunta;
 
         pregunta.setDificultad(dificultad);
         pregunta.setEnunciado(enunciado);
@@ -41,6 +60,15 @@ public class PreguntaServicio {
         pregunta.setRespuestaCorrecta(respuestaCorrecta);
         pregunta.setPuntaje(puntaje);
         pregunta.setExamen(examen);
+
+        if(!preguntaAux.equals(pregunta)){
+            if(mostrarPreguntasPorAlta(true).contains(pregunta)) {
+                throw new ObjetoRepetidoExcepcion("Se encontró una pregunta con el mismo enunciado");
+            }else if(mostrarPreguntasPorAlta(false).contains(pregunta)) {
+                throw new ObjetoEliminadoExcepcion("Se encontró una pregunta eliminada con el mismo enunciado");
+            }
+        }
+
         preguntaRepositorio.save(pregunta);
     }
 
