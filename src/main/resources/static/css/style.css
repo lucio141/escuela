@@ -397,6 +397,37 @@ color: black;
 
 }
 
+.top5{
+
+
+margin-top: 10%;
+
+
+}
+
+
+
+.tarjetaNota{
+
+    background-color: #521d39 !important ;
+    border-radius: 40px !important;
+    box-shadow: #ff51c2 12px 8px 20px !important;
+     margin-top: 5% !important;
+     transition: all 400ms ease;
+
+
+
+    }
+
+    .tarjetaNota:hover{
+
+    transform: translateY(-4%);
+    box-shadow: #ff51c2 12px 8px 50px !important;
+
+
+
+    }
+
 
 
 
