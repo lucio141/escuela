@@ -2,14 +2,19 @@ package com.example.demo.controladores;
 
 
 import com.example.demo.entidades.Rol;
+import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.servicios.RolServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @AllArgsConstructor
@@ -20,8 +25,8 @@ public class RolControlador {
 
     @GetMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView mostrarRoles() {
-        ModelAndView mav = new ModelAndView("rol"); //Falta crear
+    public ModelAndView mostrarRoles(HttpServletRequest request, RedirectAttributes attributes) {
+        ModelAndView mav = new ModelAndView("rol");
         mav.addObject("roles", rolServicio.mostrarRolesPorAlta(true));
         mav.addObject("titulo", "Tabla de roles");
         return mav;
@@ -64,19 +69,30 @@ public class RolControlador {
 
     @PostMapping("/guardar")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardar(@RequestParam String nombre) {
-        rolServicio.crearRol(nombre);
+    public RedirectView guardar(@RequestParam String nombre, RedirectAttributes attributes) {
+
+        try{
+            rolServicio.crearRol(nombre);
+        }catch (ObjetoRepetidoExcepcion repetido){
+            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+        }catch (ObjetoEliminadoExcepcion eliminado){
+            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+        }
 
         return new RedirectView("/roles");
     }
 
     @PostMapping("/modificar")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView modificar(@RequestParam int id, @RequestParam String nombre) {
+    public RedirectView modificar(@RequestParam int id, @RequestParam String nombre, RedirectAttributes attributes) {
         try {
             rolServicio.modificarRol(id,nombre);
-        } catch (ObjetoNulloExcepcion e) {
-            System.out.println(e.getMessage());
+        }catch (ObjetoRepetidoExcepcion repetido){
+            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+        }catch (ObjetoEliminadoExcepcion eliminado){
+            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+        }catch (ObjetoNulloExcepcion nulo){
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
 
         return new RedirectView("/roles");
@@ -84,8 +100,13 @@ public class RolControlador {
 
     @PostMapping("/eliminar/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView eliminar(@PathVariable int id) {
-        rolServicio.eliminar(id);
+    public RedirectView eliminar(@PathVariable int id, RedirectAttributes attributes) {
+        try {
+            rolServicio.eliminar(id);
+        }catch (ObjetoNulloExcepcion nulo){
+            System.out.println(nulo.getMessage());
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+        }
         return new RedirectView("/roles");
     }
 
