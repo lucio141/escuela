@@ -70,11 +70,10 @@ public class ExamenControlador {
             System.out.println(e.getMessage());
         }
         return mav;
-
     }
 
     @GetMapping("/baja")
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarExamenesBaja() {
         ModelAndView mav = new ModelAndView(""); //DECIDE DONATO
         mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(false));
@@ -83,9 +82,9 @@ public class ExamenControlador {
     }
 
     @GetMapping("/crear")
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearExamen() {
-        ModelAndView mav = new ModelAndView("examen-formulario");// LO ESTA HACIENDO JACKY CREO
+        ModelAndView mav = new ModelAndView("examen-formulario");
         List<Dificultad> dificultades = Arrays.asList(Dificultad.values());
         mav.addObject("examen", new Examen());
         mav.addObject("dificultades", dificultades);
@@ -96,7 +95,7 @@ public class ExamenControlador {
     }
 
     @GetMapping("/editar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarExamen(@PathVariable int id, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView(""); // Falta crear
 
@@ -114,7 +113,7 @@ public class ExamenControlador {
     }
 
     @PostMapping("/guardar")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView guardar(@RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
         try {
             examenServicio.crearExamen(dificultad,tematica,notaRequerida, nombre);
@@ -123,11 +122,11 @@ public class ExamenControlador {
             System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
         }
-        return new RedirectView("/pregunta");
+        return new RedirectView("/pregunta");// HABLAR CON LUCIO
     }
 
     @PostMapping("/modificar")
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@RequestParam int id, @RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
         try {
             examenServicio.modificarExamen(id, dificultad, tematica, notaRequerida, nombre);
@@ -149,7 +148,7 @@ public class ExamenControlador {
     }
 
     @PostMapping("/eliminar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminar(@PathVariable int id, RedirectAttributes attributes) {
         try {
             examenServicio.eliminar(id);
@@ -161,7 +160,7 @@ public class ExamenControlador {
     }
 
     @PostMapping("/recuperar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")
     public RedirectView recuperar(@PathVariable int id, RedirectAttributes attributes) {
         try {
             examenServicio.darAlta(id);

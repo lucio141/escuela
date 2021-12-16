@@ -15,10 +15,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @AllArgsConstructor
@@ -33,8 +35,17 @@ public class CategoriaControlador {
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarCategorias(HttpServletRequest request, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("categoria"); //Falta crear
-        List<Examen> examenes = examenServicio.mostrarExamenesPorAlta(true);
-        mav.addObject("examenes", examenes);
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+
+        if(map != null){
+            mav.addObject("errorNulo", map.get("errorNulo"));
+            mav.addObject("padreNulo", map.get("padreNulo"));
+            mav.addObject("errorRepetido", map.get("errorRepetido"));
+            mav.addObject("errorEliminado", map.get("errorEliminado"));
+            //mav.addObject("exito", map.get("success"));
+        }
+
+        mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(true));
         mav.addObject("titulo", "Tabla de examenes");
         mav.addObject("categorias", categoriaServicio.mostrarCategorias());
         mav.addObject("tematicas", tematicaServicio.mostrarTematicas());

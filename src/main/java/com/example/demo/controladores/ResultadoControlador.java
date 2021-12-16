@@ -33,7 +33,7 @@ public class ResultadoControlador {
     }
 
     @GetMapping("/eliminados")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarResultadoeliminados() {
         ModelAndView mav = new ModelAndView("");//falta crear
         mav.addObject("resultados", resultadoServicio.mostrarResultadosPorAlta(false));
@@ -84,14 +84,14 @@ public class ResultadoControlador {
     }
 
     @PostMapping("/eliminar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminarResultado(@PathVariable int id) {
         resultadoServicio.eliminar(id);
         return new RedirectView("/resultado");
     }
 
     @PostMapping("/recuperar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView recuperarResultado(@PathVariable int id) {
         try {
             resultadoServicio.darAlta(id);

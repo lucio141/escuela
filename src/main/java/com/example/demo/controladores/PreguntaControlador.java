@@ -29,7 +29,7 @@ public class PreguntaControlador{
     private final PreguntaServicio preguntaServicio;
 
     @GetMapping("/crear")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearPregunta(HttpServletRequest request, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("pregunta-formulario");
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
@@ -49,7 +49,7 @@ public class PreguntaControlador{
     }
 
     @GetMapping("/editar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarPregunta(@PathVariable int id, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("pregunta-formulario");
         try {
@@ -65,7 +65,7 @@ public class PreguntaControlador{
     }
 
     @PostMapping("/guardar")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, HttpServletRequest request, RedirectAttributes attributes) {
 
         try {
@@ -85,7 +85,7 @@ public class PreguntaControlador{
     }
 
     @PostMapping("/modificar")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, @RequestParam int id, RedirectAttributes attributes) {
         try{
             preguntaServicio.modificarPregunta(dificultad, enunciado, respuestas, respuestaCorrecta, puntaje, examen, id);
@@ -103,7 +103,7 @@ public class PreguntaControlador{
     }
 
     @PostMapping("/eliminar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminarPregunta(@PathVariable int id, RedirectAttributes attributes) {
 
         try{
