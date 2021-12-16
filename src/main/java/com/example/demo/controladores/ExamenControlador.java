@@ -10,7 +10,6 @@ import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.TematicaServicio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +19,8 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -85,8 +86,10 @@ public class ExamenControlador {
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearExamen() {
         ModelAndView mav = new ModelAndView("examen-formulario");// LO ESTA HACIENDO JACKY CREO
+        List<Dificultad> dificultades = Arrays.asList(Dificultad.values());
         mav.addObject("examen", new Examen());
-        mav.addObject("dificultades", Dificultad.values());
+        mav.addObject("dificultades", dificultades);
+        mav.addObject("tematicas", tematicaServicio.mostrarTematicas());
         mav.addObject("titulo", "Crear Examen");
         mav.addObject("accion", "guardar");
         return mav;
@@ -112,7 +115,7 @@ public class ExamenControlador {
 
     @PostMapping("/guardar")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardar(@RequestParam String dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
+    public RedirectView guardar(@RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
         try {
             examenServicio.crearExamen(dificultad,tematica,notaRequerida, nombre);
             attributes.addFlashAttribute("examen", examenServicio.ObtenerUltimoExamen());
@@ -125,7 +128,7 @@ public class ExamenControlador {
 
     @PostMapping("/modificar")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView modificar(@RequestParam int id, @RequestParam String dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
+    public RedirectView modificar(@RequestParam int id, @RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
         try {
             examenServicio.modificarExamen(id, dificultad, tematica, notaRequerida, nombre);
             attributes.addFlashAttribute("examen", examenServicio.obtenerPorId(id));

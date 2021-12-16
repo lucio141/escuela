@@ -23,7 +23,7 @@ public class Examen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String dificultad;
+    private Dificultad dificultad;
     private String nombre;
     @ManyToOne
     private Tematica tematica;
@@ -39,7 +39,7 @@ public class Examen {
     private Date fechaModificacion;
     private Boolean alta;
 
-    public Examen(Integer id, String dificultad, Tematica tematica, Double notaRequerida) {
+    public Examen(Integer id, Dificultad dificultad, Tematica tematica, Double notaRequerida) {
         this.id = id;
         this.dificultad = dificultad;
         this.tematica = tematica;

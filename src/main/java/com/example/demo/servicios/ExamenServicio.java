@@ -26,7 +26,7 @@ public class ExamenServicio {
     private final PreguntaRepositorio preguntaRepositorio;
 
     @Transactional
-    public void crearExamen(String dificultad, Tematica tematica, Double notaRequerida, String nombre) {
+    public void crearExamen(Dificultad dificultad, Tematica tematica, Double notaRequerida, String nombre) {
 
         Examen examen = new Examen();
         examen.setDificultad(dificultad);
@@ -38,7 +38,7 @@ public class ExamenServicio {
     }
 
     @Transactional
-    public void modificarExamen(Integer id, String dificultad, Tematica tematica, Double notaRequerida, String nombre) throws ObjetoNulloExcepcion, ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion {
+    public void modificarExamen(Integer id, Dificultad dificultad, Tematica tematica, Double notaRequerida, String nombre) throws ObjetoNulloExcepcion, ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion {
 
         Examen examen = obtenerPorId(id);
         Examen examenAux = examen;
