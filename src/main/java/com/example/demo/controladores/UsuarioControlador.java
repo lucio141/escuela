@@ -22,7 +22,7 @@ public class UsuarioControlador {
     private final RolServicio rolServicio;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarUsuarios(){
         ModelAndView mav = new ModelAndView("usuario");//
         mav.addObject("usuario", usuarioServicio.mostrarUsuariosPorAlta(true));
@@ -31,7 +31,7 @@ public class UsuarioControlador {
     }
 
     @GetMapping("/baja")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarUsuariosBaja(){
         ModelAndView mav = new ModelAndView("");// Vista de Usuarios FALTA
         mav.addObject("usuario", usuarioServicio.mostrarUsuariosPorAlta(false));
@@ -80,14 +80,14 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/eliminar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminarUsuario(@PathVariable Integer id){
         usuarioServicio.eliminar(id);
         return new RedirectView("/usuario");
     }
 
     @PostMapping("/registrar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView darAltaUsuario (@PathVariable Integer id){
         usuarioServicio.darAlta(id);
         return new RedirectView("/usuario");
