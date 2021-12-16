@@ -2,7 +2,10 @@ package com.example.demo.controladores;
 
 import com.example.demo.entidades.Categoria;
 import com.example.demo.entidades.Examen;
+import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
+import com.example.demo.excepciones.PadreNuloExcepcion;
 import com.example.demo.servicios.CategoriaServicio;
 import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.TematicaServicio;
@@ -11,8 +14,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -26,7 +31,7 @@ public class CategoriaControlador {
 
     @GetMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView mostrarCategorias() {
+    public ModelAndView mostrarCategorias(HttpServletRequest request, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("categoria"); //Falta crear
         List<Examen> examenes = examenServicio.mostrarExamenesPorAlta(true);
         mav.addObject("examenes", examenes);
@@ -72,19 +77,32 @@ public class CategoriaControlador {
 
     @PostMapping("/guardar")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardar(@RequestParam String nombre) {
-        categoriaServicio.crearCategoria(nombre);
+    public RedirectView guardar(@RequestParam String nombre, HttpServletRequest request, RedirectAttributes attributes) {
+
+        try {
+            categoriaServicio.crearCategoria(nombre);
+        }catch (ObjetoRepetidoExcepcion repetido){
+            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+        }catch (ObjetoEliminadoExcepcion eliminado){
+            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+        }
+
         return new RedirectView("/categoria");
     }
 
     @PostMapping("/modificar")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView modificar(@RequestParam int id, @RequestParam String nombre) {
+    public RedirectView modificar(@RequestParam int id, @RequestParam String nombre, RedirectAttributes attributes) {
         try {
             categoriaServicio.modificarCategoria(id,nombre);
-        } catch (ObjetoNulloExcepcion e) {
-            System.out.println(e.getMessage());
+        }catch (ObjetoRepetidoExcepcion repetido){
+            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+        }catch (ObjetoEliminadoExcepcion eliminado){
+            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+        }catch (ObjetoNulloExcepcion nulo){
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
+
 
         return new RedirectView("/categoria");
     }
