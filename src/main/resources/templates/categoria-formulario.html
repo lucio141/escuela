@@ -44,7 +44,7 @@
             </h1>
 
 
-            <form action="">
+            <form th:object="${categoria}" th:action="@{/categoria/__${accion}__}" method="post">
 
                 <div class="row" style="justify-content: center;">
 
@@ -59,7 +59,7 @@
 
 
                                     <div>
-                                        <input type="text" class="form-control inputExamen"
+                                        <input th:field="*{nombre}" type="text" class="form-control inputExamen"
                                             placeholder="Nombre de Categoria">
                                     </div>
                                 </div>
@@ -68,27 +68,14 @@
 
 
                                     <div>
-                                        <input type="text" class="form-control inputExamen"
+                                        <input  th:field="*{nombre}" type="text" class="form-control inputExamen"
                                             placeholder="Nombre de Tematica">
                                     </div>
                                 </div>
 
-                                <button href="#" class="btn btn-outline-secondary botonesCrear">AÑADIR OTRA TEMATICA</button>
-
-
-                                
-
-
-
-
+                               <!-- <button href="#" class="btn btn-outline-secondary botonesCrear">AÑADIR OTRA TEMATICA</button> -->
 
                             </div>
-
-
-
-
-
-
 
                         </div>
                     </div>
@@ -114,7 +101,7 @@
                 <div style="display: flex;  justify-content: space-around;">
 
                     <div style="width: 47%;">
-                        <a href="#" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CREAR CATEGORIA</a>
+                        <a type="submit" th:text="${accion == 'guardar'} ? 'Crear categoria' : 'Editar categoria' "  class="btn btn-primary tarjetasSecciones" style="width: 100%;">CREAR CATEGORIA</a>
                     </div>
 
                     <div style="width: 47%;">

@@ -100,12 +100,12 @@ form {
   
   .imgcontainer {
     text-align: center;
-    margin: 24px 0 12px 0;
+    margin: 12px 0 6px 0;
   }
   
   img.loginImg {
-    width: 40%;
-    border-radius: 50%;
+    width: 10%;
+    border-radius: 20%;
   }
   
  
