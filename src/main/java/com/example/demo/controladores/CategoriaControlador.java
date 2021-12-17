@@ -140,4 +140,19 @@ public class CategoriaControlador {
         return new RedirectView("/categoria");
     }
 
+    @GetMapping("/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView ingresarCategoria(@PathVariable int id){
+        ModelAndView mav = new ModelAndView("categoria-detalle"); //FALTA HTML
+        try{
+            mav.addObject("categoria",categoriaServicio.obtenerPorId(id)) ;
+
+        }
+        catch( ObjetoNulloExcepcion e){
+            System.out.println(e.getMessage());
+        }
+
+        return mav;
+    }
+
 }

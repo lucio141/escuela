@@ -1,13 +1,25 @@
 package com.example.demo.controladores;
 
+import com.example.demo.dto.CategoriaDTO;
+import com.example.demo.servicios.CategoriaServicio;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@AllArgsConstructor
 public class IndexControlador {
 
+    private final CategoriaServicio categoriaServicio;
+
     @GetMapping("/")
-    public String index(){
-        return "index";
+    public ModelAndView index() {
+        ModelAndView mav = new ModelAndView("index"); //DECIDE DONATO
+        mav.addObject("categorias", categoriaServicio.mostrarCategoriasPorAlta(true));
+        mav.addObject("titulo", "Inicio");
+        return mav;
     }
+
+
 }
