@@ -1,4 +1,4 @@
-package com.example.demo.seguridad.servicios;
+package com.example.demo.servicios;
 
 import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.dto.UsuarioInformacionDTO;
@@ -9,7 +9,6 @@ import com.example.demo.repositorios.UsuarioRepositorio;
 import com.example.demo.servicios.EmailServicio;
 import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

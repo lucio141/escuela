@@ -1,21 +1,15 @@
 package com.example.demo.controladores;
 
 import com.example.demo.entidades.Examen;
-import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Resultado;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.seguridad.servicios.PreguntaServicio;
-import com.example.demo.seguridad.servicios.ResultadoServicio;
+import com.example.demo.servicios.ResultadoServicio;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
-import java.util.List;
 
 @Controller
 @AllArgsConstructor

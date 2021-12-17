@@ -2,9 +2,8 @@ package com.example.demo.controladores;
 
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.seguridad.servicios.TematicaServicio;
+import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;

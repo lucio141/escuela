@@ -9,7 +9,7 @@
             <div class="logo">
                 <img th:src="@{/img/logo.png}" alt="" width="60px" height="60px">
 
-                <a class="navbar-brand" href="#" style="color: rgb(255, 254, 254);">SchoolHouse</a>
+                <a class="navbar-brand" th:href="@{/}" style="color: rgb(255, 254, 254);">SchoolHouse</a>
             </div>
 
             <div class="dropdown opciones">
@@ -19,31 +19,20 @@
                 </p>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <li><button class="dropdown-item" type="button">Crear Examen</button></li>
-                    <li><button class="dropdown-item" type="button">Modificar Examenes</button></li>
-                    <li><button class="dropdown-item" type="button">Ver Examenes</button></li>
+                    <li><a class="dropdown-item" type="button" th:href="@{/examen/crear}">Crear Examen</a></li>
+                    <li><a class="dropdown-item" type="button" th:href="@{/examen}">Modificar Examenes</a></li>
+                    <li><a class="dropdown-item" type="button" th:href="@{/examen}">Ver Examenes</a></li>
                 </ul>
             </div>
 
             <div class="dropdown opciones">
-                <p class="dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                <p class="dropdown-toggle" type="button" id="dropdownMenu3" data-bs-toggle="dropdown" aria-expanded="false">
                     Usuarios
                 </p>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <li><button class="dropdown-item" type="button">Crear Usuario</button></li>
-                    <li><button class="dropdown-item" type="button">Modificar Usuario</button></li>
-                    <li><button class="dropdown-item" type="button">Ver Usuarios</button></li>
-                </ul>
-            </div>
-
-            <div class="dropdown opciones">
-                <p class="dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                    Preguntas
-                </p>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <li><button class="dropdown-item" type="button">Crear Pregunta</button></li>
-                    <li><button class="dropdown-item" type="button">Modificar Preguntas</button></li>
-                    <li><button class="dropdown-item" type="button">Ver Preguntas</button></li>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu3">
+                    <li><a class="dropdown-item" type="button" th:href="@{/usuario/crear}">Crear Usuario</a></li>
+                    <li><a class="dropdown-item" type="button" th:href="@{/usuario}">Modificar Usuario</a></li>
+                    <li><a class="dropdown-item" type="button" th:href="@{/usuario}">Ver Usuarios</a></li>
                 </ul>
             </div>
 
@@ -147,7 +136,7 @@
             </div>
 
 
-            <div class="opciones"> <a href="https://ar.linkedin.com/" target="_blank">
+            <div class="opciones"> <a href="https://twitter.com/home" target="_blank">
                 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
                 <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_hdy0htc2.json" background="transparent"
                                speed="1" style="width: 60px; height: 60px;"  loop autoplay></lottie-player>
@@ -164,7 +153,7 @@
 
 
 
-            <div class="opciones"> <a href="https://ar.linkedin.com/" target="_blank">
+            <div class="opciones"> <a href="https://github.com/" target="_blank">
                 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
                 <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_kq6zs04j.json" background="transparent"
                                speed="1" style="width: 60px; height: 60px;" hover autoplay></lottie-player>

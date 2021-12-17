@@ -1,16 +1,13 @@
 package com.example.demo.controladores;
 
 import com.example.demo.entidades.Categoria;
-import com.example.demo.entidades.Examen;
 import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
-import com.example.demo.excepciones.PadreNuloExcepcion;
-import com.example.demo.seguridad.servicios.CategoriaServicio;
-import com.example.demo.seguridad.servicios.ExamenServicio;
-import com.example.demo.seguridad.servicios.TematicaServicio;
+import com.example.demo.servicios.CategoriaServicio;
+import com.example.demo.servicios.ExamenServicio;
+import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,7 +16,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Map;
 
 @Controller

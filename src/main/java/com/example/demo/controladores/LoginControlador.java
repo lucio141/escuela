@@ -1,6 +1,6 @@
 package com.example.demo.controladores;
 
-import com.example.demo.seguridad.servicios.UsuarioServicio;
+import com.example.demo.servicios.UsuarioServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
