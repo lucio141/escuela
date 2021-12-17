@@ -2,6 +2,7 @@ package com.example.demo.entidades;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@SQLDelete(sql = "UPDATE Categoria c SET c.alta = false WHERE c.id = ?")
 public class Categoria {
 
     @Id

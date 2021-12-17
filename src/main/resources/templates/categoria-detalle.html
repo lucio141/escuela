@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
@@ -94,14 +94,14 @@
 
 
 
-    <!-- CATEGORIAS-->
+    <!-- CATEGORIA/TEMATICAS/{ID}-->
     <div class="container-fluid secciones">
 
         <h1 class="placeholder-glow">
             <span class="placeholder col-12"> </span>
 
         </h1>
-        <h1>CATEGORIAS</h1>
+        <h1>TEMATICAS DE {NOMBRE CATEGORIA}</h1>
 
 
         <div class="tarjetas">
@@ -132,8 +132,8 @@
 
 
                             <div class="card-img-overlay">
-                                <h5  class="card-title">CATEGORIAS</h5>
-                                <p class="card-text">Selecciona en que categoria queres retar tus habilidades y conocimientos</p>
+                                <h5  class="card-title">TEMATICAS</h5>
+                                <p class="card-text">Selecciona en que tematica de {categoria} deseas probar tus habilidades</p>
 
 
                             </div>
@@ -150,7 +150,7 @@
 
 
 
-                    <div class="carousel-item" th:each="categoria : ${categorias}" >
+                    <div class="carousel-item" th:each="tematica : ${tematicas}" >
 
 
 
@@ -172,7 +172,7 @@
 
 
                             <div class="card-img-overlay">
-                                <h1 th:text="${categoria.nombre}" class="card-title"></h1>
+                                <h1 th:text="${tematica.nombre}" class="card-title"></h1>
 
 
                             </div>
@@ -182,7 +182,7 @@
                         </div>
 
                         <div>
-                            <a href="#"  style="width: 100%;"  class="btn btn-primary botonComenzarExamen">VER TEMATICAS</a>
+                            <a href="#"  style="width: 100%;"  class="btn btn-primary botonComenzarExamen">VER EXAMENES</a>
                         </div>
 
                     </div>
