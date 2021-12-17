@@ -1,4 +1,4 @@
-package com.example.demo.servicios;
+package com.example.demo.seguridad.servicios;
 
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
@@ -11,7 +11,6 @@ import com.example.demo.repositorios.ExamenRepositorio;
 import com.example.demo.repositorios.PreguntaRepositorio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

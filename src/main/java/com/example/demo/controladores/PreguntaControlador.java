@@ -6,7 +6,7 @@ import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.excepciones.PadreNuloExcepcion;
-import com.example.demo.servicios.PreguntaServicio;
+import com.example.demo.seguridad.servicios.PreguntaServicio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

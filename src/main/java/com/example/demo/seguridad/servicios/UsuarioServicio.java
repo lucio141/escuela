@@ -1,4 +1,4 @@
-package com.example.demo.servicios;
+package com.example.demo.seguridad.servicios;
 
 import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.dto.UsuarioInformacionDTO;
@@ -6,6 +6,7 @@ import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.UsuarioRepositorio;
+import com.example.demo.servicios.EmailServicio;
 import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

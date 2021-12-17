@@ -1,4 +1,4 @@
-package com.example.demo.servicios;
+package com.example.demo.seguridad.servicios;
 
 import com.example.demo.dto.CategoriaDTO;
 import com.example.demo.entidades.Categoria;

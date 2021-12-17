@@ -1,8 +1,7 @@
-package com.example.demo.servicios;
+package com.example.demo.seguridad.servicios;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.repositorios.ExamenRepositorio;
 import com.example.demo.repositorios.TematicaRepositorio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

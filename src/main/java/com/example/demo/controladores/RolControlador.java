@@ -5,7 +5,7 @@ import com.example.demo.entidades.Rol;
 import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
-import com.example.demo.servicios.RolServicio;
+import com.example.demo.seguridad.servicios.RolServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
