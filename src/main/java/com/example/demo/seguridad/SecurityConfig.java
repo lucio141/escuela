@@ -1,9 +1,7 @@
 package com.example.demo.seguridad;
 
-import com.example.demo.servicios.UsuarioServicio;
+import com.example.demo.seguridad.servicios.UsuarioServicio;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
