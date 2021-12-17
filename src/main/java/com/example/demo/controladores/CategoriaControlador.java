@@ -32,9 +32,8 @@ public class CategoriaControlador {
     private final ExamenServicio examenServicio;
 
     @GetMapping()
-    //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarCategorias(HttpServletRequest request, RedirectAttributes attributes) {
-        ModelAndView mav = new ModelAndView("categoria"); //Falta crear
+        ModelAndView mav = new ModelAndView("categoria");
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
 
         if(map != null){
@@ -52,19 +51,30 @@ public class CategoriaControlador {
         return mav;
     }
 
-    @GetMapping("/baja")
+    @GetMapping("/admin")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView mostrarCategoriasBaja() {
-        ModelAndView mav = new ModelAndView(""); //Falta crear
-        mav.addObject("categorias", categoriaServicio.mostrarCategoriasPorAlta(false));
-        mav.addObject("titulo", "Tabla de categorias baja");
+    public ModelAndView listarCategorias(HttpServletRequest request, RedirectAttributes attributes) {
+        ModelAndView mav = new ModelAndView("categoria-administrador");
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+
+        if(map != null){
+            mav.addObject("errorNulo", map.get("errorNulo"));
+            mav.addObject("padreNulo", map.get("padreNulo"));
+            mav.addObject("errorRepetido", map.get("errorRepetido"));
+            mav.addObject("errorEliminado", map.get("errorEliminado"));
+            //mav.addObject("exito", map.get("success"));
+        }
+        mav.addObject("titulo", "Tabla de categorias");
+        mav.addObject("categoriasBaja", categoriaServicio.mostrarCategoriasPorAlta(false));
+        mav.addObject("categoriasAlta", categoriaServicio.mostrarCategoriasPorAlta(true));
+        mav.addObject("tematicas", tematicaServicio.mostrarTematicas());
         return mav;
     }
 
     @GetMapping("/crear")
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearCategoria() {
-        ModelAndView mav = new ModelAndView("");//Falta crear
+        ModelAndView mav = new ModelAndView("categoria-formulario");
         mav.addObject("categoria", new Categoria());
         mav.addObject("tematicas", tematicaServicio.mostrarTematicasPorAlta(true));
         mav.addObject("titulo", "Crear Categoria");
@@ -75,7 +85,7 @@ public class CategoriaControlador {
     @GetMapping("/editar/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarCategoria(@PathVariable int id) {
-        ModelAndView mav = new ModelAndView(""); // Falta crear
+        ModelAndView mav = new ModelAndView("categoria-formulario"); // Falta crear
         try {
             mav.addObject("categoria", categoriaServicio.obtenerPorId(id));
         } catch (ObjetoNulloExcepcion e) {
@@ -129,9 +139,9 @@ public class CategoriaControlador {
         return new RedirectView("/categoria");
     }
 
-    @PostMapping("/recuperar/{id}")
+    @PostMapping("/darAlta/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView recuperar(@PathVariable int id) {
+    public RedirectView darAlta(@PathVariable int id) {
         try {
             categoriaServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion e) {
