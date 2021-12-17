@@ -68,6 +68,8 @@ public class ExamenControlador {
         }catch (ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());
         }
+
+
         return mav;
     }
 
@@ -105,7 +107,6 @@ public class ExamenControlador {
             System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
         }
-
         mav.addObject("titulo", "editar Examen");
         mav.addObject("accion", "modificar");
         return mav;

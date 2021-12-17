@@ -16,6 +16,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
@@ -157,6 +158,7 @@ public class CategoriaControlador {
         catch( ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());
         }
+        mav.addObject("titulo", "Detalle de categoría");
 
         return mav;
     }

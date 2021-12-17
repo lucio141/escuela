@@ -47,7 +47,8 @@
 
 
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Perfil</h5>
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel" th:text="|${session.usuarioEnSesion.nombreUsuario} Perfil|"></h5>
+
                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
 
@@ -56,15 +57,14 @@
 
                         <div class="perfil">
 
-
                             <li class="nav-item">
-                                <a class="nav-link  opciones" href="#" style="color: white;">Mis Notas</a>
+                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Notas</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  opciones" href="#" style="color: white;">Mis Examenes</a>
+                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}">Mis Examenes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  opciones" href="#" style="color: white;">Datos Personales</a>
+                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}">Datos Personales</a>
                             </li>
 
                             <li class="nav-item">

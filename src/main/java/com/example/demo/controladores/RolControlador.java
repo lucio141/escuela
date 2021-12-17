@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
@@ -37,7 +38,6 @@ public class RolControlador {
             mav.addObject("errorEliminado", map.get("errorEliminado"));
             //mav.addObject("exito", map.get("success"));
         }
-
         mav.addObject("roles", rolServicio.mostrarRolesPorAlta(true));
         mav.addObject("titulo", "Tabla de roles");
         return mav;
@@ -56,7 +56,6 @@ public class RolControlador {
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearRol() {
         ModelAndView mav = new ModelAndView("rol-formulario");//Falta crear
-
         mav.addObject("rol", new Rol());
         mav.addObject("titulo", "Crear Rol");
         mav.addObject("accion", "guardar");
@@ -72,7 +71,6 @@ public class RolControlador {
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());
         }
-
         mav.addObject("titulo", "editar Examen");
         mav.addObject("accion", "modificar");
         return mav;

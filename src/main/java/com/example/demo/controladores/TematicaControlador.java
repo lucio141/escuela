@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/tematica")
@@ -20,7 +22,6 @@ public class TematicaControlador {
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarTematicas(){
         ModelAndView mav = new ModelAndView("tematicas"); //Falta HTML
-
         mav.addObject("tematicas",tematicaServicio.mostrarTematicasPorAlta(true));
         mav.addObject("titulo", "Tabla de Tematicas");
         return mav;
@@ -30,7 +31,6 @@ public class TematicaControlador {
     //@PreAuthorize("hasRole('ADMIN')")
     public  ModelAndView mostrarTematicasBaja(){
         ModelAndView mav = new ModelAndView("tematicas"); //Falta HTML
-
         mav.addObject("tematicas",tematicaServicio.mostrarTematicasPorAlta(false));
         mav.addObject("titulo", "Tabla de Tematicas Baja");
         return mav;
@@ -68,7 +68,6 @@ public class TematicaControlador {
         ModelAndView mav = new ModelAndView("tematica"); //FALTA HTML
         try{
             mav.addObject("tematica",tematicaServicio.obtenerPorId(id)) ;
-
         }
         catch( ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());
