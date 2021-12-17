@@ -1,6 +1,6 @@
 package com.example.demo.seguridad;
 
-import com.example.demo.seguridad.servicios.UsuarioServicio;
+import com.example.demo.servicios.UsuarioServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

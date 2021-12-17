@@ -1,13 +1,11 @@
-package com.example.demo.seguridad.servicios;
+package com.example.demo.servicios;
 
 import com.example.demo.entidades.Examen;
-import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Resultado;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.ResultadoRepositorio;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

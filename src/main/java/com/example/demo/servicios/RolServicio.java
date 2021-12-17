@@ -1,4 +1,4 @@
-package com.example.demo.seguridad.servicios;
+package com.example.demo.servicios;
 
 import com.example.demo.dto.RolDTO;
 import com.example.demo.entidades.Rol;
