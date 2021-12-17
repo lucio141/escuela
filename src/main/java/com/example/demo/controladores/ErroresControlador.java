@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class ErroresControlador implements ErrorController {
@@ -35,6 +36,8 @@ public class ErroresControlador implements ErrorController {
             default:
                 mensaje="Elol";
         }
+
+
         return mav;
 
     }

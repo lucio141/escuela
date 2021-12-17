@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/usuario")
@@ -34,6 +36,21 @@ public class UsuarioControlador {
         ModelAndView mav = new ModelAndView("");// Vista de Usuarios FALTA
         mav.addObject("usuario", usuarioServicio.mostrarUsuariosPorAlta(false));
         mav.addObject("titulo", "Tabla de Usuarios Baja");
+        return mav;
+    }
+
+    @GetMapping("/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView obtenerPerfil(@PathVariable int id){
+        ModelAndView mav = new ModelAndView("perfil"); //FALTA HTML
+        try{
+            mav.addObject("categoria",usuarioServicio.obtenerPorId(id)) ;
+        }
+        catch( ObjetoNulloExcepcion e){
+            System.out.println(e.getMessage());
+        }
+        mav.addObject("titulo", "Mi perfil");
+
         return mav;
     }
 
