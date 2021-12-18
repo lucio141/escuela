@@ -85,7 +85,7 @@ public class ResultadoControlador {
             mav.addObject("Resultado", resultado);
             mav.addObject("resultado", resultado);
             mav.addObject("duracion", resultado.getDuracion() );
-            mav.addObject("top", examenServicio.top5(resultado.getExamen().getId()) );
+            mav.addObject("top", resultadoServicio.top5(resultado.getExamen().getId()) );
         } catch (ObjetoNulloExcepcion e) {
             e.printStackTrace();
         }

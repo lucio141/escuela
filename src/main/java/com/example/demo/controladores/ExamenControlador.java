@@ -67,7 +67,7 @@ public class ExamenControlador {
 
         try{
             mav.addObject("titulo", examenServicio.obtenerPorId(id).getNombre());
-            mav.addObject("resultados", examenServicio.top5(id));
+            mav.addObject("resultados", resultadoServicio.top5(id));
         }catch (ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());
         }

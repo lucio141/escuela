@@ -23,6 +23,6 @@ public interface ExamenRepositorio extends JpaRepository<Examen, Integer>{
     @Query(value = "SELECT e.* FROM Examen e ORDER BY e.id DESC LIMIT 1", nativeQuery = true)
     Examen mostrarUltimoExamen();
 
-    @Query(value = "SELECT * FROM Resultado r WHERE r.examen_id = :id ORDER BY r.puntaje_Final DESC, r.duracion ASC LIMIT 5;", nativeQuery = true)
-    List<Resultado> top5 (@Param("id") int id);
+    @Query(value = "SELECT r.id FROM Resultado r WHERE r.examen_id = :id ORDER BY r.puntaje_Final DESC, r.duracion ASC LIMIT 5", nativeQuery = true)
+    List<Integer> top5 (@Param("id") int id);
 }

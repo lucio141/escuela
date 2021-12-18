@@ -3,6 +3,7 @@ package com.example.demo.servicios;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Resultado;
+import com.example.demo.repositorios.ExamenRepositorio;
 import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.ResultadoRepositorio;
 import com.example.demo.utilidades.Mapper;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,8 +20,10 @@ import java.util.List;
 public class ResultadoServicio {
 
     private final ResultadoRepositorio resultadoRepositorio;
-  private final UsuarioServicio usuarioServicio;
-  private final ExamenServicio examenServicio;
+      private final UsuarioServicio usuarioServicio;
+      private final ExamenServicio examenServicio;
+      private final ExamenRepositorio examenRepositorio;
+
     @Transactional
     public void crearResultado(Examen examen, Integer id) throws ObjetoNulloExcepcion{
 
@@ -102,5 +106,14 @@ public class ResultadoServicio {
         }
 
         return resultado;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Resultado> top5 (int id) throws ObjetoNulloExcepcion {
+        List<Resultado> resultados = new ArrayList<>();
+        for (Integer idResultado : examenRepositorio.top5(id)) {
+            resultados.add(obtenerPorId(idResultado));
+        }
+        return resultados;
     }
 }
