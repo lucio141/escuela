@@ -110,6 +110,7 @@ public class UsuarioServicio implements UserDetailsService {
 
         try {
             UsuarioDTO usuarioDTO = obtenerPorId(usuario.getId());
+            session.setAttribute("id" , usuarioDTO.getId());
             session.setAttribute("usuarioEnSesion", usuarioDTO);
         } catch (ObjetoNulloExcepcion e) {
             e.printStackTrace();

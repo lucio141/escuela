@@ -5,6 +5,7 @@ import com.example.demo.entidades.Resultado;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.ResultadoRepositorio;
+import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +19,13 @@ import java.util.List;
 public class ResultadoServicio {
 
     private final ResultadoRepositorio resultadoRepositorio;
-
+  private final UsuarioServicio usuarioServicio;
     @Transactional
-    public void crearResultado(Examen examen, Usuario usuario) {
+    public void crearResultado(Examen examen, Integer id) throws ObjetoNulloExcepcion{
 
         Resultado resultado = new Resultado();
         resultado.setExamen(examen);
-        resultado.setUsuario(usuario);
+        resultado.setUsuario(Mapper.usuarioDTOAEntidad(usuarioServicio.obtenerPorId(id)));
         resultado.setRespuestasCorrectas((short)0);
         resultado.setRespuestasIncorrectas((short)(examen.getPreguntas().size()));
         resultado.setPuntajeFinal(null);
@@ -75,5 +76,16 @@ public class ResultadoServicio {
     public void darAlta(int id) throws ObjetoNulloExcepcion {
         Resultado resultado = obtenerPorId(id);
         resultadoRepositorio.darAlta(id);
+    }
+
+    @Transactional
+    public Resultado ObtenerUltimoResultado() throws ObjetoNulloExcepcion {
+        Resultado resultado = resultadoRepositorio.mostrarUltimoResultado();
+
+        if(resultado== null){
+            throw new ObjetoNulloExcepcion("No se encontro el resultado");
+        }
+
+        return resultado;
     }
 }

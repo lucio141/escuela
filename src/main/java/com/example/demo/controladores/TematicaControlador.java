@@ -1,6 +1,7 @@
 package com.example.demo.controladores;
 
 import com.example.demo.entidades.Tematica;
+import com.example.demo.entidades.Resultado;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
@@ -66,8 +67,12 @@ public class TematicaControlador {
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView ingresarTematica(@PathVariable int id){
         ModelAndView mav = new ModelAndView("tematica"); //FALTA HTML
+        Resultado resultado = new Resultado();
+
         try{
+
             mav.addObject("tematica",tematicaServicio.obtenerPorId(id)) ;
+            mav.addObject("resultado", resultado);
         }
         catch( ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());

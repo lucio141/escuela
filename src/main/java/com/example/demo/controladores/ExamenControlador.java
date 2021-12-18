@@ -1,12 +1,15 @@
 package com.example.demo.controladores;
 
+import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.entidades.Examen;
+import com.example.demo.entidades.Resultado;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.servicios.CategoriaServicio;
 import com.example.demo.servicios.ExamenServicio;
+import com.example.demo.servicios.ResultadoServicio;
 import com.example.demo.servicios.TematicaServicio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +34,7 @@ public class ExamenControlador {
     private final ExamenServicio examenServicio;
     private final CategoriaServicio categoriaServicio;
     private final TematicaServicio tematicaServicio;
+    private final ResultadoServicio resultadoServicio;
 
     @GetMapping()
     public ModelAndView mostrarExamenes(HttpServletRequest request) {
@@ -108,6 +113,28 @@ public class ExamenControlador {
             attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
         }
         mav.addObject("titulo", "editar Examen");
+        mav.addObject("accion", "modificar");
+        return mav;
+    }
+
+    @GetMapping("/realizar/{id}")
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView realizarExamen(@PathVariable int id, RedirectAttributes attributes , HttpSession session) {
+        ModelAndView mav = new ModelAndView("hacer-examen"); // Falta crear
+
+
+
+        try {
+            Examen examen = examenServicio.obtenerPorId(id);
+            resultadoServicio.crearResultado(examen, (Integer)session.getAttribute("id"));
+            mav.addObject("resultado", resultadoServicio.ObtenerUltimoResultado() );
+            mav.addObject("examen", examen);
+            mav.addObject("dificultades", Dificultad.values());
+        } catch (ObjetoNulloExcepcion nulo) {
+            System.out.println(nulo.getMessage());
+            attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
+        }
+        mav.addObject("titulo", "Realizar Examen");
         mav.addObject("accion", "modificar");
         return mav;
     }

@@ -51,6 +51,9 @@
 
                 <div class="col-8">
 
+
+
+
                     <div class="card w-100 tarjetasMain" th:each="examen : ${tematica.examen}  ">
                         <div class="card-body">
                           <h5 th:text="${examen.nombre}" class="card-title"></h5>
@@ -58,9 +61,11 @@
                             </p>
                             <p th:text=" |Dificultad: ${examen.dificultad}| "> </p>
                             <p th:text=" |Cantidad de Preguntas: ${#lists.size(examen.preguntas)}| "> </p>
-                            <a href="#" class="btn btn-primary botonPrincipales">COMENZAR EXAMEN</a>
+                            <a th:href="@{/examen/realizar/__${examen.id}__}" class="btn btn-primary botonPrincipales">COMENZAR EXAMEN</a>
                         </div>
                     </div>
+
+
 
 
                

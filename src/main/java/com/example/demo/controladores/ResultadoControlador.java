@@ -48,11 +48,20 @@ public class ResultadoControlador {
         return mav;
     }
 
+    /*
+
     @PostMapping("/guardar")
-    public RedirectView guardarResultado(@RequestParam Examen examen, @RequestParam Usuario usuario) {
-        resultadoServicio.crearResultado(examen,usuario);
-        return new RedirectView("/resultado");
+    public RedirectView guardarResultado(@RequestParam Examen examen, @RequestParam Integer id) {
+        try {
+            resultadoServicio.crearResultado(examen, id);
+            Integer examenId = examen.getId();
+            return new RedirectView("/tematica");
+        }catch(ObjetoNulloExcepcion e){
+
+        }
     }
+    */
+
 
     @GetMapping("/editar/{id}")
     public ModelAndView editarResultado(@PathVariable int id) {

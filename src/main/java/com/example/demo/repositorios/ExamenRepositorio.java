@@ -20,7 +20,7 @@ public interface ExamenRepositorio extends JpaRepository<Examen, Integer>{
     @Query("UPDATE Examen e SET e.alta= true WHERE e.id = :id")
     void darAlta(@Param("id") Integer id);
 
-    @Query(value = "SELECT e FROM Examen e ORDER BY e.id DESC LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT e.* FROM Examen e ORDER BY e.id DESC LIMIT 1", nativeQuery = true)
     Examen mostrarUltimoExamen();
 
     @Query(value = "SELECT r FROM Resultado r ORDER BY r.puntajeFinal DESC, r.duracion ASC WHERE r.examen_id = :id LIMIT 5 ", nativeQuery = true)
