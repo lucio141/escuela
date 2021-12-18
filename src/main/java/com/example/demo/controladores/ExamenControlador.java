@@ -122,8 +122,6 @@ public class ExamenControlador {
     public ModelAndView realizarExamen(@PathVariable int id, RedirectAttributes attributes , HttpSession session) {
         ModelAndView mav = new ModelAndView("hacer-examen"); // Falta crear
 
-
-
         try {
             Examen examen = examenServicio.obtenerPorId(id);
             resultadoServicio.crearResultado(examen, (Integer)session.getAttribute("id"));

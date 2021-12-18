@@ -1,6 +1,7 @@
 package com.example.demo.servicios;
 
 import com.example.demo.entidades.Examen;
+import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Resultado;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,6 +21,7 @@ public class ResultadoServicio {
 
     private final ResultadoRepositorio resultadoRepositorio;
   private final UsuarioServicio usuarioServicio;
+  private final ExamenServicio examenServicio;
     @Transactional
     public void crearResultado(Examen examen, Integer id) throws ObjetoNulloExcepcion{
 
@@ -33,15 +35,30 @@ public class ResultadoServicio {
     }
 
     @Transactional
-    public void modificarResultado(Integer id, Short respuestasCorrectas, Short respuestasIncorrectas, Integer puntajeFinal) throws ObjetoNulloExcepcion {
+    public void modificarResultado(Integer id, List<String> respuestas, Integer examenId) throws ObjetoNulloExcepcion {
+       short contadorRespuestasCorrectas = 0;
+       short contadorRespuestasInorrectas = 0;
+        /*
+        List<String> respuestasCorrectas = new ArrayList<>();
+        List<String> respuestasCorrectas = new ArrayList<>();
+        */
+        Examen examen = examenServicio.obtenerPorId(examenId);
+        List<Pregunta> preguntas = examen.getPreguntas();
+        for (int i=0; i< preguntas.size(); i++ ){
+            if ( preguntas.get(i).getRespuestaCorrecta().equalsIgnoreCase(respuestas.get(i))){
+                contadorRespuestasCorrectas++;
 
+            }else{
+                contadorRespuestasInorrectas++;
+            }
+        }
         Resultado resultado = obtenerPorId(id);
         resultadoRepositorio.save(resultado);
         if (resultado.getPuntajeFinal() == null){
-            resultado.setRespuestasCorrectas(respuestasCorrectas);
-            resultado.setRespuestasIncorrectas(respuestasIncorrectas);
+            resultado.setRespuestasCorrectas(contadorRespuestasCorrectas);
+            resultado.setRespuestasIncorrectas(contadorRespuestasInorrectas);
             resultado.setDuracion(resultado.getTiempoFinalizacion().getTime() - resultado.getTiempoInicio().getTime());
-            resultado.setPuntajeFinal(puntajeFinal);
+            resultado.setPuntajeFinal(100); //HACER LOGICA DE PUNTAJE FINAL
             resultadoRepositorio.save(resultado);
         }
     }

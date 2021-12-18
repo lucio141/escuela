@@ -27,7 +27,7 @@ public class Pregunta{
     @Column(nullable = false)
     private String enunciado;
     @ElementCollection(targetClass=String.class)
-    private List<String> resupestas;
+    private List<String> respuestas;
     @Column(nullable = false)
     private String respuestaCorrecta;
     private Boolean alta;

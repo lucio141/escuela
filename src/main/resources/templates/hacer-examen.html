@@ -46,9 +46,11 @@
         
               </h1>
 
-              <form th:object="${resultado}" th:action="@{/resultado/guardar}" method="post">
+            <form th:object="${resultado}" th:action="@{/resultado/modificar}" method="post">
+                <input th:name="examenId" th:value="${examen.id}" type="hidden" class="form-control inputExamen" placeholder="Respuesta 3">
+                <input th:name="resultadoId" th:value="${resultado.id}" type="hidden" class="form-control inputExamen" placeholder="Respuesta 3">
 
-            <div class="row" style="justify-content: center; margin-bottom: 5%;">
+                <div class="row" style="justify-content: center; margin-bottom: 5%;">
 
 
                 <div class="col-10">
@@ -58,24 +60,22 @@
                         <div class="card-body">
 
                             <div style="display: flex; justify-content: center; margin-bottom: 5%;">
-                                <h3 th:text="${pregunta.enunciado}" class="card-text"> ¿probando pregunta pregunta pregunta pregunta pregunra pregunta ?
+                                <h3 th:text="${pregunta.enunciado}" class="card-text">
                                 </h3>
                             </div>
 
 
-                            <div style="display: flex; justify-content: space-around;">
+                            <select th:name="respuestas" id="" class="selectForm">
 
-                                <div>
-                                    <input type="radio" name="opcion" class="opcionesExamen"> opcion1
-                                </div>
-                                <div>
-                                    <input type="radio" name="opcion" class="opcionesExamen"> opcion2
-                                </div>
-                                <div>
-                                    <input type="radio" name="opcion" class="opcionesExamen"> opcion3
-                                </div>
+                                <option value="">Respuesta</option>
+                                <option   th:each="respuesta : ${pregunta.respuestas}" th:value="${respuesta}" th:text="${respuesta}"></option>
 
+                            </select>
+                            <!--
+                            <div style="display: flex;" th:each="respuesta : ${pregunta.respuestas}">
+                                    <input  th:name="respuestas" th:value="${respuesta}" type="checkbox"  th:text="${respuesta}" class="opcionesExamen">
                             </div>
+                            -->
 
 
 
@@ -93,7 +93,7 @@
             <div style="display: flex;  justify-content: space-around;">
 
                 <div style="width: 47%;">  
-                    <a href="#" class="btn btn-primary tarjetasSecciones" style="width: 100%;">ENVIAR EXAMEN</a>
+                    <button type="submit" class="btn btn-primary tarjetasSecciones" style="width: 100%;">ENVIAR EXAMEN</button>
                    </div>
 
                <div style="width: 47%;">  

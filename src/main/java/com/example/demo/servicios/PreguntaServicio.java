@@ -36,7 +36,7 @@ public class PreguntaServicio {
         Pregunta pregunta = new Pregunta();
         pregunta.setDificultad(dificultad);
         pregunta.setEnunciado(enunciado);
-        pregunta.setResupestas(respuestas);
+        pregunta.setRespuestas(respuestas);
         pregunta.setRespuestaCorrecta(respuestaCorrecta);
         pregunta.setPuntaje(puntaje);
         try {
@@ -61,7 +61,7 @@ public class PreguntaServicio {
 
         pregunta.setDificultad(dificultad);
         pregunta.setEnunciado(enunciado);
-        pregunta.setResupestas(respuestas);
+        pregunta.setRespuestas(respuestas);
         pregunta.setRespuestaCorrecta(respuestaCorrecta);
         pregunta.setPuntaje(puntaje);
 

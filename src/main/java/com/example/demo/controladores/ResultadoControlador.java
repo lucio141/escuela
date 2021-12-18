@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -48,19 +49,19 @@ public class ResultadoControlador {
         return mav;
     }
 
-    /*
-
+/*
     @PostMapping("/guardar")
-    public RedirectView guardarResultado(@RequestParam Examen examen, @RequestParam Integer id) {
+    public RedirectView guardarResultado(HttpSession session,@RequestParam(value="examen") Integer examenId) {
         try {
-            resultadoServicio.crearResultado(examen, id);
-            Integer examenId = examen.getId();
+            resultadoServicio.crearResultado(examenId,  (Integer)session.getAttribute("id"));
             return new RedirectView("/tematica");
         }catch(ObjetoNulloExcepcion e){
 
         }
+        return new RedirectView("/tematica");
     }
-    */
+
+ */
 
 
     @GetMapping("/editar/{id}")
@@ -76,16 +77,29 @@ public class ResultadoControlador {
         return mav;
     }
 
+    @GetMapping("/mostrar/{id}")
+    public ModelAndView mostrarResultado(@PathVariable int id) {
+        ModelAndView mav = new ModelAndView("resultados-top");
+        try {
+            mav.addObject("Resultado", resultadoServicio.obtenerPorId(id));
+        } catch (ObjetoNulloExcepcion e) {
+            e.printStackTrace();
+        }
+        mav.addObject("titulo", "Editar Resultado");
+        mav.addObject("accion", "modificar");
+        return mav;
+    }
+
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam int id, @RequestParam short respuestasCorrectas, @RequestParam short respuestasIncorrectas, @RequestParam int puntajeFinal) {
+    public RedirectView modificar(@RequestParam(name="resultadoId") int resultadoId, @RequestParam("respuestas") List<String> respuestas,@RequestParam(name="examenId") int examenId) {
 
         try {
-            resultadoServicio.modificarResultado(id,respuestasCorrectas,respuestasIncorrectas,puntajeFinal);
+            resultadoServicio.modificarResultado(resultadoId,respuestas,examenId);
         } catch (ObjetoNulloExcepcion e) {
             e.printStackTrace();
         }
 
-        return new RedirectView("/resultado");
+        return new RedirectView("/resultado/mostrar/"+resultadoId);
     }
 
     @PostMapping("/eliminar/{id}")
