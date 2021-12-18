@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -109,9 +110,15 @@ public class ExamenServicio {
 
         examenRepositorio.darAlta(id);
     }
-
+/*
     @Transactional(readOnly = true)
-    public List<Resultado> top5 (int id){
-        return examenRepositorio.top5(id);
+    public List<Resultado> top5 (int id) throws ObjetoNulloExcepcion {
+        List<Resultado> resultados = new ArrayList<>();
+        for (Integer idResultado : examenRepositorio.top5(id)) {
+            resultados.add(resultadoServicio.obtenerPorId(idResultado));
+        }
+        return resultados;
     }
+*/
 }
+
