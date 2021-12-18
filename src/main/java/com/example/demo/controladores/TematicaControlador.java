@@ -2,15 +2,13 @@ package com.example.demo.controladores;
 
 import com.example.demo.entidades.Tematica;
 import com.example.demo.entidades.Resultado;
-import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
-import javax.servlet.http.HttpSession;
 
 @Controller
 @AllArgsConstructor

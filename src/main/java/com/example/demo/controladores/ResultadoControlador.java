@@ -1,9 +1,8 @@
 package com.example.demo.controladores;
 
-import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Resultado;
-import com.example.demo.entidades.Usuario;
-import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.ResultadoServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -20,6 +18,7 @@ import java.util.List;
 public class ResultadoControlador {
 
     private final ResultadoServicio resultadoServicio;
+    private final ExamenServicio examenServicio;
 
     @GetMapping
     public ModelAndView mostrarResultado() {
@@ -81,7 +80,12 @@ public class ResultadoControlador {
     public ModelAndView mostrarResultado(@PathVariable int id) {
         ModelAndView mav = new ModelAndView("resultados-top");
         try {
-            mav.addObject("Resultado", resultadoServicio.obtenerPorId(id));
+
+            Resultado resultado = resultadoServicio.obtenerPorId(id);
+            mav.addObject("Resultado", resultado);
+            mav.addObject("resultado", resultado);
+            mav.addObject("duracion", resultado.getDuracion() );
+            mav.addObject("top", examenServicio.top5(resultado.getExamen().getId()) );
         } catch (ObjetoNulloExcepcion e) {
             e.printStackTrace();
         }

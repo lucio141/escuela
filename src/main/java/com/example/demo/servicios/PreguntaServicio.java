@@ -2,12 +2,11 @@ package com.example.demo.servicios;
 
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
-import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
-import com.example.demo.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
-import com.example.demo.excepciones.PadreNuloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoEliminadoExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoRepetidoExcepcion;
+import com.example.demo.repositorios.excepciones.PadreNuloExcepcion;
 import com.example.demo.repositorios.PreguntaRepositorio;
-import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

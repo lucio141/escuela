@@ -1,4 +1,4 @@
-package com.example.demo.excepciones;
+package com.example.demo.repositorios.excepciones;
 
 
 public class ObjetoRepetidoExcepcion extends Exception {
