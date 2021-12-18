@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,8 +26,13 @@ public class PreguntaServicio {
     private final ExamenServicio examenservicio;
 
     @Transactional
-    public void crearPregunta(Dificultad dificultad, String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen) throws ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion, ObjetoNulloExcepcion, PadreNuloExcepcion{
-
+    public void crearPregunta(Dificultad dificultad, String enunciado, String respuesta2, String respuesta3, String respuesta4, String respuestaCorrecta, Integer puntaje, Integer idExamen) throws ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion, ObjetoNulloExcepcion, PadreNuloExcepcion{
+        Examen examen = examenservicio.obtenerPorId(idExamen);
+        List<String> respuestas = new ArrayList<>();
+        respuestas.add(respuestaCorrecta);
+        respuestas.add(respuesta2);
+        respuestas.add(respuesta3);
+        respuestas.add(respuesta4);
         Pregunta pregunta = new Pregunta();
         pregunta.setDificultad(dificultad);
         pregunta.setEnunciado(enunciado);

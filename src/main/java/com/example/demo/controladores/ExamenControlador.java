@@ -142,6 +142,7 @@ public class ExamenControlador {
     @PostMapping("/guardar")
     //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView guardar(@RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
+
         try {
             examenServicio.crearExamen(dificultad,tematica,notaRequerida, nombre);
             attributes.addFlashAttribute("examen", examenServicio.ObtenerUltimoExamen());
@@ -149,7 +150,11 @@ public class ExamenControlador {
             System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
         }
-        return new RedirectView("/pregunta");// HABLAR CON LUCIO
+
+            return new RedirectView("/pregunta/crear");// HABLAR CON LUCIO
+
+
+
     }
 
     @PostMapping("/modificar")
