@@ -139,6 +139,14 @@
 
                 </div>
 
+                <div class="mb-3 row">
+
+                  <div>
+                    <input th:name="tematica" th:value="${examen.tematica.id}" type="text" class="form-control inputExamen" placeholder="Respuesta 3">
+                  </div>
+
+                </div>
+
 
 
 
@@ -154,8 +162,8 @@
 
             </div>
 
-            <!-- CAJA PREGUNTA
-            <div  class="card w-100 tarjetasMain">
+            <!-- CAJA PREGUNTA -->
+            <div  class="card w-100 tarjetasMain" th:each="pregunta : ${examen.preguntas}">
 
               <div class="card-body">
 
@@ -195,7 +203,6 @@
                 <div class="mb-3 row">
 
 
-                  <p th:each="respuesta : ${pregunta.respuestas}" th:text="|Respuesta: ${pregunta.respuesta}"|> </p>
 
 
 
@@ -205,10 +212,7 @@
 
 
               </div>
-
             </div>
-            -->
-
 
           </div>
 
@@ -220,12 +224,13 @@
 
 
           <div style="width: 47%;">
-            <button type="submit" class="btn btn-primary tarjetasSecciones" style="width: 100%;">GUARDAR EXAMEN</button>
+            <button th:name="accion"  th:value="siguientePregunta" type="submit" class="btn btn-primary tarjetasSecciones" style="width: 100%;">AÑADIR PREGUNTA</button>
           </div>
 
           <div style="width: 47%;">
-            <button th:href="@{/index}" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CANCELAR</button>
+            <button th:name="accion"  th:value="terminarPreguntas" type="submit" class="btn btn-primary tarjetasSecciones" style="width: 100%;">TERMINAR Y GUARDAR</button>
           </div>
+
 
         </div>
 
@@ -233,10 +238,11 @@
       </form>
 
 
+
+
       <div style=" display: flex; justify-content: center;">
            <div style=" width: 47%;">
-        <button onclick id="agregarPregunta" class="btn btn-primary tarjetasSecciones" style="width: 100%;">AÑADIR OTRA
-          PREGUNTA</button>
+        <a th:href="@{/index}" onclick id="agregarPregunta" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CANCELAR</a>
       </div>
     </div>
 

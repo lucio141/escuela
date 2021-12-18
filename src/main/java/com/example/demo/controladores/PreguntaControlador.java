@@ -68,8 +68,8 @@ public class PreguntaControlador{
 
     @PostMapping("/guardar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam(value="respuesta2") String respuesta2, @RequestParam(value="respuesta3") String respuesta3,@RequestParam(value="respuesta4") String respuesta4, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam(value="examen") Integer examenId, HttpServletRequest request, RedirectAttributes attributes) {
-//EN EL SERVICIO BUSCAR EXAMEN POR ID Y RECIBIR ID EN EL PARAM
+    public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam(value="accion") String accion, @RequestParam(value="respuesta2") String respuesta2, @RequestParam(value="respuesta3") String respuesta3,@RequestParam(value="respuesta4") String respuesta4, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam(value="examen") Integer examenId,@RequestParam(value="tematica") Integer tematicaId,  HttpServletRequest request, RedirectAttributes attributes) {
+
         try {
             preguntaServicio.crearPregunta(dificultad, enunciado, respuesta2, respuesta3, respuesta4, respuestaCorrecta, puntaje, examenId);
         }catch (ObjetoRepetidoExcepcion repetido){
@@ -83,7 +83,14 @@ public class PreguntaControlador{
             return new RedirectView("/examen");
         }
 
-        return new RedirectView("/pregunta/crear");
+        if (accion.equalsIgnoreCase("siguientePregunta")){
+
+            return new RedirectView("/pregunta/crear");
+        }
+        else{
+            return new RedirectView("/tematica/"+tematicaId);
+
+        }
     }
 
     @PostMapping("/modificar")
