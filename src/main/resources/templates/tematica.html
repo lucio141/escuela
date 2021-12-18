@@ -54,6 +54,7 @@
 
 
 
+
                     <div class="card w-100 tarjetasMain" th:each="examen : ${tematica.examen}  ">
                         <div class="card-body">
                           <h5 th:text="${examen.nombre}" class="card-title"></h5>
@@ -64,6 +65,8 @@
                             <a th:href="@{/examen/realizar/__${examen.id}__}" class="btn btn-primary botonPrincipales">COMENZAR EXAMEN</a>
                         </div>
                     </div>
+
+
 
 
 
