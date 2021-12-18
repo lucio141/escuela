@@ -6,6 +6,7 @@ import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.excepciones.PadreNuloExcepcion;
+import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.PreguntaServicio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
@@ -23,10 +24,11 @@ import java.util.Map;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("examen/{examenId}/pregunta")
+@RequestMapping("/pregunta")
 public class PreguntaControlador{
 
     private final PreguntaServicio preguntaServicio;
+    private final ExamenServicio examenServicio;
 
     @GetMapping("/crear")
     //@PreAuthorize("hasRole('ADMIN')")
@@ -35,16 +37,16 @@ public class PreguntaControlador{
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
 
         try{
-            mav.addObject("examen" , map.get("examen"));
+            mav.addObject("dificultades", Dificultad.values());
+            mav.addObject("examen" , examenServicio.ObtenerUltimoExamen());
             mav.addObject("pregunta", new Pregunta());
             mav.addObject("titulo", "Crear Pregunta");
             mav.addObject("accion", "guardar");
-        }catch (NullPointerException e){
-            System.out.println(e.getMessage());
+        }catch (ObjetoNulloExcepcion o){
+            System.out.println(o.getMessage());
             attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
             mav.setViewName("redirect:/examen");
         }
-
         return mav;
     }
 
@@ -66,10 +68,10 @@ public class PreguntaControlador{
 
     @PostMapping("/guardar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, HttpServletRequest request, RedirectAttributes attributes) {
-
+    public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam(value="respuesta2") String respuesta2, @RequestParam(value="respuesta3") String respuesta3,@RequestParam(value="respuesta4") String respuesta4, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam(value="examen") Integer examenId, HttpServletRequest request, RedirectAttributes attributes) {
+//EN EL SERVICIO BUSCAR EXAMEN POR ID Y RECIBIR ID EN EL PARAM
         try {
-            preguntaServicio.crearPregunta(dificultad, enunciado, respuestas, respuestaCorrecta, puntaje, examen);
+            preguntaServicio.crearPregunta(dificultad, enunciado, respuesta2, respuesta3, respuesta4, respuestaCorrecta, puntaje, examenId);
         }catch (ObjetoRepetidoExcepcion repetido){
             attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
         }catch (ObjetoEliminadoExcepcion eliminado){
@@ -81,7 +83,7 @@ public class PreguntaControlador{
             return new RedirectView("/examen");
         }
 
-        return new RedirectView("/examen/{"+ examen.getId() + "}");
+        return new RedirectView("/pregunta/crear");
     }
 
     @PostMapping("/modificar")

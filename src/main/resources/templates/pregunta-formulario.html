@@ -46,12 +46,14 @@
 
       </h1>
 
-      <form id="formPreguntas" action="  ">
+      <form th:object="${pregunta}" th:action="@{/pregunta/__${accion}__}" method="post">
 
         <div class="row" style="justify-content: center; margin-bottom: 5%;">
 
 
           <div id="divElements" class="col-10">
+
+
 
             <!-- CAJA PREGUNTA-->
             <div id="pregunta" class="card w-100 tarjetasMain">
@@ -65,22 +67,19 @@
 
                   <div style="display: flex;">
 
-                    <input type="text" class="form-control inputExamen col-11" placeholder="Enunciado">
+                    <input th:field="*{enunciado}" type="text" class="form-control inputExamen col-11" placeholder="Enunciado">
 
-                    <input class="form-control inputExamen" placeholder="Puntaje" type="text" name="" >
+                    <input th:field="*{puntaje}" class="form-control inputExamen" placeholder="Puntaje" type="text" name="" >
                   </div>
 
                 </div>
 
                 <div style="height: 40px; margin-bottom: 2%;">
 
-                  <select name="" id="" class="selectForm">
+                  <select th:field="*{dificultad}" name="" id="" class="selectForm">
 
                     <option value="">Dificultad</option>
-                    <option value="">probando</option>
-                    <option value="">probando</option>
-                    <option value="">probando</option>
-
+                    <option  th:each="dificultad : ${dificultades} " th:value="${dificultad}" th:text="${dificultad}"></option>
 
                   </select>
 
@@ -95,7 +94,7 @@
 
 
                   <div>
-                    <input type="text" class="form-control inputExamen" placeholder="Respuesta Correcta">
+                    <input th:field="*{respuestaCorrecta}" class="form-control inputExamen" placeholder="Respuesta Correcta">
                   </div>
 
                 </div>
@@ -105,20 +104,41 @@
 
 
                   <div>
-                    <input type="text" class="form-control inputExamen" placeholder="Respuesta 2">
+                    <input th:name="respuesta2" type="text" class="form-control inputExamen" placeholder="Respuesta 2">
                   </div>
 
                 </div>
+
 
 
                 <div class="mb-3 row">
 
 
                   <div>
-                    <input type="text" class="form-control inputExamen" placeholder="Respuesta 3">
+                    <input th:name="respuesta3" type="text" class="form-control inputExamen" placeholder="Respuesta 3">
                   </div>
 
                 </div>
+
+                <div class="mb-3 row">
+
+
+                  <div>
+                    <input th:name="respuesta4" type="text" class="form-control inputExamen" placeholder="Respuesta 3">
+                  </div>
+
+                </div>
+
+
+
+                <div class="mb-3 row">
+
+                  <div>
+                    <input th:name="examen" th:value="${examen.id}" type="text" class="form-control inputExamen" placeholder="Respuesta 3">
+                  </div>
+
+                </div>
+
 
 
 
@@ -134,6 +154,62 @@
 
             </div>
 
+            <!-- CAJA PREGUNTA
+            <div  class="card w-100 tarjetasMain">
+
+              <div class="card-body">
+
+
+
+                <div class="mb-3 row">
+
+
+                  <div style="display: flex;">
+
+                    <p th:text="${pregunta.enunciado}" > </p>
+                    <p th:text="${pregunta.puntaje}" > </p>
+
+                  </div>
+
+                </div>
+
+                <div style="height: 40px; margin-bottom: 2%;">
+
+                  <p th:text="${pregunta.dificultad}"> </p>
+
+                </div>
+
+
+
+
+
+
+                <div class="mb-3 row">
+
+
+                  <p th:text="|Respuesta Correcta: ${pregunta.respuestaCorrecta}"|> </p>
+
+                </div>
+
+
+                <div class="mb-3 row">
+
+
+                  <p th:each="respuesta : ${pregunta.respuestas}" th:text="|Respuesta: ${pregunta.respuesta}"|> </p>
+
+
+
+                </div>
+
+
+
+
+              </div>
+
+            </div>
+            -->
+
+
           </div>
 
         </div>
@@ -144,11 +220,11 @@
 
 
           <div style="width: 47%;">
-            <a href="#" class="btn btn-primary tarjetasSecciones" style="width: 100%;">GUARDAR EXAMEN</a>
+            <button type="submit" class="btn btn-primary tarjetasSecciones" style="width: 100%;">GUARDAR EXAMEN</button>
           </div>
 
           <div style="width: 47%;">
-            <a href="#" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CANCELAR</a>
+            <button th:href="@{/index}" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CANCELAR</button>
           </div>
 
         </div>
