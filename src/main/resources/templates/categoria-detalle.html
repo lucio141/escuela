@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
@@ -33,75 +33,15 @@
 
 
 
-    <!-- SECCION PRINCIPAL -->
-    <div class="container-fluid seccionPrincipal">
-
-        <div class="row">
-
-            <div class="col-4 ">
-
-                <a href="">
-                    <script
-                            src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                    <lottie-player class="animacionMain"
-                                   src="https://assets10.lottiefiles.com/packages/lf20_m9zragkd.json" background="transparent"
-                                   speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
-                </a>
-
-
-            </div>
-
-            <div class="col-8">
-
-                <div class="card w-100 tarjetasMain">
-                    <div class="card-body">
-                        <h5 class="card-title">MIS NOTAS</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.
-                        </p>
-                        <a href="#" class="btn btn-primary botonPrincipales">Button</a>
-                    </div>
-                </div>
-
-
-
-                <div class="card w-100 tarjetasMain">
-                    <div class="card-body">
-                        <h5 class="card-title">VER EXAMENES</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.
-                        </p>
-                        <a href="#" class="btn btn-primary botonPrincipales">Button</a>
-                    </div>
-                </div>
-
-
-
-                <div class="card w-100 tarjetasMain">
-                    <div class="card-body">
-                        <h5 class="card-title">MATERIAL DE ESTUDIO</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.
-                        </p>
-                        <a href="#" class="btn btn-primary botonPrincipales">Button</a>
-                    </div>
-                </div>
-
-
-
-            </div>
-
-        </div>
-
-    </div>
-
-
 
     <!-- CATEGORIA/TEMATICAS/{ID}-->
-    <div class="container-fluid secciones">
+    <div class="container-fluid seccionesMainTematica">
 
         <h1 class="placeholder-glow">
             <span class="placeholder col-12"> </span>
 
         </h1>
-        <h1>TEMATICAS DE {NOMBRE CATEGORIA}</h1>
+        <h1 th:text="|TEMATICAS DE ${categoria.nombre}|"></h1>
 
 
         <div class="tarjetas">
@@ -133,7 +73,7 @@
 
                             <div class="card-img-overlay">
                                 <h5  class="card-title">TEMATICAS</h5>
-                                <p class="card-text">Selecciona en que tematica de {categoria} deseas probar tus habilidades</p>
+                                <p th:text="|Selecciona en que tematica de ${categoria.nombre} deseas probar tus habilidades| " class="card-text"></p>
 
 
                             </div>
@@ -150,7 +90,7 @@
 
 
 
-                    <div class="carousel-item" th:each="tematica : ${tematicas}" >
+                    <div class="carousel-item" th:each="tematica : ${categoria.tematicas}" >
 
 
 
@@ -182,7 +122,7 @@
                         </div>
 
                         <div>
-                            <a href="#"  style="width: 100%;"  class="btn btn-primary botonComenzarExamen">VER EXAMENES</a>
+                            <a th:href="@{/tematica/__${tematica.id}__}"  style="width: 100%;"  class="btn btn-primary botonComenzarExamen">VER EXAMENES</a>
                         </div>
 
                     </div>

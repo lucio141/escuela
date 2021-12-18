@@ -163,4 +163,27 @@ public class CategoriaControlador {
         return mav;
     }
 
+    @GetMapping("/mostrar/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView mostrarCategoria(@PathVariable int id, HttpServletRequest request, RedirectAttributes attributes) {
+        ModelAndView mav = new ModelAndView("categoria-detalle");
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+
+        if(map != null){
+            mav.addObject("errorNulo", map.get("errorNulo"));
+            mav.addObject("padreNulo", map.get("padreNulo"));
+            mav.addObject("errorRepetido", map.get("errorRepetido"));
+            mav.addObject("errorEliminado", map.get("errorEliminado"));
+            //mav.addObject("exito", map.get("success"));
+        }
+        try{
+            mav.addObject("categoria", categoriaServicio.obtenerPorId(id));
+        }catch (ObjetoNulloExcepcion nulo){
+            mav.addObject("errorNuloExtra", "Error al encontrar categoria");
+        }
+
+        mav.addObject("titulo", "Tabla de categorias");
+        return mav;
+    }
+
 }

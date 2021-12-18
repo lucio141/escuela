@@ -41,12 +41,12 @@
             <h1 class="placeholder-glow">
                 <span class="placeholder col-12"> </span>
                 
-                <h1 class="opciones">NOMBRE EXAMEN</h1>
+                <h1 th:text="${examen.nombre}" class="opciones"></h1>
         
         
               </h1>
 
-              <form action="  ">
+              <form th:object="${resultado}" th:action="@{/resultado/guardar}" method="post">
 
             <div class="row" style="justify-content: center; margin-bottom: 5%;">
 
@@ -54,11 +54,11 @@
                 <div class="col-10">
 
                     <!-- CAJA PREGUNTA-->
-                    <div class="card w-100 tarjetasMain">
+                    <div class="card w-100 tarjetasMain" th:each="pregunta : ${examen.preguntas}">
                         <div class="card-body">
 
                             <div style="display: flex; justify-content: center; margin-bottom: 5%;">
-                                <h3 class="card-text"> ¿probando pregunta pregunta pregunta pregunta pregunra pregunta ?
+                                <h3 th:text="${pregunta.enunciado}" class="card-text"> ¿probando pregunta pregunta pregunta pregunta pregunra pregunta ?
                                 </h3>
                             </div>
 
@@ -83,71 +83,8 @@
                         </div>
                     </div>
 
-                    <!-- CAJA PREGUNTA-->
-                    <div class="card w-100 tarjetasMain">
-                        <div class="card-body">
-
-                            <div style="display: flex; justify-content: center; margin-bottom: 5%;">
-                                <h3 class="card-text">¿probando pregunta pregunta pregunta pregunta ?</h3>
-                            </div>
-
-
-                            <div style="display: flex; justify-content: space-around;">
-
-                                <div>
-                                    <input type="radio" name="opcion2" class="opcionesExamen"> opcion1
-                                </div>
-                                <div>
-                                    <input type="radio" name="opcion2" class="opcionesExamen"> opcion2
-                                </div>
-                                <div>
-                                    <input type="radio" name="opcion2" class="opcionesExamen"> opcion3
-                                </div>
-
-                            </div>
-
-
-
-
-                        </div>
-                    </div>
-
-                    <!-- CAJA PREGUNTA-->
-                    <div class="card w-100 tarjetasMain">
-                        <div class="card-body">
-
-                            <div style="display: flex; justify-content: center; margin-bottom: 5%;">
-                                <h3 class="card-text"> ¿probando pregunta pregunta pregunta pregunta ?</h3>
-                            </div>
-
-
-                            <div style="display: flex; justify-content: space-around;">
-
-                                <div>
-                                    <input type="radio" name="opcion" class="opcionesExamen"> opcion1
-                                </div>
-                                <div>
-                                    <input type="radio" name="opcion" class="opcionesExamen"> opcion2
-                                </div>
-                                <div>
-                                    <input type="radio" name="opcion" class="opcionesExamen"> opcion3
-                                </div>
-
-                            </div>
-
-
-
-
-                        </div>
-                    </div>
-
-
-
-
-
-
-
                 </div>
+
 
             </div>
 

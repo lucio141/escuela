@@ -1,7 +1,9 @@
 package com.example.demo.repositorios;
 
 
+import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Resultado;
+import com.example.demo.servicios.ResultadoServicio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +22,7 @@ public interface ResultadoRepositorio extends JpaRepository<Resultado, Integer> 
     @Modifying
     @Query("UPDATE Resultado r Set r.alta = true WHERE r.id = :id")
     void darAlta (@Param("id") Integer id);
+
+    @Query(value = "SELECT r.* FROM Resultado r ORDER BY r.id DESC LIMIT 1", nativeQuery = true)
+    Resultado mostrarUltimoResultado();
 }
