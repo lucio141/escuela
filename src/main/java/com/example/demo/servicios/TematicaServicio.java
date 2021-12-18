@@ -1,9 +1,8 @@
 package com.example.demo.servicios;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Tematica;
-import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.TematicaRepositorio;
-import com.example.demo.servicios.ExamenServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

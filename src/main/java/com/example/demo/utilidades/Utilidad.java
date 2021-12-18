@@ -1,6 +1,6 @@
 package com.example.demo.utilidades;
 
-import com.example.demo.excepciones.ValidacionCampExcepcion;
+import com.example.demo.repositorios.excepciones.ValidacionCampExcepcion;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

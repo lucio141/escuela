@@ -2,10 +2,10 @@ package com.example.demo.controladores;
 
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
-import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
-import com.example.demo.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
-import com.example.demo.excepciones.PadreNuloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoEliminadoExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoRepetidoExcepcion;
+import com.example.demo.repositorios.excepciones.PadreNuloExcepcion;
 import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.PreguntaServicio;
 import com.example.demo.utilidades.Dificultad;
@@ -18,7 +18,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 

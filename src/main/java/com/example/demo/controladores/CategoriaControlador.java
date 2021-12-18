@@ -1,9 +1,9 @@
 package com.example.demo.controladores;
 
 import com.example.demo.entidades.Categoria;
-import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
-import com.example.demo.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoEliminadoExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.servicios.CategoriaServicio;
 import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.TematicaServicio;
@@ -16,7 +16,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller

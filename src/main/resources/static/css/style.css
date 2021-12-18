@@ -429,6 +429,63 @@ margin-top: 10%;
     }
 
 
+    .top{
+
+
+display: flex;
+justify-content: space-around;
+
+
+    }
+
+
+
+    .tarjetaTop{
+
+
+        border-radius: 40px !important;
+        background-color: #553bcc !important;
+        transition: all 400ms ease;
+        margin-bottom: 1%;
+        margin-top: 1;
+
+
+
+
+
+    }
+
+
+    .tarjetaTop:hover{
+
+    transform: translateY(-3%);
+
+
+    }
+
+
+    .tarjetaTopMain{
+
+
+        border-radius: 40px !important;
+        box-shadow: #00efe3 12px 8px 30px !important;
+        background-color: #3d289e !important;
+        transition: all 400ms ease;
+        margin-bottom: 10%;
+
+
+
+
+
+    }
+
+
+    .tarjetaTopMain:hover{
+
+    transform: translateY(-3%);
+
+
+    }
 
 
 
