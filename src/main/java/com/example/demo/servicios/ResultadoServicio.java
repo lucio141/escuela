@@ -34,6 +34,8 @@ public class ResultadoServicio {
         resultado.setRespuestasIncorrectas((short)(examen.getPreguntas().size()));
         resultado.setPuntajeFinal(null);
         resultadoRepositorio.save(resultado);
+        System.out.println(resultado.getTiempoFinalizacion());
+        System.out.println(resultado.getTiempoInicio());
     }
 
     @Transactional
@@ -44,24 +46,54 @@ public class ResultadoServicio {
         List<String> respuestasCorrectas = new ArrayList<>();
         List<String> respuestasCorrectas = new ArrayList<>();
         */
+        int puntajeAcumulado = 0;
+        int puntajeTotal = 0;
         Examen examen = examenServicio.obtenerPorId(examenId);
         List<Pregunta> preguntas = examen.getPreguntas();
         for (int i=0; i< preguntas.size(); i++ ){
+            puntajeTotal += preguntas.get(i).getPuntaje();
             if ( preguntas.get(i).getRespuestaCorrecta().equalsIgnoreCase(respuestas.get(i))){
                 contadorRespuestasCorrectas++;
+                puntajeAcumulado += preguntas.get(i).getPuntaje();
+
+
 
             }else{
                 contadorRespuestasInorrectas++;
             }
+
+
         }
+        int puntajeFinal = Math.round(puntajeAcumulado*100/puntajeTotal);
+
         Resultado resultado = obtenerPorId(id);
         resultadoRepositorio.save(resultado);
-        if (resultado.getPuntajeFinal() == null){
+        if (resultado.getPuntajeFinal() == null) {
+            System.out.println(resultado.getTiempoInicio());
+            System.out.println(resultado.getTiempoFinalizacion());
+            System.out.println(resultado.getTiempoFinalizacion().getTime() - resultado.getTiempoInicio().getTime());
+
             resultado.setRespuestasCorrectas(contadorRespuestasCorrectas);
             resultado.setRespuestasIncorrectas(contadorRespuestasInorrectas);
-            resultado.setDuracion(resultado.getTiempoFinalizacion().getTime() - resultado.getTiempoInicio().getTime());
-            resultado.setPuntajeFinal(100); //HACER LOGICA DE PUNTAJE FINAL
+            resultado.setPuntajeFinal(puntajeFinal);
+            resultado.setAprobado(puntajeFinal>examen.getNotaRequerida());
+
             resultadoRepositorio.save(resultado);
+
+            Resultado resultadoV2 = obtenerPorId(id);
+
+            System.out.println(resultadoV2.getTiempoInicio());
+            System.out.println(resultadoV2.getTiempoFinalizacion());
+            System.out.println(resultadoV2.getTiempoFinalizacion().getTime() - resultadoV2.getTiempoInicio().getTime());
+
+            resultadoV2.setDuracion(resultadoV2.getTiempoFinalizacion().getTime() - resultadoV2.getTiempoInicio().getTime());
+            resultadoRepositorio.save(resultado);
+
+            resultadoV2 = obtenerPorId(id);
+
+            System.out.println(resultadoV2.getTiempoInicio());
+            System.out.println(resultadoV2.getTiempoFinalizacion());
+            System.out.println(resultadoV2.getTiempoFinalizacion().getTime() - resultadoV2.getTiempoInicio().getTime());
         }
     }
 
