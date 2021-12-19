@@ -2,6 +2,7 @@ package com.example.demo.servicios;
 
 
 import com.example.demo.dto.UsuarioDTO;
+import com.example.demo.entidades.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -28,6 +29,16 @@ public class EmailServicio {
         sender.send(mensaje);
     }
 
+    @Async
+    public void enviarCambioPass (Usuario usuario, String contrasenia){
+        SimpleMailMessage mensaje = new SimpleMailMessage();
+        mensaje.setTo(usuario.getMail());
+        mensaje.setFrom(from);
+        mensaje.setSubject(usuario.getNombre() + ", Tu nueva contraseña de ingreso");
+        mensaje.setText(textoCambioPass(usuario, contrasenia));
+        sender.send(mensaje);
+    }
+
     private String textoNuevoUsuario(UsuarioDTO usuario){
 
 
@@ -37,6 +48,15 @@ public class EmailServicio {
                 "A partir de ahora serás mundialmente conocido como " + usuario.getNombreUsuario() + "." +
                 " Te invitamos a ingresar a la página nuevamente para empezar a poner a prueba tus SKILLS y formar parte de nuestros Rankings!!!!! \n\n" +
                 "Te deseamos lo mejor en este proceso \n" +
+                "El equipo de SkillTest";
+    }
+
+    private String textoCambioPass(Usuario usuario, String contrasenia){
+        return usuario.getNombreUsuario() + ", ¿Qué tal? \n\n" +
+                "En esta oportunidad nos comunicamos con usted porque recibimos un pedido de cambio de contraseña para su cuenta en SKILLTEST.\n" +
+                "Su nueva contraseña es: \t " + contrasenia + "\n" +
+                "En caso de no haber solicitado el cambio te pedimos comunicarte con nuestro soporte skilltest_school@gmail.com \n\n" +
+                "Desde ya muchas gracias," +
                 "El equipo de SkillTest";
     }
 }

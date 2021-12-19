@@ -2,6 +2,7 @@ package com.example.demo.utilidades;
 
 import com.example.demo.excepciones.ValidacionCampExcepcion;
 
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +27,7 @@ public class Utilidad {
     }
     */
 
-    public Boolean validarUsuario(String nombreUsuario) throws ValidacionCampExcepcion {
+    public static Boolean validarUsuario(String nombreUsuario) throws ValidacionCampExcepcion {
         Pattern regex = Pattern.compile("^([-_a-z-ù0-9]+)$");
         Matcher matcher = regex.matcher(nombreUsuario);
         if (!matcher.matches()) {
@@ -65,7 +66,7 @@ public class Utilidad {
             caso favorable, devuelve true, ejemplo: JuanCarlo0990
             caso desfavorable, devuelve false, ejemplo:juan09carlo, no contiene mayusculas
 */
-    public  Boolean validacionPassword(String password)throws ValidacionCampExcepcion{
+    public static Boolean validacionPassword(String password)throws ValidacionCampExcepcion{
         Pattern regex = Pattern.compile("^(?=.{10,}$)(?=(?:.*[A-Z]){2})(?=.*[a-z])(?=(?:.*[0-9]){2}).*");
         Matcher matcher = regex.matcher(password);
         if (!matcher.matches()) {
@@ -87,7 +88,7 @@ El email puede:
     caso desfavorable, devuelve false.ejemplo: juan90carlo.gmail.com
 
 */
-    Boolean validacionMail(String mail)throws ValidacionCampExcepcion{
+   public static Boolean validacionMail(String mail)throws ValidacionCampExcepcion{
         Pattern regex = Pattern.compile("^[\\\\w-]+(\\\\.[\\\\w-]+)*@[A-Za-z0-9]+(\\\\.[A-Za-z0-9]+)*(\\\\.[A-Za-z]{2,})$");
         Matcher matcher = regex.matcher(mail);
         if (!matcher.matches()) {
@@ -105,7 +106,7 @@ La Edad del usuario debe ser :
    caso favorable, devuelve true, ejemplo: 28
    caso desfavorable, devuelve false, ejemplo: 9
 */
-    Boolean validacionEdad(String edad)throws ValidacionCampExcepcion{
+    public static Boolean validacionEdad(String edad)throws ValidacionCampExcepcion{
         Pattern regex = Pattern.compile("^(0?[1-9]|[1-9][0-9])$\n");
         Matcher matcher = regex.matcher(edad);
         if (!matcher.matches()) {
@@ -120,13 +121,25 @@ La Edad del usuario debe ser :
     El numero de telefono debe tener:
                                      10 caracteres,numericos.?
     */
-    Boolean validacionTelefono(String telefono)throws ValidacionCampExcepcion{
+    public static Boolean validacionTelefono(String telefono)throws ValidacionCampExcepcion{
         Pattern regex = Pattern.compile("[1-9]\\\\d{8}");
         Matcher matcher = regex.matcher(telefono);
         if (!matcher.matches()) {
             throw new ValidacionCampExcepcion("El formato de telefono es inconrrecto");
         }
         return true;
+    }
+
+    public static String generadorDeCadenas()
+    {
+        String caracteres = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789";
+        Random random = new Random();
+        char[] cadena = new char[8];
+        for (int i = 0; i < 8; i++)
+        {
+            cadena[i] = caracteres.charAt(random.nextInt(caracteres.length()));
+        }
+        return new String(cadena);
     }
 
 }

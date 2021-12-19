@@ -21,4 +21,6 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
     void darAlta (@Param("id") Integer id);
 
     Optional<Usuario> findByNombreUsuario(String nombreUsuario);
+
+    Optional<Usuario> findByMail(String mail);
 }

@@ -102,9 +102,30 @@ public class UsuarioControlador {
         } catch (ObjetoNulloExcepcion e) {
             e.printStackTrace();
         }
-        mav.addObject("titulo", "Editar Usuario");
+        mav.addObject("titulo", "cambiar Contraseña");
         mav.addObject("accion", "modificarPass");
         return mav;
+    }
+
+    @GetMapping("/confirmarUsuario")
+    public ModelAndView editarPass(RedirectAttributes attributes){
+        ModelAndView mav = new ModelAndView("usuario-nuevaContrasenia");
+
+        mav.addObject("titulo", "Recuperar Contraseña");
+        mav.addObject("accion", "generarPass");
+        return mav;
+    }
+
+    @PostMapping("/generarPass")
+    public RedirectView generarPass(@RequestParam(name = "mail") String mail, RedirectAttributes attributes){
+        try {
+            usuarioServicio.generarPass(mail);
+            attributes.addFlashAttribute("exito", "Se envío un mail a su casilla de correo");
+        } catch (ObjetoNulloExcepcion e) {
+            attributes.addFlashAttribute("error", "No se encontró un usuario con los datos provistos");
+        }
+
+        return new RedirectView("/login");
     }
 
     @PostMapping("/guardar")
