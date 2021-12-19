@@ -2,13 +2,18 @@ package com.example.demo.controladores;
 
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
-import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoEliminadoExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoRepetidoExcepcion;
+import com.example.demo.repositorios.excepciones.PadreNuloExcepcion;
+import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.PreguntaServicio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -18,66 +23,101 @@ import java.util.Map;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("examen/{examenId}/pregunta")
+@RequestMapping("/pregunta")
 public class PreguntaControlador{
 
     private final PreguntaServicio preguntaServicio;
-
-    @GetMapping
-    public ModelAndView mostrarPreguntas(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("pregunta");
-        Map<String,?> map = RequestContextUtils.getInputFlashMap(request);
-
-        mav.addObject("examen" , map.get("examen"));
-        mav.addObject("preguntasValidas", preguntaServicio.mostrarPreguntasPorAlta(true));
-        mav.addObject("preguntasEliminadas", preguntaServicio.mostrarPreguntasPorAlta(false));
-        return mav;
-    }
+    private final ExamenServicio examenServicio;
 
     @GetMapping("/crear")
-    public ModelAndView crearPregunta(HttpServletRequest request) {
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView crearPregunta(HttpServletRequest request, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("pregunta-formulario");
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
 
-        mav.addObject("examen" , map.get("examen"));
-        mav.addObject("pregunta", new Pregunta());
-        mav.addObject("titulo", "Crear Pregunta");
-        mav.addObject("accion", "guardar");
+        try{
+            mav.addObject("dificultades", Dificultad.values());
+            mav.addObject("examen" , examenServicio.ObtenerUltimoExamen());
+            mav.addObject("pregunta", new Pregunta());
+            mav.addObject("titulo", "Crear Pregunta");
+            mav.addObject("accion", "guardar");
+        }catch (ObjetoNulloExcepcion o){
+            System.out.println(o.getMessage());
+            attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
+            mav.setViewName("redirect:/examen");
+        }
+        return mav;
+    }
+
+    @GetMapping("/editar/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView editarPregunta(@PathVariable int id, RedirectAttributes attributes) {
+        ModelAndView mav = new ModelAndView("pregunta-formulario");
+        try {
+            mav.addObject("pregunta", preguntaServicio.obtenerPorId(id));
+            mav.addObject("titulo", "Editar Pregunta");
+            mav.addObject("accion", "modificar");
+        } catch (ObjetoNulloExcepcion nulo) {
+            nulo.printStackTrace();
+            attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
+            mav.setViewName("redirect:/examen");
+        }
         return mav;
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, HttpServletRequest request) {
-        preguntaServicio.crearPregunta(dificultad, enunciado, respuestas, respuestaCorrecta, puntaje, examen);
-        return new RedirectView("/pregunta");
-    }
+    //@PreAuthorize("hasRole('ADMIN')")
+    public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam(value="accion") String accion, @RequestParam(value="respuesta2") String respuesta2, @RequestParam(value="respuesta3") String respuesta3,@RequestParam(value="respuesta4") String respuesta4, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam(value="examen") Integer examenId,@RequestParam(value="tematica") Integer tematicaId,  HttpServletRequest request, RedirectAttributes attributes) {
 
-    @GetMapping("/editar/{id}")
-    public ModelAndView editarPregunta(@PathVariable int id) {
-        ModelAndView mav = new ModelAndView("pregunta-formulario");
         try {
-            mav.addObject("pregunta", preguntaServicio.obtenerPorId(id));
-        } catch (ObjetoNulloExcepcion e) {
-            e.printStackTrace();
+            preguntaServicio.crearPregunta(dificultad, enunciado, respuesta2, respuesta3, respuesta4, respuestaCorrecta, puntaje, examenId);
+        }catch (ObjetoRepetidoExcepcion repetido){
+            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+        }catch (ObjetoEliminadoExcepcion eliminado){
+            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+        }catch (ObjetoNulloExcepcion nulo){
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+        }catch (PadreNuloExcepcion padre){
+            attributes.addFlashAttribute("padreNulo", padre.getMessage());
+            return new RedirectView("/examen");
         }
-        mav.addObject("titulo", "Editar Pregunta");
-        mav.addObject("accion", "modificar");
-        return mav;
+
+        if (accion.equalsIgnoreCase("siguientePregunta")){
+            return new RedirectView("/pregunta/crear");
+        }else{
+            return new RedirectView("/tematica/"+tematicaId);
+        }
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, @RequestParam int id) {
+    //@PreAuthorize("hasRole('ADMIN')")
+    public RedirectView modificar(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, @RequestParam int id, RedirectAttributes attributes) {
         try{
             preguntaServicio.modificarPregunta(dificultad, enunciado, respuestas, respuestaCorrecta, puntaje, examen, id);
-        }catch(ObjetoNulloExcepcion e) {
-            System.out.println(e.getMessage());
+        }catch(ObjetoNulloExcepcion nulo) {
+            System.out.println(nulo.getMessage());
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+        }catch (ObjetoRepetidoExcepcion repetido){
+            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+            System.out.println(repetido.getMessage());
+        }catch (ObjetoEliminadoExcepcion eliminado){
+            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+            System.out.println(eliminado.getMessage());
         }
-        return new RedirectView("/pregunta");
+        return new RedirectView("/examen/{"+ examen.getId() + "}");
     }
 
     @PostMapping("/eliminar/{id}")
-    public RedirectView eliminarPregunta(@PathVariable int id) {
-        preguntaServicio.eliminar(id);
-        return new RedirectView("/pregunta");
+    //@PreAuthorize("hasRole('ADMIN')")
+    public RedirectView eliminarPregunta(@PathVariable int id, RedirectAttributes attributes) {
+
+        try{
+            preguntaServicio.eliminar(id);
+            return new RedirectView("/../examen/{" + preguntaServicio.obtenerPorId(id).getExamen().getId() + "}");
+        }catch (ObjetoNulloExcepcion nulo){
+            System.out.println(nulo.getMessage());
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            return new RedirectView("/examen");
+        }
     }
 }

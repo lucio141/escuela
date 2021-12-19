@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -23,6 +24,7 @@ public class Examen {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Dificultad dificultad;
+    private String nombre;
     @ManyToOne
     private Tematica tematica;
     @OneToMany(mappedBy = "examen")
@@ -47,5 +49,25 @@ public class Examen {
 
     public Examen() {
         this.alta = true;
+    }
+
+    @Override
+    public String toString() {
+        return "Examen{" +
+                "nombre='" + nombre.toLowerCase().trim() + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Examen)) {
+            return false;
+        }
+        return this.hashCode() == o.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.toString().toLowerCase().hashCode();
     }
 }

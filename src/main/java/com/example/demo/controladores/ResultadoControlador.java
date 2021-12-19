@@ -1,14 +1,10 @@
 package com.example.demo.controladores;
 
-import com.example.demo.entidades.Examen;
-import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Resultado;
-import com.example.demo.entidades.Usuario;
-import com.example.demo.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.servicios.PreguntaServicio;
+import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.ResultadoServicio;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,6 +18,7 @@ import java.util.List;
 public class ResultadoControlador {
 
     private final ResultadoServicio resultadoServicio;
+    private final ExamenServicio examenServicio;
 
     @GetMapping
     public ModelAndView mostrarResultado() {
@@ -32,6 +29,7 @@ public class ResultadoControlador {
     }
 
     @GetMapping("/eliminados")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarResultadoeliminados() {
         ModelAndView mav = new ModelAndView("");//falta crear
         mav.addObject("resultados", resultadoServicio.mostrarResultadosPorAlta(false));
@@ -50,11 +48,20 @@ public class ResultadoControlador {
         return mav;
     }
 
+/*
     @PostMapping("/guardar")
-    public RedirectView guardarResultado(@RequestParam Examen examen, @RequestParam Usuario usuario, @RequestParam short respuestasCorrectas, @RequestParam short respuestasIncorrectas, @RequestParam long duracion, @RequestParam int puntajeFinal) {
-        resultadoServicio.crearResultado(examen,usuario,respuestasCorrectas,respuestasIncorrectas,duracion,puntajeFinal);
-        return new RedirectView("/resultado");
+    public RedirectView guardarResultado(HttpSession session,@RequestParam(value="examen") Integer examenId) {
+        try {
+            resultadoServicio.crearResultado(examenId,  (Integer)session.getAttribute("id"));
+            return new RedirectView("/tematica");
+        }catch(ObjetoNulloExcepcion e){
+
+        }
+        return new RedirectView("/tematica");
     }
+
+ */
+
 
     @GetMapping("/editar/{id}")
     public ModelAndView editarResultado(@PathVariable int id) {
@@ -69,25 +76,45 @@ public class ResultadoControlador {
         return mav;
     }
 
+    @GetMapping("/mostrar/{id}")
+    public ModelAndView mostrarResultado(@PathVariable int id) {
+        ModelAndView mav = new ModelAndView("resultados-top");
+        try {
+
+            Resultado resultado = resultadoServicio.obtenerPorId(id);
+            mav.addObject("Resultado", resultado);
+            mav.addObject("resultado", resultado);
+            mav.addObject("duracion", resultado.getDuracion() );
+            mav.addObject("top", resultadoServicio.top5(resultado.getExamen().getId()) );
+        } catch (ObjetoNulloExcepcion e) {
+            e.printStackTrace();
+        }
+        mav.addObject("titulo", "Editar Resultado");
+        mav.addObject("accion", "modificar");
+        return mav;
+    }
+
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam int id, @RequestParam short respuestasCorrectas, @RequestParam short respuestasIncorrectas, @RequestParam long duracion, @RequestParam int puntajeFinal) {
+    public RedirectView modificar(@RequestParam(name="resultadoId") int resultadoId, @RequestParam("respuestas") List<String> respuestas,@RequestParam(name="examenId") int examenId) {
 
         try {
-            resultadoServicio.modificarResultado(id,respuestasCorrectas,respuestasIncorrectas,duracion,puntajeFinal);
+            resultadoServicio.modificarResultado(resultadoId,respuestas,examenId);
         } catch (ObjetoNulloExcepcion e) {
             e.printStackTrace();
         }
 
-        return new RedirectView("/resultado");
+        return new RedirectView("/resultado/mostrar/"+resultadoId);
     }
 
     @PostMapping("/eliminar/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminarResultado(@PathVariable int id) {
         resultadoServicio.eliminar(id);
         return new RedirectView("/resultado");
     }
 
     @PostMapping("/recuperar/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView recuperarResultado(@PathVariable int id) {
         try {
             resultadoServicio.darAlta(id);

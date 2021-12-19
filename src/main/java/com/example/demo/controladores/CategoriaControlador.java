@@ -1,14 +1,24 @@
 package com.example.demo.controladores;
 
 import com.example.demo.entidades.Categoria;
-import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.entidades.Tematica;
+import com.example.demo.repositorios.excepciones.ObjetoEliminadoExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.servicios.CategoriaServicio;
+import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @AllArgsConstructor
@@ -17,26 +27,52 @@ public class CategoriaControlador {
 
     private final CategoriaServicio categoriaServicio;
     private final TematicaServicio tematicaServicio;
+    private final ExamenServicio examenServicio;
 
     @GetMapping()
-    public ModelAndView mostrarCategorias() {
-        ModelAndView mav = new ModelAndView(""); //Falta crear
-        mav.addObject("categorias", categoriaServicio.mostrarCategoriasPorAlta(true));
-        mav.addObject("titulo", "Tabla de Categorias");
+    public ModelAndView mostrarCategorias(HttpServletRequest request, RedirectAttributes attributes) {
+        ModelAndView mav = new ModelAndView("categoria");
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+
+        if(map != null){
+            mav.addObject("errorNulo", map.get("errorNulo"));
+            mav.addObject("padreNulo", map.get("padreNulo"));
+            mav.addObject("errorRepetido", map.get("errorRepetido"));
+            mav.addObject("errorEliminado", map.get("errorEliminado"));
+            //mav.addObject("exito", map.get("success"));
+        }
+
+        mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(true));
+        mav.addObject("titulo", "Tabla de examenes");
+        mav.addObject("categorias", categoriaServicio.mostrarCategorias());
+        mav.addObject("tematicas", tematicaServicio.mostrarTematicas());
         return mav;
     }
 
-    @GetMapping("/baja")
-    public ModelAndView mostrarCategoriasBaja() {
-        ModelAndView mav = new ModelAndView(""); //Falta crear
-        mav.addObject("categorias", categoriaServicio.mostrarCategoriasPorAlta(false));
-        mav.addObject("titulo", "Tabla de categorias baja");
+    @GetMapping("/admin")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView listarCategorias(HttpServletRequest request, RedirectAttributes attributes) {
+        ModelAndView mav = new ModelAndView("categoria-administrador");
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+
+        if(map != null){
+            mav.addObject("errorNulo", map.get("errorNulo"));
+            mav.addObject("padreNulo", map.get("padreNulo"));
+            mav.addObject("errorRepetido", map.get("errorRepetido"));
+            mav.addObject("errorEliminado", map.get("errorEliminado"));
+            //mav.addObject("exito", map.get("success"));
+        }
+        mav.addObject("titulo", "Tabla de categorias");
+        mav.addObject("categoriasBaja", categoriaServicio.mostrarCategoriasPorAlta(false));
+        mav.addObject("categoriasAlta", categoriaServicio.mostrarCategoriasPorAlta(true));
+        mav.addObject("tematicas", tematicaServicio.mostrarTematicas());
         return mav;
     }
 
     @GetMapping("/crear")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearCategoria() {
-        ModelAndView mav = new ModelAndView("");//Falta crear
+        ModelAndView mav = new ModelAndView("categoria-formulario");
         mav.addObject("categoria", new Categoria());
         mav.addObject("tematicas", tematicaServicio.mostrarTematicasPorAlta(true));
         mav.addObject("titulo", "Crear Categoria");
@@ -45,9 +81,11 @@ public class CategoriaControlador {
     }
 
     @GetMapping("/editar/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarCategoria(@PathVariable int id) {
-        ModelAndView mav = new ModelAndView(""); // Falta crear
+        ModelAndView mav = new ModelAndView("categoria-formulario"); // Falta crear
         try {
+            mav.addObject("tematicas", tematicaServicio.obtenenetTematicaPorCat(id));
             mav.addObject("categoria", categoriaServicio.obtenerPorId(id));
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());
@@ -58,23 +96,39 @@ public class CategoriaControlador {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam String nombre) {
-        categoriaServicio.crearCategoria(nombre);
-        return new RedirectView("/categoria");
-    }
+    //@PreAuthorize("hasRole('ADMIN')")
+    public RedirectView guardar(@RequestParam String nombre, HttpServletRequest request, RedirectAttributes attributes) {
 
-    @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam int id, @RequestParam String nombre) {
         try {
-            categoriaServicio.modificarCategoria(id,nombre);
-        } catch (ObjetoNulloExcepcion e) {
-            System.out.println(e.getMessage());
+            categoriaServicio.crearCategoria(nombre);
+        }catch (ObjetoRepetidoExcepcion repetido){
+            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+        }catch (ObjetoEliminadoExcepcion eliminado){
+            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
         }
 
         return new RedirectView("/categoria");
     }
 
+    @PostMapping("/modificar")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public RedirectView modificar(@RequestParam int id, @RequestParam String nombre, RedirectAttributes attributes, @RequestParam(name="tematicas") List<Tematica> tematicas) {
+        try {
+            categoriaServicio.modificarCategoria(id,nombre);
+        }catch (ObjetoRepetidoExcepcion repetido){
+            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+        }catch (ObjetoEliminadoExcepcion eliminado){
+            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+        }catch (ObjetoNulloExcepcion nulo){
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+        }
+
+
+        return new RedirectView("/categoria");
+    }
+
     @PostMapping("/eliminar/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminar(@PathVariable int id) {
         try {
             categoriaServicio.eliminar(id);
@@ -84,14 +138,54 @@ public class CategoriaControlador {
         return new RedirectView("/categoria");
     }
 
-    @PostMapping("/recuperar/{id}")
-    public RedirectView recuperar(@PathVariable int id) {
+    @PostMapping("/darAlta/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public RedirectView darAlta(@PathVariable int id) {
         try {
             categoriaServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());
         }
         return new RedirectView("/categoria");
+    }
+
+    @GetMapping("/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView ingresarCategoria(@PathVariable int id){
+        ModelAndView mav = new ModelAndView("categoria-detalle"); //FALTA HTML
+        try{
+            mav.addObject("categoria",categoriaServicio.obtenerPorId(id)) ;
+
+        }
+        catch( ObjetoNulloExcepcion e){
+            System.out.println(e.getMessage());
+        }
+        mav.addObject("titulo", "Detalle de categoría");
+
+        return mav;
+    }
+
+    @GetMapping("/mostrar/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView mostrarCategoria(@PathVariable int id, HttpServletRequest request, RedirectAttributes attributes) {
+        ModelAndView mav = new ModelAndView("categoria-detalle");
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+
+        if(map != null){
+            mav.addObject("errorNulo", map.get("errorNulo"));
+            mav.addObject("padreNulo", map.get("padreNulo"));
+            mav.addObject("errorRepetido", map.get("errorRepetido"));
+            mav.addObject("errorEliminado", map.get("errorEliminado"));
+            //mav.addObject("exito", map.get("success"));
+        }
+        try{
+            mav.addObject("categoria", categoriaServicio.obtenerPorId(id));
+        }catch (ObjetoNulloExcepcion nulo){
+            mav.addObject("errorNuloExtra", "Error al encontrar categoria");
+        }
+
+        mav.addObject("titulo", "Tabla de categorias");
+        return mav;
     }
 
 }

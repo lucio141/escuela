@@ -8,6 +8,7 @@ import com.example.demo.entidades.Categoria;
 import com.example.demo.entidades.Resultado;
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class Mapper {
         usuario.setRol(usuarioDTO.getRol());
         usuario.setResultados(usuarioDTO.getResultados());
         usuario.setId(usuarioDTO.getId());
+        System.out.println("PROBANDO EDITAR USER");
         return usuario;
     }
 

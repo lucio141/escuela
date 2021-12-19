@@ -1,7 +1,7 @@
 *{
 
 
-color: #ffffff;
+color: white;
 font-family: 'Tomorrow', sans-serif;
 text-decoration: none !important;
 }
@@ -310,7 +310,7 @@ padding: 5%;
 
     margin-top: 5.5%;
     height: 100%;
-    background-image: url("databases.jpg");
+    background-image: url(../img/databases.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     
@@ -343,6 +343,195 @@ padding: 5%;
     color: rgb(255, 255, 255) !important;
 
 }
+
+
+.selectForm{
+
+width: 100%;
+height: 100%;
+color: black ;
+border-radius: 40px;
+
+
+
+}
+
+
+.inputExamen{
+
+    border-radius: 40px !important;
+
+
+
+}
+
+option{
+
+color: black;
+
+
+}
+
+
+.botonesCrear{
+
+
+
+    background-color: #00efe3 !important;
+    color: rgb(0, 0, 0) !important;
+     border-radius: 30px !important;
+     transition: all 100ms ease;
+     box-shadow: #00efe3 12px 8px 30px !important;
+
+
+
+
+}
+
+
+.botonesCrear:hover{
+
+
+    transform: translateY(-7%);
+    box-shadow: #00efe3 12px 8px 40px !important;
+
+}
+
+.top5{
+
+
+margin-top: 10%;
+
+
+}
+
+
+
+.tarjetaNota{
+
+    background-color: #521d39 !important ;
+    border-radius: 40px !important;
+    box-shadow: #ff51c2 12px 8px 20px !important;
+     margin-top: 5% !important;
+     transition: all 400ms ease;
+
+
+
+    }
+
+    .tarjetaNota:hover{
+
+    transform: translateY(-4%);
+    box-shadow: #ff51c2 12px 8px 50px !important;
+
+
+
+    }
+
+
+    .top{
+
+
+display: flex;
+justify-content: space-around;
+
+
+    }
+
+
+
+    .tarjetaTop{
+
+
+        border-radius: 40px !important;
+        background-color: #553bcc !important;
+        transition: all 400ms ease;
+        margin-bottom: 1%;
+        margin-top: 1;
+
+
+
+
+
+    }
+
+
+    .tarjetaTop:hover{
+
+    transform: translateY(-3%);
+
+
+    }
+
+
+    .tarjetaTopMain{
+
+
+        border-radius: 40px !important;
+        box-shadow: #00efe3 12px 8px 30px !important;
+        background-color: #3d289e !important;
+        transition: all 400ms ease;
+        margin-bottom: 10%;
+
+
+
+
+
+    }
+
+
+    .tarjetaTopMain:hover{
+
+    transform: translateY(-3%);
+
+
+    }
+
+
+
+    .botonLogin{
+
+        background-color: #521d39 !important ;
+         color: rgb(255, 255, 255) !important;
+         border-radius: 100px;
+         transition: all 100ms ease;
+
+
+
+    }
+
+
+    .botonLogin:hover{
+
+
+
+         transform: translateY(5%);
+           box-shadow: #ff51c2 12px 1px 70px !important;
+
+    }
+
+
+    .dropDown{
+
+            background-color: #2E4159 !important;
+            transition: all 400ms ease;
+            color: white !important;
+
+
+
+
+        }
+
+        .dropDown:hover{
+
+
+
+            transform: translateY(-9%);
+
+
+
+
+        }
 
 
 

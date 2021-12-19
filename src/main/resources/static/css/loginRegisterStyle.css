@@ -100,12 +100,12 @@ form {
   
   .imgcontainer {
     text-align: center;
-    margin: 24px 0 12px 0;
+    margin: 12px 0 6px 0;
   }
   
   img.loginImg {
-    width: 40%;
-    border-radius: 50%;
+    width: 10%;
+    border-radius: 20%;
   }
   
  
@@ -124,5 +124,27 @@ form {
     .cancelbtn {
       width: 100%;
     }
+  }
+
+
+  .tarjetaLogin{
+
+ background-color: #2E4159;
+  border-radius: 40px !important;
+  box-shadow: #ff51c2 12px 8px 20px !important;
+   margin-top: 5% !important;
+   transition: all 400ms ease;
+
+
+
+  }
+
+  .tarjetaLogin:hover{
+
+
+  box-shadow: #ff51c2 12px 8px 50px !important;
+
+
+
   }
 

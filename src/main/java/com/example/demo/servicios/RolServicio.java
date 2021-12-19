@@ -2,7 +2,9 @@ package com.example.demo.servicios;
 
 import com.example.demo.dto.RolDTO;
 import com.example.demo.entidades.Rol;
-import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoEliminadoExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.repositorios.RolRepositorio;
 import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
@@ -16,16 +18,30 @@ public class RolServicio {
 
     private final RolRepositorio rolRepositorio;
 
-    public void crearRol(String nombre) {
+    public void crearRol(String nombre) throws ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion {
         RolDTO rolDTO = new RolDTO();
         rolDTO.setNombre(nombre);
+
+        if(mostrarRolesPorAlta(true).contains(rolDTO)) {
+            throw new ObjetoRepetidoExcepcion("Se encontró un rol con el mismo nombre");
+        }else if(mostrarRolesPorAlta(false).contains(rolDTO)) {
+            throw new ObjetoEliminadoExcepcion("Se encontró un rol eliminado con el mismo nombre");
+        }
+
         rolRepositorio.save(Mapper.rolDTOAEntidad(rolDTO));
     }
 
     @Transactional
-    public void modificarRol(Integer id, String nombre) throws ObjetoNulloExcepcion {
-        RolDTO rolDTO = obtenerPorId(id) ;
+    public void modificarRol(Integer id, String nombre) throws ObjetoNulloExcepcion, ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion {
+        RolDTO rolDTO = obtenerPorId(id);
         rolDTO.setNombre(nombre);
+
+        if(mostrarRolesPorAlta(true).contains(rolDTO)) {
+            throw new ObjetoRepetidoExcepcion("Se encontró un rol con el mismo nombre");
+        }else if(mostrarRolesPorAlta(false).contains(rolDTO)) {
+            throw new ObjetoEliminadoExcepcion("Se encontró un rol eliminado con el mismo nombre");
+        }
+
         rolRepositorio.save(Mapper.rolDTOAEntidad(rolDTO));
     }
 
@@ -42,19 +58,28 @@ public class RolServicio {
     @Transactional
     public RolDTO obtenerPorId(int id) throws ObjetoNulloExcepcion {
         Rol rol = rolRepositorio.findById(id).orElse(null);
+
         if (rol == null) {
-            throw new ObjetoNulloExcepcion("");
+            throw new ObjetoNulloExcepcion("No se encontro el rol");
         }
+
         return Mapper.rolEntidadADTO(rol);
     }
 
     @Transactional
-    public void eliminar(int id) {
+    public void eliminar(int id) throws ObjetoNulloExcepcion{
+        RolDTO rolDTO = obtenerPorId(id);
         rolRepositorio.deleteById(id);
     }
 
     @Transactional
     public void darAlta(int id) throws ObjetoNulloExcepcion {
+        RolDTO rolDTO = obtenerPorId(id);
         rolRepositorio.darAlta(id);
     }
+
+    public Rol mostrarPorNombre(String nombre){
+       return rolRepositorio.mostrarPorNombre(nombre);
+    }
+
 }

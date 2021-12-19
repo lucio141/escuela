@@ -38,51 +38,54 @@
 
         <div class="row">
 
+
             <div class="col-4 ">
 
                 <a href="">
                     <script
                             src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                    <lottie-player class="animacionMain"
-                                   src="https://assets10.lottiefiles.com/packages/lf20_m9zragkd.json" background="transparent"
-                                   speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
+                    <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_a9xyhp9v.json"
+                                   background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay>
+                    </lottie-player>
+
                 </a>
 
 
             </div>
 
+
+
             <div class="col-8">
 
-                <div class="card w-100 tarjetasMain">
+                <div class="card w-100 tarjetaNota">
                     <div class="card-body">
-                        <h5 class="card-title">MIS NOTAS</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.
-                        </p>
-                        <a href="#" class="btn btn-primary botonPrincipales">Button</a>
+                        <h5 th:text="|NOTA OBTENIDA: ${resultado.puntajeFinal}|" class="card-title"></h5>
+
+
                     </div>
                 </div>
 
-
-
-                <div class="card w-100 tarjetasMain">
+                <div class="card w-100 tarjetaNota">
                     <div class="card-body">
-                        <h5 class="card-title">VER EXAMENES</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.
-                        </p>
-                        <a href="#" class="btn btn-primary botonPrincipales">Button</a>
+                        <h5 th:text="${resultado.aprobado == true} ? 'APROBADO' : 'DESAPROBADO' " class="card-title"></h5>
                     </div>
                 </div>
 
-
-
-                <div class="card w-100 tarjetasMain">
+                <div class="card w-100 tarjetaNota">
                     <div class="card-body">
-                        <h5 class="card-title">MATERIAL DE ESTUDIO</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.
-                        </p>
-                        <a href="#" class="btn btn-primary botonPrincipales">Button</a>
+                        <h5 th:text="|TIEMPO: ${duracion}|" class="card-title"></h5>
                     </div>
                 </div>
+
+                <div class="card w-100 tarjetaNota">
+                    <div class="card-body">
+                        <h5 th:text="|PREGUNTAS INCORRECTAS: ${resultado.respuestasIncorrectas}|" class="card-title"></h5>
+
+
+
+                    </div>
+                </div>
+
 
 
 
@@ -90,104 +93,23 @@
 
         </div>
 
-    </div>
+        <div id="top5">
 
+            <div class="card text-white  mb-3 tarjetaTopMain" style="width: 100%; margin-top: 5%;">
+                <div class="card-body">
+                    <div style="display: flex; justify-content: center;">
+                        <h2 class="card-title opciones">TOP 5</h2>
+                    </div>
 
-
-    <!-- CATEGORIAS-->
-    <div class="container-fluid secciones" th:each="categoria : ${categorias}">
-
-        <h1 class="placeholder-glow">
-            <span class="placeholder col-12"> </span>
-
-        </h1>
-        <h1 th:text="${categoria.nombre}"> </h1>
-
-
-
-
-        <div class="tarjetas">
-
-            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel"
-                 style="height: 50%; width: 50%; border-radius: 100 px;">
-
-                <div class="carousel-inner tarjetasSecciones">
-
-                    <div class="carousel-item active" style="border-radius: 100px;">
-
-
-                        <div class="card bg-dark text-white">
-
-
-
-
-                            <div style="border-radius: 100px;">
-                                <script
-                                        src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                                <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_w51pcehl.json"
-                                               background="#3e279d" speed="1" style="width: 100%; height: 100%;" hover loop
-                                               autoplay></lottie-player>
-
-                            </div>
-
-
-
-
-                            <div class="card-img-overlay">
-                                <h5 th:text="${categoria.nombre}" class="card-title"></h5>
-                                <p class="card-text">En esta seccion podras encontrar todos los examenes de Backend</p>
-
-
-                            </div>
-
-
-
+                    <div class="card w-100 tarjetaTop" th:each=" resultado : ${top}">
+                        <div class="card-body">
+                            <h5 th:text="|USUARIO: ${resultado.usuario.nombre} ${resultado.usuario.apellido}|" class="card-title">USUARIO:</h5>
+                            <h5 th:text="|NOTA OBTENIDA: ${resultado.puntajeFinal}|" class="card-title"></h5>
+                            <h5 th:text="|DURACION: ${resultado.duracion}|" class="card-title"></h5>
                         </div>
-
-
-
-
                     </div>
 
 
-
-
-                    <div class="carousel-item"  th:each="tematica : ${categoria.tematicas}">
-
-
-
-                        <div class="card bg-dark text-white">
-
-
-
-
-                            <div style="border-radius: 100px;">
-                                <script
-                                        src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                                <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_w51pcehl.json"
-                                               background="#3e279d" speed="1" style="width: 100%; height: 100%;" hover loop
-                                               autoplay></lottie-player>
-
-                            </div>
-
-
-
-
-                            <div class="card-img-overlay">
-                                <h1 th:text="${tematica.nombre}" class="card-title"></h1>
-
-
-                            </div>
-
-
-
-                        </div>
-
-                        <div>
-                            <a href="#"  style="width: 100%;"  class="btn btn-primary botonComenzarExamen">VER EXAMENES</a>
-                        </div>
-
-                    </div>
 
 
 
@@ -195,32 +117,10 @@
 
 
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
-                        data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
-                        data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-
-                </button>
             </div>
-
-
-
         </div>
 
     </div>
-
-
-
-
-
-
-
 
 
 

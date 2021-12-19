@@ -2,8 +2,6 @@ package com.example.demo.seguridad;
 
 import com.example.demo.servicios.UsuarioServicio;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -32,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/css/*", "/img/*", "/assets/*").permitAll()
-                .antMatchers("/**").permitAll() //poner permitAll() cuando creemos el 1er usuario, desp poner authenticated()
+                .antMatchers("/**").authenticated() //poner permitAll() cuando creemos el 1er usuario, desp poner authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")

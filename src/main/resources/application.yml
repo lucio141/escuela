@@ -17,6 +17,20 @@ spring:
   mvc:
     format:
       date: yyyy-MM-dd
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: skilltest.school@gmail.com
+    password: noCdeJava
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            required: true
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
   loggin:
     level:
       org:

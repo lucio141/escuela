@@ -3,7 +3,9 @@ package com.example.demo.servicios;
 import com.example.demo.dto.CategoriaDTO;
 import com.example.demo.entidades.Categoria;
 import com.example.demo.entidades.Tematica;
-import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoEliminadoExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.repositorios.CategoriaRepositorio;
 import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
@@ -19,16 +21,27 @@ public class CategoriaServicio {
     private final CategoriaRepositorio categoriaRepositorio;
     private final TematicaServicio tematicaServicio;
 
-    public void crearCategoria(String nombre) {
+    public void crearCategoria(String nombre) throws ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion {
         CategoriaDTO categoriaDTO = new CategoriaDTO();
         categoriaDTO.setNombre(nombre);
+        if(mostrarCategoriasPorAlta(true).contains(categoriaDTO)) {
+            throw new ObjetoRepetidoExcepcion("Se encontró una categoria con el mismo enunciado");
+        }else if(mostrarCategoriasPorAlta(false).contains(categoriaDTO)) {
+            throw new ObjetoEliminadoExcepcion("Se encontró una categoria eliminada con el mismo enunciado");
+        }
         categoriaRepositorio.save(Mapper.categoriaDTOAEntidad(categoriaDTO));
     }
 
     @Transactional
-    public void modificarCategoria(Integer id, String nombre) throws ObjetoNulloExcepcion {
+    public void modificarCategoria(Integer id, String nombre) throws ObjetoNulloExcepcion, ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion {
         CategoriaDTO categoriaDTO = obtenerPorId(id) ;
         categoriaDTO.setNombre(nombre);
+
+        if(mostrarCategoriasPorAlta(true).contains(categoriaDTO)) {
+            throw new ObjetoRepetidoExcepcion("Se encontró una categoria con el mismo enunciado");
+        }else if(mostrarCategoriasPorAlta(false).contains(categoriaDTO)) {
+            throw new ObjetoEliminadoExcepcion("Se encontró una categoria eliminada con el mismo enunciado");
+        }
         categoriaRepositorio.save(Mapper.categoriaDTOAEntidad(categoriaDTO));
     }
 
@@ -46,7 +59,7 @@ public class CategoriaServicio {
     public CategoriaDTO obtenerPorId(int id) throws ObjetoNulloExcepcion {
         Categoria categoria = categoriaRepositorio.findById(id).orElse(null);
         if (categoria == null) {
-            throw new ObjetoNulloExcepcion("");
+            throw new ObjetoNulloExcepcion("No se encontro la categoria");
         }
         return Mapper.categoriaEntidadADTO(categoria);
     }
@@ -54,9 +67,10 @@ public class CategoriaServicio {
     @Transactional
     public void eliminar(int id) throws ObjetoNulloExcepcion {
 
-        CategoriaDTO c = this.obtenerPorId(id);
+        CategoriaDTO categoria = obtenerPorId(id);
 
-        for (Tematica tematica: c.getTematicas()) {
+
+        for (Tematica tematica: categoria.getTematicas()) {
             if(tematica.getAlta()){
                 tematicaServicio.eliminar(tematica.getId());
             }

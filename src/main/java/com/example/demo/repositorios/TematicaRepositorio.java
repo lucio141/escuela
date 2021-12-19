@@ -18,6 +18,9 @@ public interface TematicaRepositorio extends JpaRepository<Tematica, Integer> {
     @Query("SELECT t FROM Tematica t WHERE t.alta = :alta")
     List<Tematica> mostrarPorAlta(@Param("alta") Boolean alta);
 
+    @Query(value = "SELECT t.* FROM Tematica t WHERE t.categoria_id = :categoriaId", nativeQuery = true)
+    List<Tematica> mostrarPorCategoria(@Param("categoriaId") Integer id);
+
     @Query("UPDATE Tematica t SET t.alta = true WHERE t.id = :id")
     void darAlta(@Param("id") Integer id);
 }

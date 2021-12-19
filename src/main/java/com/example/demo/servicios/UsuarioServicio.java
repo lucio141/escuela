@@ -4,11 +4,12 @@ import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.dto.UsuarioInformacionDTO;
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
-import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.UsuarioRepositorio;
 import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,14 +17,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+
+import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class UsuarioServicio implements UserDetailsService {
+
+
+    private final EmailServicio emailServicio;
 
     private final UsuarioRepositorio usuarioRepositorio;
 
@@ -42,15 +49,20 @@ public class UsuarioServicio implements UserDetailsService {
         usuarioDTO.setMail(mail);
         usuarioDTO.setTelefono(telefono);
         usuarioDTO.setRol(rol);
+        emailServicio.enviarNuevoUsuario(usuarioDTO);
         usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
     }
 
     @Transactional
-    public void modificarUsuario(Integer id, String nombreUsuario, String contrasenia, String mail, Rol rol) throws ObjetoNulloExcepcion{
+    public void modificarUsuario(Integer id, String nombre, String apellido, String nombreUsuario, String contrasenia, Integer edad , String mail, String telefono, Rol rol) throws ObjetoNulloExcepcion{
         UsuarioDTO usuarioDTO = obtenerPorId(id);
+        usuarioDTO.setNombre(nombre);
+        usuarioDTO.setApellido(apellido);
         usuarioDTO.setNombreUsuario(nombreUsuario);
-        usuarioDTO.setContrasenia(contrasenia);
+        usuarioDTO.setContrasenia(encoder.encode(contrasenia));
+        usuarioDTO.setEdad(edad);
         usuarioDTO.setMail(mail);
+        usuarioDTO.setTelefono(telefono);
         usuarioDTO.setRol(rol);
         usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
     }
@@ -94,6 +106,19 @@ public class UsuarioServicio implements UserDetailsService {
         Usuario usuario = usuarioRepositorio.findByNombreUsuario(nombreUsuario)
                                             .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE, nombreUsuario)));
 
-        return new User(usuario.getNombreUsuario(), usuario.getContrasenia(), Collections.emptyList());
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
+
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attributes.getRequest().getSession(true);
+
+        try {
+            UsuarioDTO usuarioDTO = obtenerPorId(usuario.getId());
+            session.setAttribute("id" , usuarioDTO.getId());
+            session.setAttribute("usuarioEnSesion", usuarioDTO);
+        } catch (ObjetoNulloExcepcion e) {
+            e.printStackTrace();
+        }
+
+        return new User(usuario.getNombreUsuario(), usuario.getContrasenia(), Collections.singletonList(authority));
     }
 }
