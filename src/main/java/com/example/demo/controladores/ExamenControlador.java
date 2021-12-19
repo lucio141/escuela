@@ -1,6 +1,7 @@
 package com.example.demo.controladores;
 
 import com.example.demo.entidades.Examen;
+import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.repositorios.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;

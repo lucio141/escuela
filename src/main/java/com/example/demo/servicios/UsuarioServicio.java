@@ -54,17 +54,31 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void modificarUsuario(Integer id, String nombre, String apellido, String nombreUsuario, String contrasenia, Integer edad , String mail, String telefono, Rol rol) throws ObjetoNulloExcepcion{
+    public void modificarUsuario(Integer id, String nombre, String apellido, String nombreUsuario, Integer edad , String mail, String telefono, Rol rol) throws ObjetoNulloExcepcion{
         UsuarioDTO usuarioDTO = obtenerPorId(id);
         usuarioDTO.setNombre(nombre);
         usuarioDTO.setApellido(apellido);
         usuarioDTO.setNombreUsuario(nombreUsuario);
-        usuarioDTO.setContrasenia(encoder.encode(contrasenia));
         usuarioDTO.setEdad(edad);
         usuarioDTO.setMail(mail);
         usuarioDTO.setTelefono(telefono);
         usuarioDTO.setRol(rol);
         usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
+    }
+
+    @Transactional
+    public void modificarPass(Integer id,String contraseniaAnterior, String contrasenia1, String contrasenia2) throws ObjetoNulloExcepcion{
+        UsuarioDTO usuarioDTO = obtenerPorId(id);
+
+        if(encoder.matches(contraseniaAnterior, usuarioDTO.getContrasenia()) && contrasenia1.equals(contrasenia2)){
+            usuarioDTO.setContrasenia(encoder.encode(contrasenia1));
+            usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
+        }
+        else{
+            System.out.println("No se pudo cambiar la contraseña");
+        }
+
+
     }
 
     @Transactional
