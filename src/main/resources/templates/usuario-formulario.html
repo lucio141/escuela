@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,43 +20,43 @@
                                         </div>
                                     </div>  
                                     <div class="col-md-12 position-relative">
-                                        <label for="validationTooltip01" class="form-label">Apellido</label>
-                                        <input type="text" class="form-control" id="validationTooltip01" required th:field="*{apellido}">
+                                        <label for="validationTooltip02" class="form-label">Apellido</label>
+                                        <input type="text" class="form-control" id="validationTooltip02" required th:field="*{apellido}">
                                         <div class="invalid-tooltip">
                                             Inserte apellido por favor
                                         </div>
                                     </div>
                                     <div class="col-md-12 position-relative">
-                                        <label for="validationTooltip01" class="form-label">Usuario</label>
-                                        <input type="text" class="form-control" id="validationTooltip01" required th:field="*{nombreUsuario}">
+                                        <label for="validationTooltip03" class="form-label">Usuario</label>
+                                        <input type="text" class="form-control" id="validationTooltip03" required th:field="*{nombreUsuario}">
                                         <div class="invalid-tooltip">
                                             Inserte un usuario por favor
                                         </div>
                                     </div>
                                     <div class="col-md-12 position-relative">
-                                        <label for="validationTooltip01" class="form-label">Contraseña</label>
-                                        <input type="text" class="form-control" id="validationTooltip01" required th:field="*{contrasenia}">
+                                        <label for="validationTooltip04" class="form-label">Contraseña</label>
+                                        <input type="text" class="form-control" id="validationTooltip04" required th:field="*{contrasenia}">
                                         <div class="invalid-tooltip">
                                             Inserte una contraseña por favor
                                         </div>
                                     </div>
                                     <div class="col-md-12 position-relative">
-                                        <label for="validationTooltip01" class="form-label">Edad</label>
-                                        <input type="text" class="form-control" id="validationTooltip01" required th:field="*{edad}">
+                                        <label for="validationTooltip05" class="form-label">Edad</label>
+                                        <input type="text" class="form-control" id="validationTooltip05" required th:field="*{edad}">
                                         <div class="invalid-tooltip">
                                             Inserte una edad por favor
                                         </div>
                                     </div>
                                     <div class="col-md-12 position-relative">
-                                        <label for="validationTooltip01" class="form-label">Mail</label>
-                                        <input type="text" class="form-control" id="validationTooltip01" required th:field="*{mail}">
+                                        <label for="validationTooltip06" class="form-label">Mail</label>
+                                        <input type="text" class="form-control" id="validationTooltip06" required th:field="*{mail}">
                                         <div class="invalid-tooltip">
                                             Inserte un mail por favor
                                         </div>
                                     </div>
                                     <div class="col-md-12 position-relative">
-                                        <label for="validationTooltip01" class="form-label">Telefono</label>
-                                        <input type="text" class="form-control" id="validationTooltip01" required th:field="*{telefono}">
+                                        <label for="validationTooltip07" class="form-label">Telefono</label>
+                                        <input type="text" class="form-control" id="validationTooltip07" required th:field="*{telefono}">
                                         <div class="invalid-tooltip">
                                             Inserte su numero de telefono por favor
                                         </div>
@@ -65,7 +65,7 @@
                                         <label class="input-group-text" for="inputGroupSelect01">Rol</label>
                                         <select class="form-select" id="inputGroupSelect01" th:field="*{rol}">
                                             <option selected value="">Elija un rol...</option>
-                                            <option th:each="rol : ${roles}" th:value="${rol.id}" th:text="${rol.nombre}">
+                                            <option th:each="rol : ${roles}" th:value="${rol.id}" th:value="${usuario.rol}" th:text="${rol.nombre}">
                                             </option>
                                         </select>
                                     </div>
