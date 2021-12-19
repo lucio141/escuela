@@ -22,6 +22,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -123,6 +124,11 @@ public class ExamenControlador {
 
         try {
             Examen examen = examenServicio.obtenerPorId(id);
+            Collections.shuffle(examen.getPreguntas());
+            for (Pregunta pregunta: examen.getPreguntas()
+            ) {
+                Collections.shuffle(pregunta.getRespuestas());
+            }
             resultadoServicio.crearResultado(examen, (Integer)session.getAttribute("id"));
             mav.addObject("resultado", resultadoServicio.ObtenerUltimoResultado() );
             mav.addObject("examen", examen);
