@@ -45,10 +45,10 @@
           <div class="card w-100 tarjetasMain">
             <div class="card-body">
               <h5 class="card-title">DATOS PERSONALES</h5>
-              <p class="card-text">Nombre: Nombre Apellido</p>
-              <p class="card-text">Edad: 19 años</p>
-              <p class="card-text">Mail: Mail@gmail.com</p>
-              <p class="card-text">Telefono: 1166046826</p>
+              <p class="card-text" th:text="|Nombre: ${session.usuarioEnSesion.nombre} ${session.usuarioEnSesion.apellido}|">Nombre: Nombre Apellido</p>
+              <p class="card-text" th:text="|Edad: ${session.usuarioEnSesion.edad} años|">Edad: 19 años</p>
+              <p class="card-text" th:text="|Mail: ${session.usuarioEnSesion.mail} |">Mail: Mail@gmail.com</p>
+              <p class="card-text" th:text="|Mail: ${session.usuarioEnSesion.telefono} |">Telefono: 1166046826</p>
               <a href="#" class="btn btn-primary botonPrincipales">Editar</a>
             </div>
 
