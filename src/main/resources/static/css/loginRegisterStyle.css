@@ -126,3 +126,25 @@ form {
     }
   }
 
+
+  .tarjetaLogin{
+
+ background-color: #2E4159;
+  border-radius: 40px !important;
+  box-shadow: #ff51c2 12px 8px 20px !important;
+   margin-top: 5% !important;
+   transition: all 400ms ease;
+
+
+
+  }
+
+  .tarjetaLogin:hover{
+
+
+  box-shadow: #ff51c2 12px 8px 50px !important;
+
+
+
+  }
+

@@ -1,7 +1,7 @@
 *{
 
 
-color: #ffffff;
+color: white;
 font-family: 'Tomorrow', sans-serif;
 text-decoration: none !important;
 }
@@ -484,6 +484,29 @@ justify-content: space-around;
 
     transform: translateY(-3%);
 
+
+    }
+
+
+
+    .botonLogin{
+
+        background-color: #521d39 !important ;
+         color: rgb(255, 255, 255) !important;
+         border-radius: 100px;
+         transition: all 100ms ease;
+
+
+
+    }
+
+
+    .botonLogin:hover{
+
+
+
+         transform: translateY(5%);
+           box-shadow: #ff51c2 12px 1px 70px !important;
 
     }
 
