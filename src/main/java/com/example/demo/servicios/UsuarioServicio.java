@@ -54,11 +54,15 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void modificarUsuario(Integer id, String nombreUsuario, String contrasenia, String mail, Rol rol) throws ObjetoNulloExcepcion{
+    public void modificarUsuario(Integer id, String nombre, String apellido, String nombreUsuario, String contrasenia, Integer edad , String mail, String telefono, Rol rol) throws ObjetoNulloExcepcion{
         UsuarioDTO usuarioDTO = obtenerPorId(id);
+        usuarioDTO.setNombre(nombre);
+        usuarioDTO.setApellido(apellido);
         usuarioDTO.setNombreUsuario(nombreUsuario);
-        usuarioDTO.setContrasenia(contrasenia);
+        usuarioDTO.setContrasenia(encoder.encode(contrasenia));
+        usuarioDTO.setEdad(edad);
         usuarioDTO.setMail(mail);
+        usuarioDTO.setTelefono(telefono);
         usuarioDTO.setRol(rol);
         usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
     }

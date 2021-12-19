@@ -85,10 +85,10 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam(name = "usuarioId") Integer id, @RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam String mail, @RequestParam Rol rol){
+    public RedirectView modificar(@RequestParam(name = "usuarioId") Integer id, @RequestParam String nombre, @RequestParam String apellido,  @RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam Integer edad, @RequestParam String telefono, @RequestParam String mail, @RequestParam Rol rol){
 
         try{
-            usuarioServicio.modificarUsuario(id, nombreUsuario, contrasenia, mail, rol);
+            usuarioServicio.modificarUsuario(id, nombre, apellido, nombreUsuario, contrasenia, edad, mail, telefono, rol);
         }catch (ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());
         }

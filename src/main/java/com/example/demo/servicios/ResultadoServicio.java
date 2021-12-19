@@ -71,7 +71,7 @@ public class ResultadoServicio {
         if (resultado.getPuntajeFinal() == null) {
             System.out.println(resultado.getTiempoInicio());
             System.out.println(resultado.getTiempoFinalizacion());
-            System.out.println(resultado.getTiempoFinalizacion().getTime() - resultado.getTiempoInicio().getTime());
+        //    System.out.println(resultado.getTiempoFinalizacion() - resultado.getTiempoInicio());
 
             resultado.setRespuestasCorrectas(contadorRespuestasCorrectas);
             resultado.setRespuestasIncorrectas(contadorRespuestasInorrectas);
@@ -84,16 +84,16 @@ public class ResultadoServicio {
 
             System.out.println(resultadoV2.getTiempoInicio());
             System.out.println(resultadoV2.getTiempoFinalizacion());
-            System.out.println(resultadoV2.getTiempoFinalizacion().getTime() - resultadoV2.getTiempoInicio().getTime());
+            //System.out.println(resultadoV2.getTiempoFinalizacion().getTime() - resultadoV2.getTiempoInicio().getTime());
 
-            resultadoV2.setDuracion(resultadoV2.getTiempoFinalizacion().getTime() - resultadoV2.getTiempoInicio().getTime());
+            //resultadoV2.setDuracion(resultadoV2.getTiempoFinalizacion().getTime() - resultadoV2.getTiempoInicio().getTime());
             resultadoRepositorio.save(resultado);
 
             resultadoV2 = obtenerPorId(id);
 
             System.out.println(resultadoV2.getTiempoInicio());
             System.out.println(resultadoV2.getTiempoFinalizacion());
-            System.out.println(resultadoV2.getTiempoFinalizacion().getTime() - resultadoV2.getTiempoInicio().getTime());
+            //System.out.println(resultadoV2.getTiempoFinalizacion().getTime() - resultadoV2.getTiempoInicio().getTime());
         }
     }
 
@@ -149,3 +149,27 @@ public class ResultadoServicio {
         return resultados;
     }
 }
+
+/*
+    public static String diferenciaTiempo(LocalDateTime fechaInicio, LocalDateTime fechaFinal){
+
+        String diferencia = "";
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss a");
+
+        LocalDateTime date1 = LocalDateTime.now();
+        LocalDateTime date2 = LocalDateTime.now().plusMinutes(70).plusSeconds(29);
+
+        Duration duracion = Duration.between(date2, date1);
+
+        Long minutos = Math.abs(duracion.toMinutes());
+
+        Long segundos = Math.abs(duracion.minusMinutes(duracion.toMinutes()).getSeconds());
+
+        System.out.printf("%d:%02d%n", minutos , segundos);
+
+        diferencia = " " + duracion.toString() + " ";
+
+        return diferencia;
+    }
+ */

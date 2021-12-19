@@ -83,12 +83,9 @@ public class PreguntaControlador{
         }
 
         if (accion.equalsIgnoreCase("siguientePregunta")){
-
             return new RedirectView("/pregunta/crear");
-        }
-        else{
+        }else{
             return new RedirectView("/tematica/"+tematicaId);
-
         }
     }
 
