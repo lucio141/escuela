@@ -1,7 +1,7 @@
 package com.example.demo.controladores;
 
 import com.example.demo.entidades.Resultado;
-import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.ResultadoServicio;
 import lombok.AllArgsConstructor;

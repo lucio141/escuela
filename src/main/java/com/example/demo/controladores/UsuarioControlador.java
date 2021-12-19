@@ -2,7 +2,7 @@ package com.example.demo.controladores;
 
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
-import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.RolServicio;
 import com.example.demo.servicios.UsuarioServicio;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.spi.http.HttpExchange;
 
 @Controller
 @AllArgsConstructor
