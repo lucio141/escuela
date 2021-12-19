@@ -38,8 +38,7 @@
 
             <h1 class="placeholder-glow opciones">
                 <span class="placeholder col-12"> </span>
-                <h1 th:text="${accion == 'guardar'} ? |Crear ${categoria.nombre}|: |Editar ${categoria.nombre}| "> </h1>
-
+                <h1 th:text="${accion == 'guardar'} ? |CREAR CATEGORIA|: |EDITAR CATEGORIA| "> </h1>
 
             </h1>
 
@@ -47,8 +46,6 @@
             <form th:object="${categoria}" th:action="@{/categoria/__${accion}__}" method="post">
 
                 <input th:field="*{id}" id="id" type="hidden">
-                <input th:field="*{tematicas}" id="tematicas" type="hidden">
-
 
                 <div class="row" style="justify-content: center;">
 
