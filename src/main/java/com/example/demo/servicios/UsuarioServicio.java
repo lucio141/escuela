@@ -7,6 +7,7 @@ import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.UsuarioRepositorio;
 import com.example.demo.utilidades.Mapper;
+import com.example.demo.utilidades.Utilidad;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -77,8 +78,16 @@ public class UsuarioServicio implements UserDetailsService {
         else{
             System.out.println("No se pudo cambiar la contraseña");
         }
+    }
 
+    @Transactional
+    public void generarPass(String mail) throws ObjetoNulloExcepcion{
+        Usuario usuario = obtenerPorMail(mail);
 
+        String contrasenia = Utilidad.generadorDeCadenas();
+
+        usuario.setContrasenia(encoder.encode(contrasenia));
+        emailServicio.enviarCambioPass(usuario, contrasenia);
     }
 
     @Transactional
@@ -98,6 +107,15 @@ public class UsuarioServicio implements UserDetailsService {
             throw new ObjetoNulloExcepcion("");
         }
         return Mapper.usuarioEntidadADTO(usuario);
+    }
+
+    @Transactional
+    public Usuario obtenerPorMail (String mail) throws ObjetoNulloExcepcion {
+        Usuario usuario = usuarioRepositorio.findByMail(mail).orElse(null);
+        if (usuario == null) {
+            throw new ObjetoNulloExcepcion("");
+        }
+        return usuario;
     }
 
     @Transactional
