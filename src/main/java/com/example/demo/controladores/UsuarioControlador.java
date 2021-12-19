@@ -54,7 +54,7 @@ public class UsuarioControlador {
 
     @GetMapping("/crear")
     public ModelAndView crearUsuario(){
-        ModelAndView mav = new ModelAndView("usuario-formulario");
+        ModelAndView mav = new ModelAndView("registerDonato");
         mav.addObject("usuario", new Usuario());
         mav.addObject("roles", rolServicio.mostrarRolesPorAlta(true));
         mav.addObject("titulo", "Crear Usuario");
@@ -64,8 +64,11 @@ public class UsuarioControlador {
 
     @GetMapping("/editar/{id}")
     public ModelAndView editarUsuario(@PathVariable Integer id){
-        ModelAndView mav = new ModelAndView("usuario-formulario");
+        ModelAndView mav = new ModelAndView("usuario-editar");
+
         try {
+            mav.addObject("roles", rolServicio.mostrarRoles());
+            mav.addObject("rolUsuario", rolServicio.mostrarPorNombre("USUARIO"));
             mav.addObject("usuario", usuarioServicio.obtenerPorId(id));
         } catch (ObjetoNulloExcepcion e) {
             e.printStackTrace();
@@ -76,13 +79,13 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardarUsuario(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam Integer edad, @RequestParam String mail, @RequestParam String telefono, @RequestParam Rol rol) {
+    public RedirectView guardarUsuario(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam Integer edad, @RequestParam String mail, @RequestParam String telefono, @RequestParam(name = "rol") Rol rol) {
         usuarioServicio.crearUsuario(nombre, apellido, nombreUsuario, contrasenia, edad, mail, telefono, rol);
         return new RedirectView("/usuario");
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam Integer id, @RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam String mail, @RequestParam Rol rol){
+    public RedirectView modificar(@RequestParam(name = "usuarioId") Integer id, @RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam String mail, @RequestParam Rol rol){
 
         try{
             usuarioServicio.modificarUsuario(id, nombreUsuario, contrasenia, mail, rol);

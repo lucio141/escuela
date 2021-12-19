@@ -1,6 +1,7 @@
 package com.example.demo.controladores;
 
 import com.example.demo.entidades.Categoria;
+import com.example.demo.entidades.Tematica;
 import com.example.demo.repositorios.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.excepciones.ObjetoRepetidoExcepcion;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -83,6 +85,7 @@ public class CategoriaControlador {
     public ModelAndView editarCategoria(@PathVariable int id) {
         ModelAndView mav = new ModelAndView("categoria-formulario"); // Falta crear
         try {
+            mav.addObject("tematicas", tematicaServicio.obtenenetTematicaPorCat(id));
             mav.addObject("categoria", categoriaServicio.obtenerPorId(id));
         } catch (ObjetoNulloExcepcion e) {
             System.out.println(e.getMessage());
@@ -109,7 +112,7 @@ public class CategoriaControlador {
 
     @PostMapping("/modificar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView modificar(@RequestParam int id, @RequestParam String nombre, RedirectAttributes attributes) {
+    public RedirectView modificar(@RequestParam int id, @RequestParam String nombre, RedirectAttributes attributes, @RequestParam(name="tematicas") List<Tematica> tematicas) {
         try {
             categoriaServicio.modificarCategoria(id,nombre);
         }catch (ObjetoRepetidoExcepcion repetido){

@@ -70,5 +70,9 @@ public class TematicaServicio {
         tematicaRepositorio.darAlta(id);
     }
 
+    public List<Tematica> obtenenetTematicaPorCat(Integer categoriaId){
+        return tematicaRepositorio.mostrarPorCategoria(categoriaId);
+    }
+
 
 }

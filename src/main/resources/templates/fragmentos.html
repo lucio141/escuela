@@ -9,32 +9,10 @@
             <div class="logo">
                 <img th:src="@{/img/logo.png}" alt="" width="60px" height="60px">
 
-                <a class="navbar-brand" th:href="@{/}" style="color: rgb(255, 254, 254);">SchoolHouse</a>
+                <a class="navbar-brand" th:href="@{/}" style="color: rgb(255, 254, 254);">Skill Test</a>
             </div>
 
-            <div class="dropdown opciones">
 
-                <p class="dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                    Examenes
-                </p>
-
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <li><a class="dropdown-item" type="button" th:href="@{/examen/crear}">Crear Examen</a></li>
-                    <li><a class="dropdown-item" type="button" th:href="@{/examen}">Modificar Examenes</a></li>
-                    <li><a class="dropdown-item" type="button" th:href="@{/examen}">Ver Examenes</a></li>
-                </ul>
-            </div>
-
-            <div class="dropdown opciones">
-                <p class="dropdown-toggle" type="button" id="dropdownMenu3" data-bs-toggle="dropdown" aria-expanded="false">
-                    Usuarios
-                </p>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu3">
-                    <li><a class="dropdown-item" type="button" th:href="@{/usuario/crear}">Crear Usuario</a></li>
-                    <li><a class="dropdown-item" type="button" th:href="@{/usuario}">Modificar Usuario</a></li>
-                    <li><a class="dropdown-item" type="button" th:href="@{/usuario}">Ver Usuarios</a></li>
-                </ul>
-            </div>
 
 
             <button class="navbar-toggler logo" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
@@ -62,15 +40,27 @@
                                 <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Notas</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}">Mis Examenes</a>
+                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Examenes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}">Datos Personales</a>
+                                <a class="nav-link  opciones" th:href="@{/usuario}" style="color: white;">Administrar Usuarios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  opciones" th:href="@{/categoria/admin}" style="color: white;">Administrar Categorias</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Administrar Tematicas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Administrar Examenes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Datos Personales</a>
                             </li>
 
                             <li class="nav-item">
                                 <form th:action="@{/logout}">
-                                    <a class="nav-link text-white" href="#" onclick="this.parentNode.submit();"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+                                    <a class="nav-link text-white opciones" href="#" onclick="this.parentNode.submit();"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
                                 </form>
                             </li>
 

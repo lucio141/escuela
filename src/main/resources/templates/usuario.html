@@ -56,10 +56,13 @@
               <br>
               <div style="display: flex; justify-content: flex-start; ">
               <div style="display: flex; justify-content: space-around; width: 15%;">  
-              <a href="#" class="btn btn-primary botonPrincipales">Editar</a>
-              <a href="#" class="btn btn-primary botonPrincipales">Eliminar</a>
+              <a th:href="@{/usuario/editar/__${usuario.id}__}" class="btn btn-primary botonPrincipales">Editar</a>
 
-             </div>
+                <form method="post" th:action="@{/usuario/eliminar/__${usuario.id}__}">
+                  <button type="submit" class="btn btn-primary botonPrincipales">Dar de baja</button>
+                </form>
+
+              </div>
 
            </div>
             </div>

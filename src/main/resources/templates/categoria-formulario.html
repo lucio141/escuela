@@ -38,13 +38,17 @@
 
             <h1 class="placeholder-glow opciones">
                 <span class="placeholder col-12"> </span>
-                CREAR CATEGORIA
+                <h1 th:text="${accion == 'guardar'} ? |Crear ${categoria.nombre}|: |Editar ${categoria.nombre}| "> </h1>
 
 
             </h1>
 
 
             <form th:object="${categoria}" th:action="@{/categoria/__${accion}__}" method="post">
+
+                <input th:field="*{id}" id="id" type="hidden">
+                <input th:field="*{tematicas}" id="tematicas" type="hidden">
+
 
                 <div class="row" style="justify-content: center;">
 
@@ -64,16 +68,6 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-3 row">
-
-
-                                    <div>
-                                        <input  th:field="*{nombre}" type="text" class="form-control inputExamen"
-                                            placeholder="Nombre de Tematica">
-                                    </div>
-                                </div>
-
-                               <!-- <button href="#" class="btn btn-outline-secondary botonesCrear">AÑADIR OTRA TEMATICA</button> -->
 
                             </div>
 
@@ -101,7 +95,7 @@
                 <div style="display: flex;  justify-content: space-around;">
 
                     <div style="width: 47%;">
-                        <a type="submit" th:text="${accion == 'guardar'} ? 'Crear categoria' : 'Editar categoria' "  class="btn btn-primary tarjetasSecciones" style="width: 100%;">CREAR CATEGORIA</a>
+                        <button type="submit" th:text="${accion == 'guardar'} ? 'CREAR CATEGORIA' : 'TERMINAR EDICION' "  class="btn btn-primary tarjetasSecciones" style="width: 100%;">CREAR CATEGORIA</button>
                     </div>
 
                     <div style="width: 47%;">

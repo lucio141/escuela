@@ -25,35 +25,13 @@
 <body>
 
 
-<header>
-
-  <nav class="navbar navbar-light  fixed-top" style="background-color: #2E4159;">
-
-    <div class="container-fluid" style="background-color: #2E4159; font-size: x-large;">
-
-      <div class="logo">
-        <img th:src="@{/img/user.png}" alt="" width="60px" height="60px">
-      </div>
-
-        <a class="navbar-brand" href="#" style="color: rgb(255, 254, 254);">SchoolHouse</a>
-      </div>
-
-    </div>
-
-  </nav>
-
-</header>
+<header th:replace="fragmentos :: header"></header>
 
 
 
 
 
 <main>
-
-
-
-
-
 
   <!-- SECCION FRONTEND -->
   <div class="container-fluid seccionesMainTematica">
@@ -70,6 +48,8 @@
     <div class="container-fluid">
 
       <form th:object="${usuario}" th:action="@{/usuario/__${accion}__}" method="post">
+        <input th:name="usuarioId" th:value="${usuario.id}" type="hidden">
+
 
         <div class="row" style="justify-content: center;">
 
@@ -148,11 +128,9 @@
 
 
 
-                <select th:field="*{rol}" name="rol" th:value="rolUsuario.id" id="" class="selectForm">
-
+                <select name="rol" th:value="${rolUsuario}" id="" class="selectForm">
                   <option value="">Rol</option>
                   <option  th:each="rol : ${roles} " th:value="${rol.id}" th:text="${rol.nombre}"></option>
-
                 </select>
 
 
@@ -199,11 +177,11 @@
         <div style="display: flex;  justify-content: space-around;">
 
           <div style="width: 47%;">
-            <button type="submit" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CREAR CUENTA</button>
+            <button type="submit" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CONFIRMAR EDICION</button>
           </div>
 
           <div style="width: 47%;">
-            <a th:href="@{/login}" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CANCELAR</a>
+            <a th:href="@{/usuario}" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CANCELAR</a>
           </div>
 
         </div>

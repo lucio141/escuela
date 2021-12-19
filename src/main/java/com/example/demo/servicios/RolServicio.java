@@ -77,4 +77,9 @@ public class RolServicio {
         RolDTO rolDTO = obtenerPorId(id);
         rolRepositorio.darAlta(id);
     }
+
+    public Rol mostrarPorNombre(String nombre){
+       return rolRepositorio.mostrarPorNombre(nombre);
+    }
+
 }

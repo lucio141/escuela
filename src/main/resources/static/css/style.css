@@ -511,5 +511,29 @@ justify-content: space-around;
     }
 
 
+    .dropDown{
+
+            background-color: #2E4159 !important;
+            transition: all 400ms ease;
+            color: white !important;
+
+
+
+
+        }
+
+        .dropDown:hover{
+
+
+
+            transform: translateY(-9%);
+
+
+
+
+        }
+
+
+
 
 
