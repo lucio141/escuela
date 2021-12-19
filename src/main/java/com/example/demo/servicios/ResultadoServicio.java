@@ -8,10 +8,14 @@ import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.ResultadoRepositorio;
 import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,60 +44,42 @@ public class ResultadoServicio {
 
     @Transactional
     public void modificarResultado(Integer id, List<String> respuestas, Integer examenId) throws ObjetoNulloExcepcion {
-       short contadorRespuestasCorrectas = 0;
-       short contadorRespuestasInorrectas = 0;
-        /*
-        List<String> respuestasCorrectas = new ArrayList<>();
-        List<String> respuestasCorrectas = new ArrayList<>();
-        */
+
+        short contadorRespuestasCorrectas = 0;
+        short contadorRespuestasInorrectas = 0;
         int puntajeAcumulado = 0;
         int puntajeTotal = 0;
+
         Examen examen = examenServicio.obtenerPorId(examenId);
         List<Pregunta> preguntas = examen.getPreguntas();
+
         for (int i=0; i< preguntas.size(); i++ ){
+
             puntajeTotal += preguntas.get(i).getPuntaje();
+
             if ( preguntas.get(i).getRespuestaCorrecta().equalsIgnoreCase(respuestas.get(i))){
                 contadorRespuestasCorrectas++;
                 puntajeAcumulado += preguntas.get(i).getPuntaje();
-
-
-
             }else{
                 contadorRespuestasInorrectas++;
             }
 
-
         }
+
         int puntajeFinal = Math.round(puntajeAcumulado*100/puntajeTotal);
 
         Resultado resultado = obtenerPorId(id);
-        resultadoRepositorio.save(resultado);
+
         if (resultado.getPuntajeFinal() == null) {
-            System.out.println(resultado.getTiempoInicio());
-            System.out.println(resultado.getTiempoFinalizacion());
-        //    System.out.println(resultado.getTiempoFinalizacion() - resultado.getTiempoInicio());
 
             resultado.setRespuestasCorrectas(contadorRespuestasCorrectas);
             resultado.setRespuestasIncorrectas(contadorRespuestasInorrectas);
             resultado.setPuntajeFinal(puntajeFinal);
+
             resultado.setAprobado(puntajeFinal>examen.getNotaRequerida());
+            resultado.setDuracion(diferenciaTiempo(resultado.getTiempoInicio(), LocalDateTime.now()));
 
             resultadoRepositorio.save(resultado);
-
-            Resultado resultadoV2 = obtenerPorId(id);
-
-            System.out.println(resultadoV2.getTiempoInicio());
-            System.out.println(resultadoV2.getTiempoFinalizacion());
-            //System.out.println(resultadoV2.getTiempoFinalizacion().getTime() - resultadoV2.getTiempoInicio().getTime());
-
-            //resultadoV2.setDuracion(resultadoV2.getTiempoFinalizacion().getTime() - resultadoV2.getTiempoInicio().getTime());
-            resultadoRepositorio.save(resultado);
-
-            resultadoV2 = obtenerPorId(id);
-
-            System.out.println(resultadoV2.getTiempoInicio());
-            System.out.println(resultadoV2.getTiempoFinalizacion());
-            //System.out.println(resultadoV2.getTiempoFinalizacion().getTime() - resultadoV2.getTiempoInicio().getTime());
         }
     }
 
@@ -148,28 +134,27 @@ public class ResultadoServicio {
         }
         return resultados;
     }
-}
 
-/*
     public static String diferenciaTiempo(LocalDateTime fechaInicio, LocalDateTime fechaFinal){
 
-        String diferencia = "";
+        String diferencia;
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss a");
-
-        LocalDateTime date1 = LocalDateTime.now();
-        LocalDateTime date2 = LocalDateTime.now().plusMinutes(70).plusSeconds(29);
-
-        Duration duracion = Duration.between(date2, date1);
+        Duration duracion = Duration.between(fechaInicio, fechaFinal);
 
         Long minutos = Math.abs(duracion.toMinutes());
-
         Long segundos = Math.abs(duracion.minusMinutes(duracion.toMinutes()).getSeconds());
 
         System.out.printf("%d:%02d%n", minutos , segundos);
 
-        diferencia = " " + duracion.toString() + " ";
+        diferencia = String.format("%d:%02d%n", minutos , segundos);
+
+        if (Integer.parseInt(diferencia.substring(0, 1)) > 59){
+            diferencia = "1hr +";
+        }
 
         return diferencia;
     }
- */
+}
+
+
+

@@ -26,37 +26,38 @@
 
                 <div class="offcanvas-header">
 
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel" th:text="|${session.usuarioEnSesion.nombreUsuario} Perfil|"></h5>
+                                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel" th:text="|${session.usuarioEnSesion.nombreUsuario} Perfil|"></h5>
 
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
+                                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
 
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                                    <div class="offcanvas-body">
+                                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 
-                        <div class="perfil">
+                                            <div class="perfil">
 
-                            <li class="nav-item">
-                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Notas</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Examenes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  opciones" th:href="@{/usuario}" style="color: white;">Administrar Usuarios</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  opciones" th:href="@{/categoria/admin}" style="color: white;">Administrar Categorias</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Administrar Tematicas</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Administrar Examenes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Datos Personales</a>
-                            </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Notas</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Examenes</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link  opciones" th:href="@{/usuario}" style="color: white;">Administrar Usuarios</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link  opciones" th:href="@{/categoria/admin}" style="color: white;">Administrar Categorias</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Administrar Tematicas</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Administrar Examenes</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Datos Personales</a>
+                                                </li>
+
 
                             <li class="nav-item">
                                 <form th:action="@{/logout}">
