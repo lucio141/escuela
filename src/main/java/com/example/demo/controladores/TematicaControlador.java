@@ -2,7 +2,7 @@ package com.example.demo.controladores;
 
 import com.example.demo.entidades.Tematica;
 import com.example.demo.entidades.Resultado;
-import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;

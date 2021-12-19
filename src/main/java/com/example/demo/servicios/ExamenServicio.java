@@ -2,11 +2,10 @@ package com.example.demo.servicios;
 
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
-import com.example.demo.entidades.Resultado;
 import com.example.demo.entidades.Tematica;
-import com.example.demo.repositorios.excepciones.ObjetoEliminadoExcepcion;
-import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.repositorios.excepciones.ObjetoRepetidoExcepcion;
+import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
+import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.repositorios.ExamenRepositorio;
 import com.example.demo.repositorios.PreguntaRepositorio;
 import com.example.demo.utilidades.Dificultad;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

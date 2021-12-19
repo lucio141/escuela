@@ -92,8 +92,8 @@ public class Mapper {
 
     public static Categoria categoriaDTOAEntidad(CategoriaDTO categoriaDTO){
         Categoria categoria = new Categoria();
+        categoria.setId(categoriaDTO.getId());
         categoria.setNombre(categoriaDTO.getNombre());
-        categoria.setTematicas(categoriaDTO.getTematicas());
         return categoria;
     }
 
