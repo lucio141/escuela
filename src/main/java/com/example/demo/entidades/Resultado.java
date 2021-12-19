@@ -8,6 +8,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -30,9 +32,9 @@ public class Resultado {
     private Integer puntajeFinal;
     @CreatedDate
     @Column(nullable = false,updatable = false)
-    private Date tiempoInicio;
+    private LocalDate tiempoInicio;
     @LastModifiedDate
-    private Date tiempoFinalizacion;
+    private LocalDate tiempoFinalizacion;
     private Boolean alta;
     private Boolean aprobado;
 
