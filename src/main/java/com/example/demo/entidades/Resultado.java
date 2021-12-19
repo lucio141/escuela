@@ -28,17 +28,17 @@ public class Resultado {
     private Usuario usuario;
     private Short respuestasCorrectas;
     private Short respuestasIncorrectas;
-    private Long duracion;
+    private String duracion;
     private Integer puntajeFinal;
     @CreatedDate
     @Column(nullable = false,updatable = false)
-    private LocalDate tiempoInicio;
+    private LocalDateTime tiempoInicio;
     @LastModifiedDate
-    private LocalDate tiempoFinalizacion;
+    private LocalDateTime tiempoFinalizacion;
     private Boolean alta;
     private Boolean aprobado;
 
-    public Resultado(Integer id, Examen examen, Usuario usuario, Short respuestasCorrectas, Short respuestasIncorrectas, Long duracion, Integer puntajeFinal) {
+    public Resultado(Integer id, Examen examen, Usuario usuario, Short respuestasCorrectas, Short respuestasIncorrectas, String duracion, Integer puntajeFinal) {
         Id = id;
         this.examen = examen;
         this.usuario = usuario;
