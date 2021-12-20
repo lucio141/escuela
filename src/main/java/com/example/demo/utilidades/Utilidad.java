@@ -112,8 +112,7 @@ La Edad del usuario debe ser :
         }
         return true;
     }
-
-
+    
     /*
     descripcion de la validacion
     El numero de telefono debe tener:
@@ -128,13 +127,11 @@ La Edad del usuario debe ser :
         return true;
     }
 
-    public static String generadorDeCadenas()
-    {
+    public static String generadorDeCadenas(){
         String caracteres = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789";
         Random random = new Random();
         char[] cadena = new char[8];
-        for (int i = 0; i < 8; i++)
-        {
+        for (int i = 0; i < 8; i++){
             cadena[i] = caracteres.charAt(random.nextInt(caracteres.length()));
         }
         return new String(cadena);
