@@ -1,10 +1,8 @@
 package com.example.demo.utilidades;
 
-import com.example.demo.dto.CategoriaDTO;
-import com.example.demo.dto.UsuarioDTO;
-import com.example.demo.dto.RolDTO;
-import com.example.demo.dto.UsuarioInformacionDTO;
+import com.example.demo.dto.*;
 import com.example.demo.entidades.Categoria;
+import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
 
@@ -114,5 +112,49 @@ public class Mapper {
         }
 
         return categoriasDTO;
+    }
+
+    public static Examen examenDTOAEntidad(ExamenDTO examenDTO){
+        Examen examen = new Examen();
+        examen.setId(examenDTO.getId());
+        examen.setDificultad(examenDTO.getDificultad());
+        examen.setNombre(examenDTO.getNombre());
+        examen.setTematica(examenDTO.getTematica());
+        examen.setResultados(examenDTO.getResultados());
+        examen.setPreguntas(examenDTO.getPreguntas());
+        examen.setNotaRequerida(examenDTO.getNotaRequerida());
+        return examen;
+    }
+
+    public static ExamenDTO examenEntidadADTO(Examen examen){
+        ExamenDTO examenDTO = new ExamenDTO();
+        examenDTO.setId(examen.getId());
+        examenDTO.setDificultad(examen.getDificultad());
+        examenDTO.setNombre(examen.getNombre());
+        examenDTO.setTematica(examen.getTematica());
+        examenDTO.setResultados(examen.getResultados());
+        examenDTO.setPreguntas(examen.getPreguntas());
+        examenDTO.setNotaRequerida(examen.getNotaRequerida());
+        return examenDTO;
+    }
+
+    public static List<ExamenDTO> listaExamenEntidadADTO (List<Examen> examenes){
+        List<ExamenDTO> examenesDTO = new ArrayList<>();
+
+        for (Examen examen: examenes) {
+            examenesDTO.add(examenEntidadADTO(examen));
+        }
+
+        return examenesDTO;
+    }
+
+    public static List<Examen> listaExamenDTOAEntidad (List<ExamenDTO> examenesDTO){
+        List<Examen> examenes = new ArrayList<>();
+
+        for (ExamenDTO examenDTO: examenesDTO) {
+            examenes.add(examenDTOAEntidad(examenDTO));
+        }
+
+        return examenes;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.servicios;
 
+import com.example.demo.dto.ExamenDTO;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Resultado;
@@ -26,16 +27,14 @@ public class ResultadoServicio {
     private final ExamenRepositorio examenRepositorio;
 
     @Transactional
-    public void crearResultado(Examen examen, Integer id) throws ObjetoNulloExcepcion{
+    public void crearResultado(ExamenDTO examenDTO, Integer id) throws ObjetoNulloExcepcion{
         Resultado resultado = new Resultado();
-        resultado.setExamen(examen);
+        resultado.setExamen(Mapper.examenDTOAEntidad(examenDTO));
         resultado.setUsuario(Mapper.usuarioDTOAEntidad(usuarioServicio.obtenerPorId(id)));
         resultado.setRespuestasCorrectas((short)0);
-        resultado.setRespuestasIncorrectas((short)(examen.getPreguntas().size()));
+        resultado.setRespuestasIncorrectas((short)(examenDTO.getPreguntas().size()));
         resultado.setPuntajeFinal(null);
         resultadoRepositorio.save(resultado);
-        System.out.println(resultado.getTiempoFinalizacion());
-        System.out.println(resultado.getTiempoInicio());
     }
 
     @Transactional
@@ -45,8 +44,8 @@ public class ResultadoServicio {
         int puntajeAcumulado = 0;
         int puntajeTotal = 0;
 
-        Examen examen = examenServicio.obtenerPorId(examenId);
-        List<Pregunta> preguntas = examen.getPreguntas();
+        ExamenDTO examenDTO = examenServicio.obtenerPorId(examenId);
+        List<Pregunta> preguntas = examenDTO.getPreguntas();
 
         for (int i=0; i< preguntas.size(); i++ ){
 
@@ -67,7 +66,7 @@ public class ResultadoServicio {
             resultado.setRespuestasCorrectas(contadorRespuestasCorrectas);
             resultado.setRespuestasIncorrectas(contadorRespuestasInorrectas);
             resultado.setPuntajeFinal(puntajeFinal);
-            resultado.setAprobado(puntajeFinal>examen.getNotaRequerida());
+            resultado.setAprobado(puntajeFinal>examenDTO.getNotaRequerida());
             resultado.setDuracion(diferenciaTiempo(resultado.getTiempoInicio(), LocalDateTime.now()));
             resultadoRepositorio.save(resultado);
         }

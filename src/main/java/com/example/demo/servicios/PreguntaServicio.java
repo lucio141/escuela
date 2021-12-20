@@ -1,5 +1,6 @@
 package com.example.demo.servicios;
 
+import com.example.demo.dto.ExamenDTO;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
@@ -8,6 +9,7 @@ import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.excepciones.PadreNuloExcepcion;
 import com.example.demo.repositorios.PreguntaRepositorio;
 import com.example.demo.utilidades.Dificultad;
+import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +26,7 @@ public class PreguntaServicio {
 
     @Transactional
     public void crearPregunta(Dificultad dificultad, String enunciado, String respuesta2, String respuesta3, String respuesta4, String respuestaCorrecta, Integer puntaje, Integer idExamen) throws ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion, ObjetoNulloExcepcion, PadreNuloExcepcion{
-        Examen examen = examenservicio.obtenerPorId(idExamen);
+        ExamenDTO examenDTO = examenservicio.obtenerPorId(idExamen);
         List<String> respuestas = new ArrayList<>();
 
         respuestas.add(respuestaCorrecta);
@@ -40,7 +42,7 @@ public class PreguntaServicio {
         pregunta.setPuntaje(puntaje);
 
         try {
-            pregunta.setExamen(examenservicio.obtenerPorId(examen.getId()));
+            pregunta.setExamen(Mapper.examenDTOAEntidad(examenservicio.obtenerPorId(examenDTO.getId())));
         } catch (ObjetoNulloExcepcion nulo) {
             throw new PadreNuloExcepcion("Error al buscar el Examen");
         }
