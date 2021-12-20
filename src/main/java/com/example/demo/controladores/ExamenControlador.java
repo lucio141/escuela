@@ -35,7 +35,7 @@ public class ExamenControlador {
     private final CategoriaServicio categoriaServicio;
     private final TematicaServicio tematicaServicio;
     private final ResultadoServicio resultadoServicio;
-
+ /*
     @GetMapping()
     public ModelAndView mostrarExamenes(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("examen");
@@ -47,12 +47,13 @@ public class ExamenControlador {
             //mav.addObject("exito", map.get("success"));
         }
 
-        mav.addObject("titulo", "Tabla de examenes");
+        mav.addObject("titulo", "Examenes");
         mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(true));
         mav.addObject("categorias", categoriaServicio.mostrarCategorias());
         mav.addObject("tematicas", tematicaServicio.mostrarTematicas());
         return mav;
     }
+
 
     @GetMapping("/{id}")
     public ModelAndView mostrarExamen(@PathVariable int id, HttpServletRequest request) {
@@ -86,14 +87,13 @@ public class ExamenControlador {
         mav.addObject("titulo", "Tabla de examenes baja");
         return mav;
     }
-
+*/
     @GetMapping("/crear")
    // @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearExamen() {
         ModelAndView mav = new ModelAndView("examen-formulario");
-        List<Dificultad> dificultades = Arrays.asList(Dificultad.values());
         mav.addObject("examen", new Examen());
-        mav.addObject("dificultades", dificultades);
+        mav.addObject("dificultades", Arrays.asList(Dificultad.values()));
         mav.addObject("tematicas", tematicaServicio.mostrarTematicas());
         mav.addObject("titulo", "Crear Examen");
         mav.addObject("accion", "guardar");
@@ -103,17 +103,18 @@ public class ExamenControlador {
     @GetMapping("/editar/{id}")
    // @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarExamen(@PathVariable int id, RedirectAttributes attributes) {
-        ModelAndView mav = new ModelAndView(""); // Falta crear
+        ModelAndView mav = new ModelAndView("examen-formulario"); // Falta crear examen formulario que mande el ID
 
         try {
             mav.addObject("examen", examenServicio.obtenerPorId(id));
             mav.addObject("dificultades", Dificultad.values());
+            mav.addObject("tematicas", tematicaServicio.mostrarTematicas());
+            mav.addObject("titulo", "Editar Examen");
+            mav.addObject("accion", "modificar");
         } catch (ObjetoNulloExcepcion nulo) {
-            System.out.println(nulo.getMessage());
-            attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
+            attributes.addFlashAttribute("errorNulo",nulo.getMessage());
         }
-        mav.addObject("titulo", "editar Examen");
-        mav.addObject("accion", "modificar");
+
         return mav;
     }
 
@@ -125,18 +126,21 @@ public class ExamenControlador {
         try {
             Examen examen = examenServicio.obtenerPorId(id);
             Collections.shuffle(examen.getPreguntas());
-            for (Pregunta pregunta: examen.getPreguntas()
-            ) {
+
+            for (Pregunta pregunta : examen.getPreguntas()) {
                 Collections.shuffle(pregunta.getRespuestas());
             }
+
             resultadoServicio.crearResultado(examen, (Integer)session.getAttribute("id"));
             mav.addObject("resultado", resultadoServicio.ObtenerUltimoResultado() );
             mav.addObject("examen", examen);
             mav.addObject("dificultades", Dificultad.values());
+
         } catch (ObjetoNulloExcepcion nulo) {
             System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
         }
+
         mav.addObject("titulo", "Realizar Examen");
         mav.addObject("accion", "modificar");
         return mav;
@@ -163,6 +167,7 @@ public class ExamenControlador {
     @PostMapping("/modificar")
    // @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@RequestParam int id, @RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
+
         try {
             examenServicio.modificarExamen(id, dificultad, tematica, notaRequerida, nombre);
             attributes.addFlashAttribute("examen", examenServicio.obtenerPorId(id));
@@ -180,29 +185,34 @@ public class ExamenControlador {
             System.out.println(eliminado.getMessage());
             return new RedirectView("/examen");
         }
+
     }
 
     @PostMapping("/eliminar/{id}")
    // @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminar(@PathVariable int id, RedirectAttributes attributes) {
+
         try {
             examenServicio.eliminar(id);
         } catch (ObjetoNulloExcepcion nulo) {
             nulo.printStackTrace();
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
+
         return new RedirectView("/examen");
     }
 
     @PostMapping("/recuperar/{id}")
    // @PreAuthorize("hasRole('ADMIN')")
     public RedirectView recuperar(@PathVariable int id, RedirectAttributes attributes) {
+
         try {
             examenServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion nulo) {
             System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
+
         return new RedirectView("/examen");
     }
 }

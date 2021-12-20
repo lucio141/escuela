@@ -31,9 +31,8 @@ public class PreguntaControlador{
 
     @GetMapping("/crear")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView crearPregunta(HttpServletRequest request, RedirectAttributes attributes) {
+    public ModelAndView crearPregunta(RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("pregunta-formulario");
-        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
 
         try{
             mav.addObject("dificultades", Dificultad.values());
@@ -41,11 +40,11 @@ public class PreguntaControlador{
             mav.addObject("pregunta", new Pregunta());
             mav.addObject("titulo", "Crear Pregunta");
             mav.addObject("accion", "guardar");
-        }catch (ObjetoNulloExcepcion o){
-            System.out.println(o.getMessage());
-            attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
+        }catch (ObjetoNulloExcepcion nulo){
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
             mav.setViewName("redirect:/examen");
         }
+
         return mav;
     }
 
@@ -53,15 +52,16 @@ public class PreguntaControlador{
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarPregunta(@PathVariable int id, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("pregunta-formulario");
+
         try {
             mav.addObject("pregunta", preguntaServicio.obtenerPorId(id));
             mav.addObject("titulo", "Editar Pregunta");
             mav.addObject("accion", "modificar");
         } catch (ObjetoNulloExcepcion nulo) {
-            nulo.printStackTrace();
-            attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
             mav.setViewName("redirect:/examen");
         }
+
         return mav;
     }
 
@@ -92,6 +92,7 @@ public class PreguntaControlador{
     @PostMapping("/modificar")
     //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, @RequestParam int id, RedirectAttributes attributes) {
+
         try{
             preguntaServicio.modificarPregunta(dificultad, enunciado, respuestas, respuestaCorrecta, puntaje, examen, id);
         }catch(ObjetoNulloExcepcion nulo) {
@@ -104,6 +105,7 @@ public class PreguntaControlador{
             attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
             System.out.println(eliminado.getMessage());
         }
+
         return new RedirectView("/examen/{"+ examen.getId() + "}");
     }
 
@@ -119,5 +121,6 @@ public class PreguntaControlador{
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
             return new RedirectView("/examen");
         }
+
     }
 }

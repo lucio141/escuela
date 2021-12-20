@@ -5,10 +5,8 @@ import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.dto.RolDTO;
 import com.example.demo.dto.UsuarioInformacionDTO;
 import com.example.demo.entidades.Categoria;
-import com.example.demo.entidades.Resultado;
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +41,6 @@ public class Mapper {
         usuario.setRol(usuarioDTO.getRol());
         usuario.setResultados(usuarioDTO.getResultados());
         usuario.setId(usuarioDTO.getId());
-        System.out.println("PROBANDO EDITAR USER");
         return usuario;
     }
 
@@ -62,9 +59,11 @@ public class Mapper {
 
     public static List<UsuarioDTO> listaUsuarioEntidadADTO(List<Usuario> usuarios){
         List<UsuarioDTO> usuarioDTOS = new ArrayList<>();
+
         for (Usuario usuario : usuarios) {
             usuarioDTOS.add(usuarioEntidadADTO(usuario));
         }
+
         return usuarioDTOS;
     }
 
@@ -84,9 +83,11 @@ public class Mapper {
 
     public static List<RolDTO> listaRolEntidadADTO (List<Rol> roles){
         List<RolDTO> rolesDTO = new ArrayList<>();
+
         for (Rol rol: roles) {
                rolesDTO.add(rolEntidadADTO(rol));
         }
+
         return rolesDTO;
     }
 
@@ -107,9 +108,11 @@ public class Mapper {
 
     public static List<CategoriaDTO> listaCategoriaEntidadADTO (List<Categoria> categorias){
         List<CategoriaDTO> categoriasDTO = new ArrayList<>();
+
         for (Categoria categoria: categorias) {
             categoriasDTO.add(categoriaEntidadADTO(categoria));
         }
+
         return categoriasDTO;
     }
 }

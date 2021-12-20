@@ -17,7 +17,7 @@ public class IndexControlador {
 
     @GetMapping("/")
     public ModelAndView index() {
-        ModelAndView mav = new ModelAndView("index"); //DECIDE DONATO
+        ModelAndView mav = new ModelAndView("index");
         mav.addObject("categorias", categoriaServicio.mostrarCategoriasPorAlta(true));
         mav.addObject("titulo", "Inicio");
         return mav;

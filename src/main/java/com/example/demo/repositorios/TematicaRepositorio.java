@@ -8,11 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/*
-Esta clase es la conexion a la base de datos.
- */
-
-
 @Repository
 public interface TematicaRepositorio extends JpaRepository<Tematica, Integer> {
     @Query("SELECT t FROM Tematica t WHERE t.alta = :alta")

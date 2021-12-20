@@ -1,4 +1,5 @@
 package com.example.demo.servicios;
+
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
@@ -44,6 +45,7 @@ public class TematicaServicio {
     @Transactional(readOnly = true)
     public Tematica obtenerPorId(Integer id)throws ObjetoNulloExcepcion{
         Tematica tematica = tematicaRepositorio.findById(id).orElse(null);
+
         if(tematica == null){
             throw new ObjetoNulloExcepcion("No se ha encontrado la tematica");
         }
@@ -64,7 +66,6 @@ public class TematicaServicio {
         tematicaRepositorio.deleteById(id);
     }
 
-
     @Transactional
     public void darAlta(Integer id) throws ObjetoNulloExcepcion {
         tematicaRepositorio.darAlta(id);
@@ -73,6 +74,4 @@ public class TematicaServicio {
     public List<Tematica> obtenenetTematicaPorCat(Integer categoriaId){
         return tematicaRepositorio.mostrarPorCategoria(categoriaId);
     }
-
-
 }

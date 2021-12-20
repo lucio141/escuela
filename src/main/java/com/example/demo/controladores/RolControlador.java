@@ -37,6 +37,7 @@ public class RolControlador {
             mav.addObject("errorEliminado", map.get("errorEliminado"));
             //mav.addObject("exito", map.get("success"));
         }
+
         mav.addObject("roles", rolServicio.mostrarRolesPorAlta(true));
         mav.addObject("titulo", "Tabla de roles");
         return mav;
@@ -63,13 +64,15 @@ public class RolControlador {
 
     @GetMapping("/editar/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView editarRol(@PathVariable int id) {
+    public ModelAndView editarRol(@PathVariable int id, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("rol-formulario"); // Falta crear
+
         try {
             mav.addObject("rol", rolServicio.obtenerPorId(id));
-        } catch (ObjetoNulloExcepcion e) {
-            System.out.println(e.getMessage());
+        } catch (ObjetoNulloExcepcion nulo) {
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
+
         mav.addObject("titulo", "editar Examen");
         mav.addObject("accion", "modificar");
         return mav;
@@ -93,6 +96,7 @@ public class RolControlador {
     @PostMapping("/modificar")
     //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@RequestParam int id, @RequestParam String nombre, RedirectAttributes attributes) {
+
         try {
             rolServicio.modificarRol(id,nombre);
         }catch (ObjetoRepetidoExcepcion repetido){
@@ -109,23 +113,27 @@ public class RolControlador {
     @PostMapping("/eliminar/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminar(@PathVariable int id, RedirectAttributes attributes) {
+
         try {
             rolServicio.eliminar(id);
         }catch (ObjetoNulloExcepcion nulo){
             System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
+
         return new RedirectView("/roles");
     }
 
     @PostMapping("/recuperar/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView recuperar(@PathVariable int id) {
+    public RedirectView recuperar(@PathVariable int id, RedirectAttributes attributes) {
+
         try {
             rolServicio.darAlta(id);
-        } catch (ObjetoNulloExcepcion e) {
-            System.out.println(e.getMessage());
+        } catch (ObjetoNulloExcepcion nulo) {
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
+
         return new RedirectView("/roles");
     }
 

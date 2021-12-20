@@ -1,7 +1,6 @@
 package com.example.demo.repositorios;
 
 import com.example.demo.entidades.Examen;
-import com.example.demo.entidades.Resultado;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
