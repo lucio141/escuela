@@ -1,8 +1,8 @@
 package com.example.demo.servicios;
 
 import com.example.demo.dto.ExamenDTO;
-import com.example.demo.entidades.Pregunta;
-import com.example.demo.entidades.Resultado;
+import com.example.demo.dto.PreguntaDTO;
+import com.example.demo.dto.ResultadoDTO;
 import com.example.demo.repositorios.ExamenRepositorio;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.ResultadoRepositorio;
@@ -26,103 +26,92 @@ public class ResultadoServicio {
     private final ExamenRepositorio examenRepositorio;
 
     @Transactional
-    public void crearResultado(ExamenDTO examenDTO, Integer id) throws ObjetoNulloExcepcion{
-        Resultado resultado = new Resultado();
-        resultado.setExamen(Mapper.examenDTOAEntidad(examenDTO));
-        resultado.setUsuario(Mapper.usuarioDTOAEntidad(usuarioServicio.obtenerPorId(id)));
-        resultado.setRespuestasCorrectas((short)0);
-        resultado.setRespuestasIncorrectas((short)(examenDTO.getPreguntas().size()));
-        resultado.setPuntajeFinal(null);
-        resultadoRepositorio.save(resultado);
+    public void crearResultado(ExamenDTO examenDTO, int id) throws ObjetoNulloExcepcion{
+        ResultadoDTO resultadoDTO = new ResultadoDTO();
+        resultadoDTO.setExamen(Mapper.examenDTOAEntidad(examenDTO));
+        resultadoDTO.setUsuario(Mapper.usuarioDTOAEntidad(usuarioServicio.obtenerPorId(id)));
+        resultadoDTO.setRespuestasCorrectas((short)0);
+        resultadoDTO.setRespuestasIncorrectas((short)(examenDTO.getPreguntas().size()));
+        resultadoDTO.setPuntajeFinal(null);
+        resultadoRepositorio.save(Mapper.resultadoDTOAEntidad(resultadoDTO));
     }
 
     @Transactional
-    public void modificarResultado(Integer id, List<String> respuestas, Integer examenId) throws ObjetoNulloExcepcion {
+    public void modificarResultado(int id, List<String> respuestas, int examenId) throws ObjetoNulloExcepcion {
         short contadorRespuestasCorrectas = 0;
         short contadorRespuestasInorrectas = 0;
         int puntajeAcumulado = 0;
         int puntajeTotal = 0;
 
         ExamenDTO examenDTO = examenServicio.obtenerPorId(examenId);
-        List<Pregunta> preguntas = examenDTO.getPreguntas();
+        List<PreguntaDTO> preguntasDTO = Mapper.listaPreguntaEntidadADTO(examenDTO.getPreguntas());
 
-        for (int i=0; i< preguntas.size(); i++ ){
+        for (int i=0; i< preguntasDTO.size(); i++ ){
 
-            puntajeTotal += preguntas.get(i).getPuntaje();
+            puntajeTotal += preguntasDTO.get(i).getPuntaje();
 
-            if ( preguntas.get(i).getRespuestaCorrecta().equalsIgnoreCase(respuestas.get(i))){
+            if ( preguntasDTO.get(i).getRespuestaCorrecta().equalsIgnoreCase(respuestas.get(i))){
                 contadorRespuestasCorrectas++;
-                puntajeAcumulado += preguntas.get(i).getPuntaje();
+                puntajeAcumulado += preguntasDTO.get(i).getPuntaje();
             }else{
                 contadorRespuestasInorrectas++;
             }
         }
 
         int puntajeFinal = Math.round(puntajeAcumulado*100/puntajeTotal);
-        Resultado resultado = obtenerPorId(id);
+        ResultadoDTO resultadoDTO = obtenerPorId(id);
 
-        if (resultado.getPuntajeFinal() == null) {
-            resultado.setRespuestasCorrectas(contadorRespuestasCorrectas);
-            resultado.setRespuestasIncorrectas(contadorRespuestasInorrectas);
-            resultado.setPuntajeFinal(puntajeFinal);
-            resultado.setAprobado(puntajeFinal>examenDTO.getNotaRequerida());
-            resultado.setDuracion(diferenciaTiempo(resultado.getTiempoInicio(), LocalDateTime.now()));
-            resultadoRepositorio.save(resultado);
+        if (resultadoDTO.getPuntajeFinal() == null) {
+            resultadoDTO.setRespuestasCorrectas(contadorRespuestasCorrectas);
+            resultadoDTO.setRespuestasIncorrectas(contadorRespuestasInorrectas);
+            resultadoDTO.setPuntajeFinal(puntajeFinal);
+            resultadoDTO.setAprobado(puntajeFinal>examenDTO.getNotaRequerida());
+            resultadoDTO.setDuracion(diferenciaTiempo(resultadoDTO.getTiempoInicio(), LocalDateTime.now()));
+            resultadoRepositorio.save(Mapper.resultadoDTOAEntidad(resultadoDTO));
         }
     }
 
     @Transactional
-    public List<Resultado> mostrarResultados() {
-        return resultadoRepositorio.findAll();
+    public List<ResultadoDTO> mostrarResultados() {
+        return Mapper.listaResultadoEntidadADTO(resultadoRepositorio.findAll());
     }
 
     @Transactional(readOnly = true)
-    public List<Resultado> mostrarResultadosPorAlta(Boolean alta) {
-        return resultadoRepositorio.mostrarPorAlta(alta);
+    public List<ResultadoDTO> mostrarResultadosPorAlta(Boolean alta) {
+        return Mapper.listaResultadoEntidadADTO(resultadoRepositorio.mostrarPorAlta(alta));
     }
 
     @Transactional
-    public Resultado obtenerPorId(int id) throws ObjetoNulloExcepcion {
-        Resultado resultado = resultadoRepositorio.findById(id).orElse(null);
+    public ResultadoDTO obtenerPorId(int id) throws ObjetoNulloExcepcion {
+        ResultadoDTO resultadoDTO = Mapper.resultadoEntidadADTO(resultadoRepositorio.findById(id).orElse(null));
 
-        if (resultado == null) {
+        if (resultadoDTO == null) {
             throw new ObjetoNulloExcepcion("");
         }
 
-        return resultado;
+        return resultadoDTO;
     }
 
     @Transactional
-    public void eliminar(int id) {
-        resultadoRepositorio.deleteById(id);
-    }
+    public ResultadoDTO ObtenerUltimoResultado() throws ObjetoNulloExcepcion {
+        ResultadoDTO resultadoDTO = Mapper.resultadoEntidadADTO(resultadoRepositorio.mostrarUltimoResultado());
 
-    @Transactional
-    public void darAlta(int id) throws ObjetoNulloExcepcion {
-        Resultado resultado = obtenerPorId(id);
-        resultadoRepositorio.darAlta(id);
-    }
-
-    @Transactional
-    public Resultado ObtenerUltimoResultado() throws ObjetoNulloExcepcion {
-        Resultado resultado = resultadoRepositorio.mostrarUltimoResultado();
-
-        if(resultado== null){
+        if(resultadoDTO== null){
             throw new ObjetoNulloExcepcion("No se encontro el resultado");
         }
 
-        return resultado;
+        return resultadoDTO;
     }
 
     @Transactional(readOnly = true)
-    public List<Resultado> top5 (int id) throws ObjetoNulloExcepcion {
-        List<Resultado> resultados = new ArrayList<>();
+    public List<ResultadoDTO> top5 (int id) throws ObjetoNulloExcepcion {
+        List<ResultadoDTO> resultadosDTO = new ArrayList<>();
 
         for (Integer idResultado : examenRepositorio.top5(id)) {
-            resultados.add(obtenerPorId(idResultado));
+            resultadosDTO.add(obtenerPorId(idResultado));
         }
 
-        return resultados;
+        return resultadosDTO;
     }
 
     public static String diferenciaTiempo(LocalDateTime fechaInicio, LocalDateTime fechaFinal){
@@ -140,6 +129,18 @@ public class ResultadoServicio {
         }
 
         return diferencia;
+    }
+
+    @Transactional
+    public void eliminar(int id) throws ObjetoNulloExcepcion{
+        ResultadoDTO resultadoDTO = obtenerPorId(id);
+        resultadoRepositorio.deleteById(id);
+    }
+
+    @Transactional
+    public void darAlta(int id) throws ObjetoNulloExcepcion {
+        ResultadoDTO resultadoDTO = obtenerPorId(id);
+        resultadoRepositorio.darAlta(id);
     }
 }
 

@@ -198,4 +198,52 @@ public class Mapper {
 
         return preguntas;
     }
+
+    public static ResultadoDTO resultadoEntidadADTO(Resultado resultado){
+        ResultadoDTO resultadoDTO = new ResultadoDTO();
+        resultadoDTO.setId(resultado.getId());
+        resultadoDTO.setExamen(resultado.getExamen());
+        resultadoDTO.setUsuario(resultado.getUsuario());
+        resultadoDTO.setRespuestasCorrectas(resultado.getRespuestasCorrectas());
+        resultadoDTO.setRespuestasIncorrectas(resultado.getRespuestasIncorrectas());
+        resultadoDTO.setDuracion(resultado.getDuracion());
+        resultadoDTO.setPuntajeFinal(resultado.getPuntajeFinal());
+        resultadoDTO.setTiempoInicio(resultado.getTiempoInicio());
+        resultadoDTO.setAprobado(resultado.getAprobado());
+        return resultadoDTO;
+    }
+
+    public static Resultado resultadoDTOAEntidad(ResultadoDTO resultadoDTO){
+        Resultado resultado = new Resultado();
+        resultado.setId(resultadoDTO.getId());
+        resultado.setExamen(resultadoDTO.getExamen());
+        resultado.setUsuario(resultadoDTO.getUsuario());
+        resultado.setRespuestasCorrectas(resultadoDTO.getRespuestasCorrectas());
+        resultado.setRespuestasIncorrectas(resultadoDTO.getRespuestasIncorrectas());
+        resultado.setDuracion(resultadoDTO.getDuracion());
+        resultado.setPuntajeFinal(resultadoDTO.getPuntajeFinal());
+        resultado.setTiempoInicio(resultadoDTO.getTiempoInicio());
+        resultado.setAprobado(resultadoDTO.getAprobado());
+        return resultado;
+    }
+
+    public static List<Resultado> listaResultadoDTOAEntidad(List<ResultadoDTO> resultadosDTO){
+        List<Resultado> resultados = new ArrayList<>();
+
+        for (ResultadoDTO resultadoDTO : resultadosDTO) {
+            resultados.add(resultadoDTOAEntidad(resultadoDTO));
+        }
+
+        return resultados;
+    }
+
+    public static List<ResultadoDTO> listaResultadoEntidadADTO(List<Resultado> resultados){
+        List<ResultadoDTO> resultadosDTO = new ArrayList<>();
+
+        for (Resultado resultado : resultados) {
+            resultadosDTO.add(resultadoEntidadADTO(resultado));
+        }
+
+        return resultadosDTO;
+    }
 }
