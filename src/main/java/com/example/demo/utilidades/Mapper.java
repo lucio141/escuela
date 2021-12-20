@@ -159,7 +159,6 @@ public class Mapper {
         PreguntaDTO preguntaDTO = new PreguntaDTO();
         preguntaDTO.setId(pregunta.getId());
         preguntaDTO.setExamen(pregunta.getExamen());
-        preguntaDTO.setDificultad(pregunta.getDificultad());
         preguntaDTO.setEnunciado(pregunta.getEnunciado());
         preguntaDTO.setRespuestas(pregunta.getRespuestas());
         preguntaDTO.setRespuestaCorrecta(pregunta.getRespuestaCorrecta());
@@ -171,7 +170,6 @@ public class Mapper {
         Pregunta pregunta = new Pregunta();
         pregunta.setId(preguntaDTO.getId());
         pregunta.setExamen(preguntaDTO.getExamen());
-        pregunta.setDificultad(preguntaDTO.getDificultad());
         pregunta.setEnunciado(preguntaDTO.getEnunciado());
         pregunta.setRespuestas(preguntaDTO.getRespuestas());
         pregunta.setRespuestaCorrecta(preguntaDTO.getRespuestaCorrecta());
