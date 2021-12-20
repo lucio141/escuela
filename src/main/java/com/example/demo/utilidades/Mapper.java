@@ -1,10 +1,7 @@
 package com.example.demo.utilidades;
 
 import com.example.demo.dto.*;
-import com.example.demo.entidades.Categoria;
-import com.example.demo.entidades.Examen;
-import com.example.demo.entidades.Rol;
-import com.example.demo.entidades.Usuario;
+import com.example.demo.entidades.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,5 +153,49 @@ public class Mapper {
         }
 
         return examenes;
+    }
+
+    public static PreguntaDTO preguntaEntidadADTO(Pregunta pregunta){
+        PreguntaDTO preguntaDTO = new PreguntaDTO();
+        preguntaDTO.setId(pregunta.getId());
+        preguntaDTO.setExamen(pregunta.getExamen());
+        preguntaDTO.setDificultad(pregunta.getDificultad());
+        preguntaDTO.setEnunciado(pregunta.getEnunciado());
+        preguntaDTO.setRespuestas(pregunta.getRespuestas());
+        preguntaDTO.setRespuestaCorrecta(pregunta.getRespuestaCorrecta());
+        preguntaDTO.setPuntaje(pregunta.getPuntaje());
+        return preguntaDTO;
+    }
+
+    public static Pregunta preguntaDTOAEntidad(PreguntaDTO preguntaDTO){
+        Pregunta pregunta = new Pregunta();
+        pregunta.setId(preguntaDTO.getId());
+        pregunta.setExamen(preguntaDTO.getExamen());
+        pregunta.setDificultad(preguntaDTO.getDificultad());
+        pregunta.setEnunciado(preguntaDTO.getEnunciado());
+        pregunta.setRespuestas(preguntaDTO.getRespuestas());
+        pregunta.setRespuestaCorrecta(preguntaDTO.getRespuestaCorrecta());
+        pregunta.setPuntaje(preguntaDTO.getPuntaje());
+        return pregunta;
+    }
+
+    public static List<PreguntaDTO> listaPreguntaEntidadADTO (List<Pregunta> preguntas){
+        List<PreguntaDTO> preguntasDTO = new ArrayList<>();
+
+        for (Pregunta preugunta : preguntas) {
+            preguntasDTO.add(preguntaEntidadADTO(preugunta));
+        }
+
+        return preguntasDTO;
+    }
+
+    public static List<Pregunta> listaPreguntaDTOAEntidad(List<PreguntaDTO> preguntasDTO){
+        List<Pregunta> preguntas = new ArrayList<>();
+
+        for (PreguntaDTO preuguntaDTO : preguntasDTO) {
+            preguntas.add(preguntaDTOAEntidad(preuguntaDTO));
+        }
+
+        return preguntas;
     }
 }
