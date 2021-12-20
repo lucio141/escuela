@@ -1,4 +1,4 @@
-package com.example.demo.repositorios.excepciones;
+package com.example.demo.excepciones;
 
 public class ObjetoEliminadoExcepcion extends Exception{
 

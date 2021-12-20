@@ -2,16 +2,15 @@ package com.example.demo.servicios;
 
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
-import com.example.demo.repositorios.excepciones.ObjetoEliminadoExcepcion;
-import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.repositorios.excepciones.ObjetoRepetidoExcepcion;
-import com.example.demo.repositorios.excepciones.PadreNuloExcepcion;
+import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
+import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
+import com.example.demo.excepciones.PadreNuloExcepcion;
 import com.example.demo.repositorios.PreguntaRepositorio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,26 +20,28 @@ import java.util.List;
 public class PreguntaServicio {
 
     private final PreguntaRepositorio preguntaRepositorio;
-
     private final ExamenServicio examenservicio;
 
     @Transactional
     public void crearPregunta(Dificultad dificultad, String enunciado, String respuesta2, String respuesta3, String respuesta4, String respuestaCorrecta, Integer puntaje, Integer idExamen) throws ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion, ObjetoNulloExcepcion, PadreNuloExcepcion{
         Examen examen = examenservicio.obtenerPorId(idExamen);
         List<String> respuestas = new ArrayList<>();
+
         respuestas.add(respuestaCorrecta);
         respuestas.add(respuesta2);
         respuestas.add(respuesta3);
         respuestas.add(respuesta4);
+
         Pregunta pregunta = new Pregunta();
         pregunta.setDificultad(dificultad);
         pregunta.setEnunciado(enunciado);
         pregunta.setRespuestas(respuestas);
         pregunta.setRespuestaCorrecta(respuestaCorrecta);
         pregunta.setPuntaje(puntaje);
+
         try {
             pregunta.setExamen(examenservicio.obtenerPorId(examen.getId()));
-        } catch (ObjetoNulloExcepcion e) {
+        } catch (ObjetoNulloExcepcion nulo) {
             throw new PadreNuloExcepcion("Error al buscar el Examen");
         }
 
@@ -105,7 +106,6 @@ public class PreguntaServicio {
     @Transactional
     public void darAlta(int id) throws ObjetoNulloExcepcion {
         Pregunta pregunta = obtenerPorId(id);
-
         preguntaRepositorio.darAlta(id);
     }
 }

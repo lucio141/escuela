@@ -4,9 +4,10 @@ import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.dto.UsuarioInformacionDTO;
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
-import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.UsuarioRepositorio;
 import com.example.demo.utilidades.Mapper;
+import com.example.demo.utilidades.Utilidad;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.List;
@@ -29,13 +29,9 @@ import java.util.List;
 @AllArgsConstructor
 public class UsuarioServicio implements UserDetailsService {
 
-
     private final EmailServicio emailServicio;
-
     private final UsuarioRepositorio usuarioRepositorio;
-
     private final BCryptPasswordEncoder encoder;
-
     private final String MENSAJE = "El nombre de usuario ingresado no existe %s";
 
     @Transactional
@@ -73,12 +69,19 @@ public class UsuarioServicio implements UserDetailsService {
         if(encoder.matches(contraseniaAnterior, usuarioDTO.getContrasenia()) && contrasenia1.equals(contrasenia2)){
             usuarioDTO.setContrasenia(encoder.encode(contrasenia1));
             usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
-        }
-        else{
+        }else{
             System.out.println("No se pudo cambiar la contraseña");
         }
+    }
 
+    @Transactional
+    public void generarPass(String mail) throws ObjetoNulloExcepcion{
+        Usuario usuario = obtenerPorMail(mail);
 
+        String contrasenia = Utilidad.generadorDeCadenas();
+
+        usuario.setContrasenia(encoder.encode(contrasenia));
+        emailServicio.enviarCambioPass(usuario, contrasenia);
     }
 
     @Transactional
@@ -94,19 +97,34 @@ public class UsuarioServicio implements UserDetailsService {
     @Transactional
     public UsuarioDTO obtenerPorId (Integer id) throws ObjetoNulloExcepcion {
         Usuario usuario = usuarioRepositorio.findById(id).orElse(null);
+
         if (usuario == null) {
             throw new ObjetoNulloExcepcion("");
         }
+
         return Mapper.usuarioEntidadADTO(usuario);
     }
 
     @Transactional
-    public void eliminar(Integer id) {
+    public Usuario obtenerPorMail (String mail) throws ObjetoNulloExcepcion {
+        Usuario usuario = usuarioRepositorio.findByMail(mail).orElse(null);
+
+        if (usuario == null) {
+            throw new ObjetoNulloExcepcion("");
+        }
+
+        return usuario;
+    }
+
+    @Transactional
+    public void eliminar(Integer id) throws ObjetoNulloExcepcion{
+        UsuarioDTO usuarioDTO = obtenerPorId(id);
         usuarioRepositorio.deleteById(id);
     }
 
     @Transactional
-    public void darAlta(Integer id) {
+    public void darAlta(Integer id) throws ObjetoNulloExcepcion{
+        UsuarioDTO usuarioDTO = obtenerPorId(id);
         usuarioRepositorio.darAlta(id);
     }
 
@@ -116,7 +134,7 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException{
         Usuario usuario = usuarioRepositorio.findByNombreUsuario(nombreUsuario)
                                             .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE, nombreUsuario)));
 
@@ -129,8 +147,8 @@ public class UsuarioServicio implements UserDetailsService {
             UsuarioDTO usuarioDTO = obtenerPorId(usuario.getId());
             session.setAttribute("id" , usuarioDTO.getId());
             session.setAttribute("usuarioEnSesion", usuarioDTO);
-        } catch (ObjetoNulloExcepcion e) {
-            e.printStackTrace();
+        } catch (ObjetoNulloExcepcion nulo) {
+            System.out.println("Error");
         }
 
         return new User(usuario.getNombreUsuario(), usuario.getContrasenia(), Collections.singletonList(authority));

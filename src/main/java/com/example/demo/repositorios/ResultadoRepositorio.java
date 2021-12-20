@@ -1,9 +1,6 @@
 package com.example.demo.repositorios;
 
-
-import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Resultado;
-import com.example.demo.servicios.ResultadoServicio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +11,6 @@ import java.util.List;
 
 @Repository
 public interface ResultadoRepositorio extends JpaRepository<Resultado, Integer> {
-
 
     @Query("SELECT r FROM Resultado r WHERE alta = :alta")
     List<Resultado> mostrarPorAlta(@Param("alta") boolean alta);

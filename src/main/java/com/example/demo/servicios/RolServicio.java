@@ -2,9 +2,9 @@ package com.example.demo.servicios;
 
 import com.example.demo.dto.RolDTO;
 import com.example.demo.entidades.Rol;
-import com.example.demo.repositorios.excepciones.ObjetoEliminadoExcepcion;
-import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.repositorios.excepciones.ObjetoRepetidoExcepcion;
+import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
+import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.repositorios.RolRepositorio;
 import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;

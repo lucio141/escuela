@@ -2,7 +2,7 @@ package com.example.demo.controladores;
 
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
-import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.RolServicio;
 import com.example.demo.servicios.UsuarioServicio;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.spi.http.HttpExchange;
 
 @Controller
 @AllArgsConstructor
@@ -43,13 +42,12 @@ public class UsuarioControlador {
 
     @GetMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView obtenerPerfil(@PathVariable int id){
+    public ModelAndView obtenerPerfil(@PathVariable int id, RedirectAttributes attributes){
         ModelAndView mav = new ModelAndView("perfil"); //FALTA HTML
         try{
             mav.addObject("categoria",usuarioServicio.obtenerPorId(id)) ;
-        }
-        catch( ObjetoNulloExcepcion e){
-            System.out.println(e.getMessage());
+        }catch( ObjetoNulloExcepcion nulo){
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
         mav.addObject("titulo", "Mi perfil");
 
@@ -72,17 +70,18 @@ public class UsuarioControlador {
 
         try {
             if((int)sesion.getAttribute("id") != id && !usuarioServicio.obtenerPorId(id).getRol().toString().equalsIgnoreCase("ADMIN") ){
-
                 mav.setViewName("redirect:/");
                 attributes.addFlashAttribute("error-autorización", "No se encuentra habilitado para realizar la modificación");
                 return mav;
             }
+
             mav.addObject("roles", rolServicio.mostrarRoles());
             mav.addObject("rolUsuario", rolServicio.mostrarPorNombre("USUARIO"));
             mav.addObject("usuario", usuarioServicio.obtenerPorId(id));
-        } catch (ObjetoNulloExcepcion e) {
-            e.printStackTrace();
+        }catch (ObjetoNulloExcepcion nulo) {
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
+
         mav.addObject("titulo", "Editar Usuario");
         mav.addObject("accion", "modificar");
         return mav;
@@ -94,18 +93,39 @@ public class UsuarioControlador {
 
         try {
             if((int)sesion.getAttribute("id") != id && !usuarioServicio.obtenerPorId(id).getRol().toString().equalsIgnoreCase("ADMIN") ){
-
                 mav.setViewName("redirect:/");
                 attributes.addFlashAttribute("error-autorización", "No se encuentra habilitado para realizar la modificación");
                 return mav;
             }
+
             mav.addObject("usuario", usuarioServicio.obtenerPorId(id));
-        } catch (ObjetoNulloExcepcion e) {
-            e.printStackTrace();
+        } catch (ObjetoNulloExcepcion nulo) {
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
-        mav.addObject("titulo", "Editar Usuario");
+
+        mav.addObject("titulo", "Cambiar Contraseña");
         mav.addObject("accion", "modificarPass");
         return mav;
+    }
+
+    @GetMapping("/confirmarUsuario")
+    public ModelAndView editarPass(RedirectAttributes attributes){
+        ModelAndView mav = new ModelAndView("usuario-nuevaContrasenia");
+        mav.addObject("titulo", "Recuperar Contraseña");
+        mav.addObject("accion", "generarPass");
+        return mav;
+    }
+
+    @PostMapping("/generarPass")
+    public RedirectView generarPass(@RequestParam(name = "mail") String mail, RedirectAttributes attributes){
+        try {
+            usuarioServicio.generarPass(mail);
+            attributes.addFlashAttribute("exito", "Se envío un mail a su casilla de correo");
+        } catch (ObjetoNulloExcepcion e) {
+            attributes.addFlashAttribute("errorNulo", "No se encontró un usuario con los datos provistos");
+        }
+
+        return new RedirectView("/login");
     }
 
     @PostMapping("/guardar")
@@ -115,24 +135,23 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam(name = "usuarioId") Integer id, @RequestParam String nombre, @RequestParam String apellido,  @RequestParam String nombreUsuario, @RequestParam Integer edad, @RequestParam String telefono, @RequestParam String mail, @RequestParam Rol rol, HttpSession sesion){
-
+    public RedirectView modificar(@RequestParam(name = "usuarioId") Integer id, @RequestParam String nombre, @RequestParam String apellido,  @RequestParam String nombreUsuario, @RequestParam Integer edad, @RequestParam String telefono, @RequestParam String mail, @RequestParam Rol rol, HttpSession sesion, RedirectAttributes attributes){
         try{
             usuarioServicio.modificarUsuario(id, nombre, apellido, nombreUsuario, edad, mail, telefono, rol);
+
             if((int)sesion.getAttribute("id") == id){
                 return new RedirectView("/usuario/"+id);
             }else if(usuarioServicio.obtenerPorId(id).getRol().toString().equalsIgnoreCase("ADMIN")){
                 return new RedirectView("/usuario");
             }
-        }catch (ObjetoNulloExcepcion e){
-            System.out.println(e.getMessage());
+        }catch (ObjetoNulloExcepcion nulo){
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
         return new RedirectView("/usuario");
     }
 
     @PostMapping("/modificarPass")
-    public RedirectView modificarPass(@RequestParam(name = "usuarioId") Integer id, @RequestParam String contraseniaAnterior, @RequestParam String contrasenia1, @RequestParam String contrasenia2, HttpSession sesion){
-
+    public RedirectView modificarPass(@RequestParam(name = "usuarioId") Integer id, @RequestParam String contraseniaAnterior, @RequestParam String contrasenia1, @RequestParam String contrasenia2, HttpSession sesion, RedirectAttributes attributes){
         try{
             usuarioServicio.modificarPass(id,contraseniaAnterior,contrasenia1,contrasenia2);
                 if((int)sesion.getAttribute("id") == id){
@@ -140,23 +159,32 @@ public class UsuarioControlador {
                 }else if(usuarioServicio.obtenerPorId(id).getRol().toString().equalsIgnoreCase("ADMIN")){
                     return new RedirectView("/usuario");
                 }
-        }catch (ObjetoNulloExcepcion e){
-            System.out.println(e.getMessage());
+        }catch (ObjetoNulloExcepcion nulo){
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
         return new RedirectView("/usuario");
     }
 
     @PostMapping("/eliminar/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView eliminarUsuario(@PathVariable Integer id){
-        usuarioServicio.eliminar(id);
+    public RedirectView eliminarUsuario(@PathVariable Integer id, RedirectAttributes attributes){
+        try {
+            usuarioServicio.eliminar(id);
+        }catch (ObjetoNulloExcepcion nulo) {
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+        }
+
         return new RedirectView("/usuario");
     }
 
     @PostMapping("/registrar/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView darAltaUsuario (@PathVariable Integer id){
-        usuarioServicio.darAlta(id);
+    public RedirectView darAltaUsuario (@PathVariable Integer id, RedirectAttributes attributes){
+        try {
+            usuarioServicio.darAlta(id);
+        }catch (ObjetoNulloExcepcion nulo) {
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+        }
         return new RedirectView("/usuario");
     }
 }

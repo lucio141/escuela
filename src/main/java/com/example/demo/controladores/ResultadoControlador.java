@@ -1,13 +1,13 @@
 package com.example.demo.controladores;
 
 import com.example.demo.entidades.Resultado;
-import com.example.demo.repositorios.excepciones.ObjetoNulloExcepcion;
-import com.example.demo.servicios.ExamenServicio;
+import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.ResultadoServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
@@ -18,8 +18,8 @@ import java.util.List;
 public class ResultadoControlador {
 
     private final ResultadoServicio resultadoServicio;
-    private final ExamenServicio examenServicio;
 
+ /*
     @GetMapping
     public ModelAndView mostrarResultado() {
         ModelAndView mav = new ModelAndView("");//falta crear
@@ -36,13 +36,12 @@ public class ResultadoControlador {
         mav.addObject("titulo", "Tabla de Resultados dados de baja");
         return mav;
     }
+*/
 
     @GetMapping("/crear")
     public ModelAndView crearResultado() {
         ModelAndView mav = new ModelAndView("");//falta crear
         mav.addObject("resultado", new Resultado());
-        //mav.addObject("examenes" , examenServicio.mostrarExamenes()); POR AGREGAR
-        //mav.addObject("usuario" , resultadoServicio.mostrarResultado()); POR AGREGAR
         mav.addObject("titulo", "Crear Resultado");
         mav.addObject("accion", "guardar");
         return mav;
@@ -51,11 +50,12 @@ public class ResultadoControlador {
 /*
     @PostMapping("/guardar")
     public RedirectView guardarResultado(HttpSession session,@RequestParam(value="examen") Integer examenId) {
+
         try {
             resultadoServicio.crearResultado(examenId,  (Integer)session.getAttribute("id"));
             return new RedirectView("/tematica");
         }catch(ObjetoNulloExcepcion e){
-
+            e.getMessage();
         }
         return new RedirectView("/tematica");
     }
@@ -64,43 +64,46 @@ public class ResultadoControlador {
 
 
     @GetMapping("/editar/{id}")
-    public ModelAndView editarResultado(@PathVariable int id) {
+    public ModelAndView editarResultado(@PathVariable int id, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("");
+
         try {
             mav.addObject("Resultado", resultadoServicio.obtenerPorId(id));
-        } catch (ObjetoNulloExcepcion e) {
-            e.printStackTrace();
+            mav.addObject("titulo", "Editar Resultado");
+            mav.addObject("accion", "modificar");
+        }catch (ObjetoNulloExcepcion nulo){
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
-        mav.addObject("titulo", "Editar Resultado");
-        mav.addObject("accion", "modificar");
+
         return mav;
     }
 
     @GetMapping("/mostrar/{id}")
-    public ModelAndView mostrarResultado(@PathVariable int id) {
+    public ModelAndView mostrarResultado(@PathVariable int id, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("resultados-top");
-        try {
 
+        try {
             Resultado resultado = resultadoServicio.obtenerPorId(id);
             mav.addObject("Resultado", resultado);
             mav.addObject("resultado", resultado);
             mav.addObject("duracion", resultado.getDuracion() );
-            mav.addObject("top", resultadoServicio.top5(resultado.getExamen().getId()) );
-        } catch (ObjetoNulloExcepcion e) {
-            e.printStackTrace();
+            mav.addObject("top", resultadoServicio.top5(resultado.getExamen().getId()));
+            mav.addObject("titulo", "Editar Resultado");
+            mav.addObject("accion", "modificar");
+        } catch (ObjetoNulloExcepcion nulo) {
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
-        mav.addObject("titulo", "Editar Resultado");
-        mav.addObject("accion", "modificar");
+
         return mav;
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam(name="resultadoId") int resultadoId, @RequestParam("respuestas") List<String> respuestas,@RequestParam(name="examenId") int examenId) {
+    public RedirectView modificar(@RequestParam(name="resultadoId") int resultadoId, @RequestParam("respuestas") List<String> respuestas,@RequestParam(name="examenId") int examenId, RedirectAttributes attributes) {
 
         try {
             resultadoServicio.modificarResultado(resultadoId,respuestas,examenId);
-        } catch (ObjetoNulloExcepcion e) {
-            e.printStackTrace();
+        } catch (ObjetoNulloExcepcion nulo) {
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
 
         return new RedirectView("/resultado/mostrar/"+resultadoId);
@@ -116,11 +119,13 @@ public class ResultadoControlador {
     @PostMapping("/recuperar/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView recuperarResultado(@PathVariable int id) {
+
         try {
             resultadoServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion e) {
             e.printStackTrace();
         }
+
         return new RedirectView("/resultado");
     }
 
