@@ -36,135 +36,135 @@
 
                                             <div class="perfil">
 
-                                                <li class="nav-item">
-                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Notas</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Examenes</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link  opciones" th:href="@{/usuario}" style="color: white;">Administrar Usuarios</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link  opciones" th:href="@{/categoria/admin}" style="color: white;">Administrar Categorias</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link  opciones" th:href="@{/tematica/admin}" style="color: white;">Administrar Tematicas</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Administrar Examenes</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Datos Personales</a>
-                                                </li>
+                                                                                                <li class="nav-item">
+                                                                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Notas</a>
+                                                                                                </li>
+                                                                                                <li class="nav-item">
+                                                                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Examenes</a>
+                                                                                                </li>
+                                                                                                <li class="nav-item">
+                                                                                                    <a class="nav-link  opciones" th:href="@{/usuario}" style="color: white;">Administrar Usuarios</a>
+                                                                                                </li>
+                                                                                                <li class="nav-item">
+                                                                                                    <a class="nav-link  opciones" th:href="@{/categoria/admin}" style="color: white;">Administrar Categorias</a>
+                                                                                                </li>
+                                                                                                <li class="nav-item">
+                                                                                                    <a class="nav-link  opciones" th:href="@{/tematica/admin}" style="color: white;">Administrar Tematicas</a>
+                                                                                                </li>
+                                                                                                <li class="nav-item">
+                                                                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Administrar Examenes</a>
+                                                                                                </li>
+                                                                                                <li class="nav-item">
+                                                                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Datos Personales</a>
+                                                                                                </li>
 
 
-                            <li class="nav-item">
-                                <form th:action="@{/logout}">
-                                    <a class="nav-link text-white opciones" href="#" onclick="this.parentNode.submit();"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
-                                </form>
-                            </li>
+                                                                            <li class="nav-item">
+                                                                                <form th:action="@{/logout}">
+                                                                                    <a class="nav-link text-white opciones" href="#" onclick="this.parentNode.submit();"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+                                                                                </form>
+                                                                            </li>
 
-                        </div>
+                                                                        </div>
 
-                    </ul>
-
-
-                    <div>
-                        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                        <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_wnceyokk.json" background="transparent"
-                                       speed="0.7" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </nav>
-
-</header>
-
-<footer th:fragment="footer" class="container-fluid">
+                                                                    </ul>
 
 
-    <div class="row">
+                                                                    <div>
+                                                                        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                                                                        <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_wnceyokk.json" background="transparent"
+                                                                                       speed="0.7" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </nav>
+
+                                                </header>
+
+                                                <footer th:fragment="footer" class="container-fluid">
 
 
-        <div class="col-4 contenidoFooter">
-            <div>
-                <a href="Turnos.php" class="opciones">
-                    <p>Cursos</p>
-                </a>
-                <a href="obras.php"  class="opciones">
-                    <p>Fuentes de informacion</p>
-                </a>
-                <a href="registro.php" class="opciones">
-                    <p>Certificados</p>
-                </a>
-                <p class="opciones">@Copyright SchoolHouse™</p>
-            </div>
-
-        </div>
-
-        <div class="col-4 contenidoFooter">
-
-            <div class="opciones">
-                <p> Informacion de contacto: </p>
-                <p>Email: SchoolHouse@gmail.com</p>
-                <p>Telefono: 1166046826 / 42648893</p>
-            </div>
-        </div>
+                                                    <div class="row">
 
 
-        <div class="col-4 contenidoFooter redesSociales">
+                                                        <div class="col-4 contenidoFooter">
+                                                            <div>
+                                                                <a href="Turnos.php" class="opciones">
+                                                                    <p>Cursos</p>
+                                                                </a>
+                                                                <a href="obras.php"  class="opciones">
+                                                                    <p>Fuentes de informacion</p>
+                                                                </a>
+                                                                <a href="registro.php" class="opciones">
+                                                                    <p>Certificados</p>
+                                                                </a>
+                                                                <p class="opciones">@Copyright SchoolHouse™</p>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-4 contenidoFooter">
+
+                                                            <div class="opciones">
+                                                                <p> Informacion de contacto: </p>
+                                                                <p>Email: SchoolHouse@gmail.com</p>
+                                                                <p>Telefono: 1166046826 / 42648893</p>
+                                                            </div>
+                                                        </div>
 
 
-
-            <div class="opciones"> <a href="https://www.facebook.com/enespanol/" target="_blank">
-                <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_7akxvutj.json" background="transparent"
-                               speed="1" style="width: 60px; height: 60px;"  loop autoplay></lottie-player>
-            </a>
-
-            </div>
-
-
-            <div class="opciones"> <a href="https://twitter.com/home" target="_blank">
-                <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_hdy0htc2.json" background="transparent"
-                               speed="1" style="width: 60px; height: 60px;"  loop autoplay></lottie-player>
-            </a>
-            </div>
-
-
-            <div class="opciones"> <a href="https://ar.linkedin.com/" target="_blank">
-                <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_atjsyyed.json" background="transparent"
-                               speed="1" style="width: 60px; height: 60px;"  loop autoplay></lottie-player>
-            </a>
-            </div>
+                                                        <div class="col-4 contenidoFooter redesSociales">
 
 
 
-            <div class="opciones"> <a href="https://github.com/" target="_blank">
-                <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_kq6zs04j.json" background="transparent"
-                               speed="1" style="width: 60px; height: 60px;" hover autoplay></lottie-player>
-            </a>
-            </div>
+                                                            <div class="opciones"> <a href="https://www.facebook.com/enespanol/" target="_blank">
+                                                                <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                                                                <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_7akxvutj.json" background="transparent"
+                                                                               speed="1" style="width: 60px; height: 60px;"  loop autoplay></lottie-player>
+                                                            </a>
+
+                                                            </div>
+
+
+                                                            <div class="opciones"> <a href="https://twitter.com/home" target="_blank">
+                                                                <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                                                                <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_hdy0htc2.json" background="transparent"
+                                                                               speed="1" style="width: 60px; height: 60px;"  loop autoplay></lottie-player>
+                                                            </a>
+                                                            </div>
+
+
+                                                            <div class="opciones"> <a href="https://ar.linkedin.com/" target="_blank">
+                                                                <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                                                                <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_atjsyyed.json" background="transparent"
+                                                                               speed="1" style="width: 60px; height: 60px;"  loop autoplay></lottie-player>
+                                                            </a>
+                                                            </div>
 
 
 
-        </div>
+                                                            <div class="opciones"> <a href="https://github.com/" target="_blank">
+                                                                <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                                                                <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_kq6zs04j.json" background="transparent"
+                                                                               speed="1" style="width: 60px; height: 60px;" hover autoplay></lottie-player>
+                                                            </a>
+                                                            </div>
 
 
 
-    </div>
+                                                        </div>
+
+
+
+                                                    </div>
 
 
 
 
 
 
-</footer>
-</html>
+                                                </footer>
+                                                </html>

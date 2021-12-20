@@ -25,25 +25,7 @@ public class CategoriaControlador {
 
     private final CategoriaServicio categoriaServicio;
     private final TematicaServicio tematicaServicio;
- /*
-    @GetMapping()
-    public ModelAndView mostrarCategorias(HttpServletRequest request, RedirectAttributes attributes) {
-        ModelAndView mav = new ModelAndView("categoria");
-        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
 
-        if(map != null){
-            mav.addObject("errorNulo", map.get("errorNulo"));
-            mav.addObject("padreNulo", map.get("padreNulo"));
-            mav.addObject("errorRepetido", map.get("errorRepetido"));
-            mav.addObject("errorEliminado", map.get("errorEliminado"));
-            //mav.addObject("exito", map.get("success"));
-        }
-        mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(true));
-        mav.addObject("titulo", "Tabla de examenes");
-        mav.addObject("categorias", categoriaServicio.mostrarCategorias());
-        return mav;
-    }
-*/
     @GetMapping("/admin")
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView listarCategorias(HttpServletRequest request, RedirectAttributes attributes) {
@@ -167,6 +149,6 @@ public class CategoriaControlador {
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
 
-        return new RedirectView("/categoria");
+        return new RedirectView("/categoria/admin");
     }
 }

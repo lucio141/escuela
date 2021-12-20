@@ -146,6 +146,7 @@ public class UsuarioServicio implements UserDetailsService {
         try {
             UsuarioDTO usuarioDTO = obtenerPorId(usuario.getId());
             session.setAttribute("id" , usuarioDTO.getId());
+            session.setAttribute("rol" , usuarioDTO.getRol().getNombre());
             session.setAttribute("usuarioEnSesion", usuarioDTO);
         } catch (ObjetoNulloExcepcion nulo) {
             System.out.println("Error");

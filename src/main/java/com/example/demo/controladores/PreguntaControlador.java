@@ -33,7 +33,6 @@ public class PreguntaControlador{
         ModelAndView mav = new ModelAndView("pregunta-formulario");
 
         try{
-            mav.addObject("dificultades", Dificultad.values());
             mav.addObject("examen" , examenServicio.ObtenerUltimoExamen());
             mav.addObject("pregunta", new Pregunta());
             mav.addObject("titulo", "Crear Pregunta");
@@ -65,10 +64,10 @@ public class PreguntaControlador{
 
     @PostMapping("/guardar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardarPregunta(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam(value="accion") String accion, @RequestParam(value="respuesta2") String respuesta2, @RequestParam(value="respuesta3") String respuesta3,@RequestParam(value="respuesta4") String respuesta4, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam(value="examen") Integer examenId,@RequestParam(value="tematica") Integer tematicaId,  HttpServletRequest request, RedirectAttributes attributes) {
+    public RedirectView guardarPregunta(@RequestParam String enunciado, @RequestParam(value="accion") String accion, @RequestParam(value="respuesta2") String respuesta2, @RequestParam(value="respuesta3") String respuesta3,@RequestParam(value="respuesta4") String respuesta4, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam(value="examen") Integer examenId,@RequestParam(value="tematica") Integer tematicaId,  HttpServletRequest request, RedirectAttributes attributes) {
 
         try {
-            preguntaServicio.crearPregunta(dificultad, enunciado, respuesta2, respuesta3, respuesta4, respuestaCorrecta, puntaje, examenId);
+            preguntaServicio.crearPregunta(enunciado, respuesta2, respuesta3, respuesta4, respuestaCorrecta, puntaje, examenId);
         }catch (ObjetoRepetidoExcepcion repetido){
             attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
         }catch (ObjetoEliminadoExcepcion eliminado){
@@ -89,10 +88,10 @@ public class PreguntaControlador{
 
     @PostMapping("/modificar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView modificar(@RequestParam Dificultad dificultad, @RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, @RequestParam int id, RedirectAttributes attributes) {
+    public RedirectView modificar(@RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, @RequestParam int id, RedirectAttributes attributes) {
 
         try{
-            preguntaServicio.modificarPregunta(dificultad, enunciado, respuestas, respuestaCorrecta, puntaje, examen, id);
+            preguntaServicio.modificarPregunta(enunciado, respuestas, respuestaCorrecta, puntaje, examen, id);
         }catch(ObjetoNulloExcepcion nulo) {
             System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
