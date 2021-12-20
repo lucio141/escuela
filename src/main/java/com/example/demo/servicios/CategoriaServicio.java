@@ -71,15 +71,12 @@ public class CategoriaServicio {
 
     @Transactional
     public void eliminar(int id) throws ObjetoNulloExcepcion {
+        CategoriaDTO categoriaDTO = obtenerPorId(id);
 
-        CategoriaDTO categoria = obtenerPorId(id);
-
-        for (Tematica tematica: categoria.getTematicas()) {
-
+        for (Tematica tematica: categoriaDTO.getTematicas()) {
             if(tematica.getAlta()){
                 tematicaServicio.eliminar(tematica.getId());
             }
-
         }
 
         categoriaRepositorio.deleteById(id);
@@ -87,6 +84,7 @@ public class CategoriaServicio {
 
     @Transactional
     public void darAlta(int id) throws ObjetoNulloExcepcion {
+        CategoriaDTO categoriaDTO = obtenerPorId(id);
         categoriaRepositorio.darAlta(id);
     }
 }

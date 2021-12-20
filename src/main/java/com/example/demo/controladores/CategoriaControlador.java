@@ -96,6 +96,22 @@ public class CategoriaControlador {
         return mav;
     }
 
+    @GetMapping("/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView categoriaDetalle(@PathVariable int id, RedirectAttributes attributes){
+        ModelAndView mav = new ModelAndView("categoria-detalle"); //FALTA HTML
+
+        try{
+            CategoriaDTO categoriaDTO = categoriaServicio.obtenerPorId(id);
+            mav.addObject("categoria",categoriaDTO) ;
+            mav.addObject("titulo", "Detalle de " + categoriaDTO.getNombre() + "");
+        }catch( ObjetoNulloExcepcion nulo){
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+        }
+
+        return mav;
+    }
+
     @PostMapping("/guardar")
     //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView guardar(@RequestParam String nombre, RedirectAttributes attributes) {
@@ -152,21 +168,5 @@ public class CategoriaControlador {
         }
 
         return new RedirectView("/categoria");
-    }
-
-    @GetMapping("/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView categoriaDetalle(@PathVariable int id, RedirectAttributes attributes){
-        ModelAndView mav = new ModelAndView("categoria-detalle"); //FALTA HTML
-
-        try{
-            CategoriaDTO categoriaDTO = categoriaServicio.obtenerPorId(id);
-            mav.addObject("categoria",categoriaDTO) ;
-            mav.addObject("titulo", "Detalle de " + categoriaDTO.getNombre() + "");
-        }catch( ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
-        }
-
-        return mav;
     }
 }

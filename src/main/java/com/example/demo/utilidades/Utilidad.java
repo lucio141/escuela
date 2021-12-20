@@ -6,8 +6,6 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/*Esta clase contiene metodos de utilidad, tales como las validaciones con regex,etc*/
-
 public class Utilidad {
 
     /*
