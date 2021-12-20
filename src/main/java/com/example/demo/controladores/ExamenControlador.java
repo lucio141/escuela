@@ -115,8 +115,8 @@ public class ExamenControlador {
 
     @GetMapping("/realizar/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView realizarExamen(@PathVariable int id, RedirectAttributes attributes , HttpSession session) {
-        ModelAndView mav = new ModelAndView("hacer-examen"); // Falta crear
+    public ModelAndView realizarExamen(@PathVariable int id, RedirectAttributes attributes, HttpSession session) {
+        ModelAndView mav = new ModelAndView("hacer-examen");
 
         try {
             ExamenDTO examenDTO = examenServicio.resolverExamen(id);
@@ -124,9 +124,7 @@ public class ExamenControlador {
             mav.addObject("resultado", resultadoServicio.ObtenerUltimoResultado() );
             mav.addObject("examen", examenDTO);
             mav.addObject("dificultades", Dificultad.values());
-
         } catch (ObjetoNulloExcepcion nulo) {
-            System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
         }
 

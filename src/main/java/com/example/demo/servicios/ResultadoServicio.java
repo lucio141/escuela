@@ -1,7 +1,6 @@
 package com.example.demo.servicios;
 
 import com.example.demo.dto.ExamenDTO;
-import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Resultado;
 import com.example.demo.repositorios.ExamenRepositorio;

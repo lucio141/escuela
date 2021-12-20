@@ -1,6 +1,7 @@
 package com.example.demo.servicios;
 
 import com.example.demo.dto.ExamenDTO;
+import com.example.demo.dto.PreguntaDTO;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Tematica;
@@ -85,8 +86,8 @@ public class ExamenServicio {
 
         Collections.shuffle(examenDTO.getPreguntas());
 
-        for (Pregunta pregunta : examenDTO.getPreguntas()) {
-            Collections.shuffle(pregunta.getRespuestas());
+        for (PreguntaDTO preguntaDTO : Mapper.listaPreguntaEntidadADTO(examenDTO.getPreguntas())) {
+            Collections.shuffle(preguntaDTO.getRespuestas());
         }
 
         return examenDTO;
