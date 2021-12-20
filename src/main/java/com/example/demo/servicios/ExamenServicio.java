@@ -13,6 +13,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -75,6 +78,23 @@ public class ExamenServicio {
     }
 
     @Transactional
+    public Examen resolverExamen(int id) throws ObjetoNulloExcepcion {
+        Examen examen = obtenerPorId(id);
+
+
+        examen.getPreguntas().removeIf(p -> !p.getAlta());
+
+        Collections.shuffle(examen.getPreguntas());
+
+        for (Pregunta pregunta : examen.getPreguntas()) {
+            Collections.shuffle(pregunta.getRespuestas());
+        }
+
+        return examen;
+    }
+
+
+    @Transactional
     public Examen ObtenerUltimoExamen() throws ObjetoNulloExcepcion {
         Examen examen = examenRepositorio.mostrarUltimoExamen();
 
@@ -91,7 +111,7 @@ public class ExamenServicio {
 
         for (Pregunta pregunta: examen.getPreguntas()) {
             if(pregunta.getAlta()){
-                preguntaRepositorio.deleteById(id);
+                preguntaRepositorio.deleteById(pregunta.getId());
             }
         }
 

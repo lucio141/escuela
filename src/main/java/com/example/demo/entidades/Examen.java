@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE Examen e SET e.alta = false WHERE e.id = ?")
+@SQLDelete(sql="UPDATE Examen e SET e.alta = false WHERE e.id = ?")
 @EntityListeners(AuditingEntityListener.class)
 public class Examen {
 
