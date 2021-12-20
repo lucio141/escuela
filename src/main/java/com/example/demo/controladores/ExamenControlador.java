@@ -124,13 +124,7 @@ public class ExamenControlador {
         ModelAndView mav = new ModelAndView("hacer-examen"); // Falta crear
 
         try {
-            Examen examen = examenServicio.obtenerPorId(id);
-            Collections.shuffle(examen.getPreguntas());
-
-            for (Pregunta pregunta : examen.getPreguntas()) {
-                Collections.shuffle(pregunta.getRespuestas());
-            }
-
+            Examen examen = examenServicio.resolverExamen(id);
             resultadoServicio.crearResultado(examen, (Integer)session.getAttribute("id"));
             mav.addObject("resultado", resultadoServicio.ObtenerUltimoResultado() );
             mav.addObject("examen", examen);
