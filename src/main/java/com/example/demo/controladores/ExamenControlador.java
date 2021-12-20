@@ -195,7 +195,6 @@ public class ExamenControlador {
         try {
             examenServicio.eliminar(id);
         } catch (ObjetoNulloExcepcion nulo) {
-            nulo.printStackTrace();
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
 
