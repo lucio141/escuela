@@ -41,7 +41,7 @@
       <h1 class="placeholder-glow">
         <span class="placeholder col-12"> </span>
 
-        <h1 class="opciones">NOMBRE EXAMEN</h1>
+        <h1 class="opciones" th:text ="${examen.nombre}">NOMBRE EXAMEN</h1>
 
 
       </h1>
@@ -73,19 +73,6 @@
                   </div>
 
                 </div>
-
-                <div style="height: 40px; margin-bottom: 2%;">
-
-                  <select th:field="*{dificultad}" name="" id="" class="selectForm">
-
-                    <option value="">Dificultad</option>
-                    <option  th:each="dificultad : ${dificultades} " th:value="${dificultad}" th:text="${dificultad}"></option>
-
-                  </select>
-
-                </div>
-
-
 
 
 
@@ -124,7 +111,7 @@
 
 
                   <div>
-                    <input th:name="respuesta4" type="text" class="form-control inputExamen" placeholder="Respuesta 3">
+                    <input th:name="respuesta4" type="text" class="form-control inputExamen" placeholder="Respuesta 4">
                   </div>
 
                 </div>
@@ -181,16 +168,6 @@
 
                 </div>
 
-                <div style="height: 40px; margin-bottom: 2%;">
-
-                  <p th:text="${pregunta.dificultad}"> </p>
-
-                </div>
-
-
-
-
-
 
                 <div class="mb-3 row">
 
@@ -242,7 +219,7 @@
 
       <div style=" display: flex; justify-content: center;">
            <div style=" width: 47%;">
-        <a th:href="@{/index}" onclick id="agregarPregunta" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CANCELAR</a>
+        <a th:href="@{/}" onclick id="agregarPregunta" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CANCELAR</a>
       </div>
     </div>
 

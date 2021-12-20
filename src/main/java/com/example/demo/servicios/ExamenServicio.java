@@ -121,18 +121,14 @@ public class ExamenServicio {
     @Transactional
     public void darAlta(int id) throws ObjetoNulloExcepcion {
         ExamenDTO examenDTO = obtenerPorId(id);
+
+        for (Pregunta pregunta: examenDTO.getPreguntas()) {
+            if(pregunta.getAlta()){
+                preguntaRepositorio.darAlta(pregunta.getId());
+            }
+        }
+
         examenRepositorio.darAlta(id);
     }
-
-/*
-    @Transactional(readOnly = true)
-    public List<Resultado> top5 (int id) throws ObjetoNulloExcepcion {
-        List<Resultado> resultados = new ArrayList<>();
-        for (Integer idResultado : examenRepositorio.top5(id)) {
-            resultados.add(resultadoServicio.obtenerPorId(idResultado));
-        }
-        return resultados;
-    }
-*/
 }
 

@@ -42,10 +42,15 @@ public class UsuarioControlador {
 
     @GetMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView obtenerPerfil(@PathVariable int id, RedirectAttributes attributes){
+    public ModelAndView obtenerPerfil(@PathVariable int id, RedirectAttributes attributes, HttpSession session){
         ModelAndView mav = new ModelAndView("perfil"); //FALTA HTML
         try{
-            mav.addObject("categoria",usuarioServicio.obtenerPorId(id)) ;
+            if ((int)session.getAttribute("id") != id && !session.getAttribute("rol").equals("ADMIN")){
+                attributes.addFlashAttribute("errorAutorizacion", "No se puede acceder al perfil solicitado");
+                mav.setViewName("redirect:/");
+                return mav;
+            }
+            mav.addObject("usuario",usuarioServicio.obtenerPorId(id));
         }catch( ObjetoNulloExcepcion nulo){
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }

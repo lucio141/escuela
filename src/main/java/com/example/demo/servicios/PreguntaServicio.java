@@ -26,7 +26,7 @@ public class PreguntaServicio {
     private final ExamenServicio examenservicio;
 
     @Transactional
-    public void crearPregunta(Dificultad dificultad, String enunciado, String respuesta2, String respuesta3, String respuesta4, String respuestaCorrecta, Integer puntaje, Integer idExamen) throws ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion, ObjetoNulloExcepcion, PadreNuloExcepcion{
+    public void crearPregunta(String enunciado, String respuesta2, String respuesta3, String respuesta4, String respuestaCorrecta, Integer puntaje, Integer idExamen) throws ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion, ObjetoNulloExcepcion, PadreNuloExcepcion{
         ExamenDTO examenDTO = examenservicio.obtenerPorId(idExamen);
         List<String> respuestas = new ArrayList<>();
 
@@ -36,7 +36,6 @@ public class PreguntaServicio {
         respuestas.add(respuesta4);
 
         PreguntaDTO preguntaDTO = new PreguntaDTO();
-        preguntaDTO.setDificultad(dificultad);
         preguntaDTO.setEnunciado(enunciado);
         preguntaDTO.setRespuestas(respuestas);
         preguntaDTO.setRespuestaCorrecta(respuestaCorrecta);
@@ -57,11 +56,10 @@ public class PreguntaServicio {
     }
 
     @Transactional
-    public void modificarPregunta(Dificultad dificultad, String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen, Integer id) throws ObjetoNulloExcepcion, ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion {
+    public void modificarPregunta(String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen, Integer id) throws ObjetoNulloExcepcion, ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion {
         PreguntaDTO preguntaDTO = obtenerPorId(id);
         PreguntaDTO preguntaAux = preguntaDTO;
 
-        preguntaDTO.setDificultad(dificultad);
         preguntaDTO.setEnunciado(enunciado);
         preguntaDTO.setRespuestas(respuestas);
         preguntaDTO.setRespuestaCorrecta(respuestaCorrecta);
