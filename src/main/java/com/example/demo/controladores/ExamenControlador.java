@@ -1,5 +1,6 @@
 package com.example.demo.controladores;
 
+import com.example.demo.dto.ExamenDTO;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Tematica;
@@ -16,15 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/examen")
@@ -32,7 +28,6 @@ import java.util.Map;
 public class ExamenControlador {
 
     private final ExamenServicio examenServicio;
-    private final CategoriaServicio categoriaServicio;
     private final TematicaServicio tematicaServicio;
     private final ResultadoServicio resultadoServicio;
  /*
@@ -124,10 +119,10 @@ public class ExamenControlador {
         ModelAndView mav = new ModelAndView("hacer-examen"); // Falta crear
 
         try {
-            Examen examen = examenServicio.resolverExamen(id);
-            resultadoServicio.crearResultado(examen, (Integer)session.getAttribute("id"));
+            ExamenDTO examenDTO = examenServicio.resolverExamen(id);
+            resultadoServicio.crearResultado(examenDTO, (Integer)session.getAttribute("id"));
             mav.addObject("resultado", resultadoServicio.ObtenerUltimoResultado() );
-            mav.addObject("examen", examen);
+            mav.addObject("examen", examenDTO);
             mav.addObject("dificultades", Dificultad.values());
 
         } catch (ObjetoNulloExcepcion nulo) {
@@ -152,10 +147,7 @@ public class ExamenControlador {
             attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
         }
 
-            return new RedirectView("/pregunta/crear");// HABLAR CON LUCIO
-
-
-
+            return new RedirectView("/pregunta/crear");
     }
 
     @PostMapping("/modificar")

@@ -1,5 +1,6 @@
 package com.example.demo.servicios;
 
+import com.example.demo.dto.ExamenDTO;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Tematica;
@@ -9,13 +10,12 @@ import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.repositorios.ExamenRepositorio;
 import com.example.demo.repositorios.PreguntaRepositorio;
 import com.example.demo.utilidades.Dificultad;
+import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -27,89 +27,88 @@ public class ExamenServicio {
 
     @Transactional
     public void crearExamen(Dificultad dificultad, Tematica tematica, Double notaRequerida, String nombre) {
-        Examen examen = new Examen();
-        examen.setDificultad(dificultad);
-        examen.setNombre(nombre);
-        examen.setTematica(tematica);
-        examen.setNotaRequerida(notaRequerida);
-        examenRepositorio.save(examen);
+        ExamenDTO examenDTO = new ExamenDTO();
+        examenDTO.setDificultad(dificultad);
+        examenDTO.setNombre(nombre);
+        examenDTO.setTematica(tematica);
+        examenDTO.setNotaRequerida(notaRequerida);
+        examenRepositorio.save(Mapper.examenDTOAEntidad(examenDTO));
     }
 
     @Transactional
     public void modificarExamen(Integer id, Dificultad dificultad, Tematica tematica, Double notaRequerida, String nombre) throws ObjetoNulloExcepcion, ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion {
-        Examen examen = obtenerPorId(id);
-        Examen examenAux = examen;
+        ExamenDTO examenDTO = obtenerPorId(id);
+        ExamenDTO examenAux = examenDTO;
 
-        examen.setNombre(nombre);
-        examen.setDificultad(dificultad);
-        examen.setTematica(tematica);
-        examen.setNotaRequerida(notaRequerida);
+        examenDTO.setNombre(nombre);
+        examenDTO.setDificultad(dificultad);
+        examenDTO.setTematica(tematica);
+        examenDTO.setNotaRequerida(notaRequerida);
 
-        if(!examenAux.equals(examen)){
-            if(mostrarExamenesPorAlta(true).contains(examen)) {
+        if(!examenAux.equals(examenDTO)){
+            if(mostrarExamenesPorAlta(true).contains(examenDTO)) {
                 throw new ObjetoRepetidoExcepcion("Se encontró una pregunta con el mismo enunciado");
-            }else if(mostrarExamenesPorAlta(false).contains(examen)) {
+            }else if(mostrarExamenesPorAlta(false).contains(examenDTO)) {
                 throw new ObjetoEliminadoExcepcion("Se encontró una pregunta eliminada con el mismo enunciado");
             }
         }
 
-        examenRepositorio.save(examen);
+        examenRepositorio.save(Mapper.examenDTOAEntidad(examenDTO));
     }
 
     @Transactional
-    public List<Examen> mostrarExamenes() {
-        return examenRepositorio.findAll();
+    public List<ExamenDTO> mostrarExamenes() {
+        return Mapper.listaExamenEntidadADTO(examenRepositorio.findAll());
     }
 
     @Transactional(readOnly = true)
-    public List<Examen> mostrarExamenesPorAlta(Boolean alta) {
-        return examenRepositorio.mostrarPorAlta(alta);
+    public List<ExamenDTO> mostrarExamenesPorAlta(Boolean alta) {
+        return Mapper.listaExamenEntidadADTO(examenRepositorio.mostrarPorAlta(alta));
     }
 
     @Transactional
-    public Examen obtenerPorId(int id) throws ObjetoNulloExcepcion {
-        Examen examen = examenRepositorio.findById(id).orElse(null);
+    public ExamenDTO obtenerPorId(int id) throws ObjetoNulloExcepcion {
+        ExamenDTO examenDTO = Mapper.examenEntidadADTO(examenRepositorio.findById(id).orElse(null));
 
-        if (examen == null) {
+        if (examenDTO == null) {
             throw new ObjetoNulloExcepcion("No se encontro el examen");
         }
 
-        return examen;
+        return examenDTO;
     }
 
     @Transactional
-    public Examen resolverExamen(int id) throws ObjetoNulloExcepcion {
-        Examen examen = obtenerPorId(id);
+    public ExamenDTO resolverExamen(int id) throws ObjetoNulloExcepcion {
+        ExamenDTO examenDTO = obtenerPorId(id);
 
+        examenDTO.getPreguntas().removeIf(p -> !p.getAlta());
 
-        examen.getPreguntas().removeIf(p -> !p.getAlta());
+        Collections.shuffle(examenDTO.getPreguntas());
 
-        Collections.shuffle(examen.getPreguntas());
-
-        for (Pregunta pregunta : examen.getPreguntas()) {
+        for (Pregunta pregunta : examenDTO.getPreguntas()) {
             Collections.shuffle(pregunta.getRespuestas());
         }
 
-        return examen;
+        return examenDTO;
     }
 
 
     @Transactional
-    public Examen ObtenerUltimoExamen() throws ObjetoNulloExcepcion {
-        Examen examen = examenRepositorio.mostrarUltimoExamen();
+    public ExamenDTO ObtenerUltimoExamen() throws ObjetoNulloExcepcion {
+        ExamenDTO examenDTO = Mapper.examenEntidadADTO(examenRepositorio.mostrarUltimoExamen());
 
-        if(examen == null){
+        if(examenDTO == null){
             throw new ObjetoNulloExcepcion("No se encontro el examen");
         }
 
-        return examen;
+        return examenDTO;
     }
 
     @Transactional
     public void eliminar(int id) throws ObjetoNulloExcepcion {
-        Examen examen = obtenerPorId(id);
+        ExamenDTO examenDTO = obtenerPorId(id);
 
-        for (Pregunta pregunta: examen.getPreguntas()) {
+        for (Pregunta pregunta: examenDTO.getPreguntas()) {
             if(pregunta.getAlta()){
                 preguntaRepositorio.deleteById(pregunta.getId());
             }
@@ -120,7 +119,7 @@ public class ExamenServicio {
 
     @Transactional
     public void darAlta(int id) throws ObjetoNulloExcepcion {
-        Examen examen = obtenerPorId(id);
+        ExamenDTO examenDTO = obtenerPorId(id);
         examenRepositorio.darAlta(id);
     }
 

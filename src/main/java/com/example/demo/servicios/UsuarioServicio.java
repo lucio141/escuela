@@ -135,7 +135,7 @@ public class UsuarioServicio implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException{
-        Usuario usuario = usuarioRepositorio.findByNombreUsuario(nombreUsuario)
+        Usuario usuario = usuarioRepositorio.findByNombreUsuarioAndAltaTrue(nombreUsuario)
                                             .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE, nombreUsuario)));
 
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
