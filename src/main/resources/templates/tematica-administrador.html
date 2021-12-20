@@ -47,31 +47,78 @@
 
       </h1>
     
-      <button style="margin-bottom: 2%;" href="#" class="btn btn-outline-secondary botonesCrear">CREAR TEMATICA</button>
+      <button style="margin-bottom: 2%;" th:href="@{tematica/crear}" class="btn btn-outline-secondary botonesCrear">CREAR TEMATICA</button>
 
 
 
       <div class="tematicas row" style="display: flex; justify-content: space-around;">
 
-        <div class="col-sm-3 ">
+        <div class="col-sm-3 " th:each="tematicaAlta : ${tematicasAlta}">
           <div class="card tarjetasSecciones">
             <div class="card-body">
 
               <div style="display: flex; justify-content: center ;">
                 <div class="opciones">
-                  <h3 class="card-title">Nombre Tematica</h3>
+                  <h3 class="card-title" th:text="${tematicaAlta.nombre}">NOMBRE DE LA TEMATICA</h3>
                 </div>
               </div>
               
+              <div th:each="examen : ${tematicaAlta.examen}">
 
+                <div class="examenesDeTematica" th:text="${examen.nombre}">nombre del examen</div>
 
+              </div>
+              <!-- 
               <div class="examenesTematica"><h5>Examen Ejemplo</h5> </div>
               <div class="examenesTematica"><h5>Examen ejemplos</h5>  </div>
               <div class="examenesTematica"><h5>Examen ejemplos</h5>  </div>
-  
+              -->
               <div style="display: flex; justify-content: space-around; margin-top: 2%;">  
-                <button href="#" class="btn btn-outline-secondary botonesSecciones">EDITAR</button>
-                <button href="#" class="btn btn-outline-secondary botonesSecciones">ELIMINAR</button>
+                <a th:href="@{editar/__${tematicaAlta.id}__}" class="btn btn-outline-secondary botonesSecciones">EDITAR</a>
+
+                <form method="post" th:action="@{eliminar/__${tematicaAlta.id}__}">
+                  <button type="submit" class="btn btn-outline-secondary botonesSecciones">ELIMINAR</button>
+                </form>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+
+        
+      </div>
+
+
+      <div class="tematicas row" style="display: flex; justify-content: space-around;">
+
+        <div class="col-sm-3 " th:each="tematicaBaja : ${tematicasBaja}">
+          <div class="card tarjetasSecciones">
+            <div class="card-body">
+
+              <div style="display: flex; justify-content: center ;">
+                <div class="opciones">
+                  <h3 class="card-title" th:text="${tematicaBaja.nombre}">NOMBRE DE LA TEMATICA</h3>
+                </div>
+              </div>
+              
+              <div th:each="examen : ${tematicaBaja.examen}">
+
+                <div class="examenesDeTematica" th:text="${examen.nombre}">nombre del examen</div>
+
+              </div>
+              <!-- 
+              <div class="examenesTematica"><h5>Examen Ejemplo</h5> </div>
+              <div class="examenesTematica"><h5>Examen ejemplos</h5>  </div>
+              <div class="examenesTematica"><h5>Examen ejemplos</h5>  </div>
+              -->
+              <div style="display: flex; justify-content: space-around; margin-top: 2%;">
+                <a th:href="@{editar/__${tematicaBaja.id}__}" class="btn btn-outline-secondary botonesSecciones">EDITAR</a>
+
+                <form method="post" th:action="@{darAlta/__${tematicaBaja.id}__}">
+                  <button type="submit" class="btn btn-outline-secondary botonesSecciones">DAR ALTA</button>
+                </form>
               </div>
 
 
