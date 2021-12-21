@@ -26,8 +26,10 @@ public class UsuarioControlador {
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarUsuarios(){
         ModelAndView mav = new ModelAndView("usuario");//
-        mav.addObject("usuarios", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("USER")));
-        mav.addObject("admins", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("ADMIN")));
+        mav.addObject("usuarios", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("USER"),true));
+        mav.addObject("admins", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("ADMIN"),true));
+        mav.addObject("usuariosEliminados", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("USER"),false));
+        mav.addObject("adminsEliminados", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("ADMIN"),false));
         mav.addObject("titulo", "Tabla de Usuarios");
         return mav;
     }
@@ -183,7 +185,7 @@ public class UsuarioControlador {
         return new RedirectView("/usuario");
     }
 
-    @PostMapping("/registrar/{id}")
+    @PostMapping("/darAlta/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView darAltaUsuario (@PathVariable Integer id, RedirectAttributes attributes){
         try {
