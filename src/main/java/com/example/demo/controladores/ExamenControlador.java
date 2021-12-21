@@ -37,7 +37,6 @@ public class ExamenControlador {
     public ModelAndView mostrarExamen(@PathVariable int id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
-
         if(map != null){
             mav.addObject("errorNulo", map.get("errorNulo"));
             mav.addObject("padreNulo", map.get("padreNulo"));
@@ -45,27 +44,25 @@ public class ExamenControlador {
             mav.addObject("errorRepetido", map.get("errorRepetido"));
             //mav.addObject("exito", map.get("success"));
         }
-
         try{
             mav.addObject("titulo", examenServicio.obtenerPorId(id).getNombre());
             mav.addObject("resultados", resultadoServicio.top5(id));
         }catch (ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());
         }
-
-
         return mav;
     }
+*/
 
-    @GetMapping("/baja")
+    @GetMapping("/admin")
    // @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarExamenesBaja() {
-        ModelAndView mav = new ModelAndView(""); //DECIDE DONATO
+        ModelAndView mav = new ModelAndView("examen-administrador");
         mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(false));
         mav.addObject("titulo", "Tabla de examenes baja");
         return mav;
     }
-*/
+
 
     @GetMapping("/top20")
     public ModelAndView mostrarExamenesMasBuscados(RedirectAttributes attributes) {
