@@ -64,23 +64,23 @@
       
           <button class="botonLogin" type="submit">Ingresar</button>
 
-          <div class="row" style="margin-top: 1%;">
+          <div class="row" style="margin-top: 2%;">
 
-            <div class="col-6 botonLogin" style="display: flex; justify-content: center; height: 20%;">
+            <div class="col-6 botonLogin" style="display: flex; justify-content: center;">
 
-              <div style="display: flex; justify-content: center;">
-                <a th:href="@{/usuario/crear}"  style="width: 100%; color:white;"  type="button" >Registrarse</a>
-              </div>
+              <a th:href="@{/usuario/crear}" class="botonRegister" style="display: flex; justify-content: center; width:100%; margin-top: 2%;" >
+                Registrarse
+              </a>
+
             </div>
 
-            <div class="col-6 botonLogin" style="display: flex; justify-content: center; height: 20%;">
+            <div class="col-6 botonLogin" style="display: flex; justify-content: center;">
 
-              <div style="display: flex; justify-content: center;" >
-                <a th:href="@{/usuario/confirmarUsuario}"  style="width: 100%; color:white;  height: 100%;"  type="button">Olvide mi Contraseña</a>
-              </div>
+              <a th:href="@{/usuario/confirmarUsuario}" class="botonRegister" style="display: flex; justify-content: center; width:100%; margin-top: 2%;" >
+                Olvide mi contraseña
+              </a>
+
             </div>
-
-
 
 
 

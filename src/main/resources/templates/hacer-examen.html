@@ -65,12 +65,16 @@
                             </div>
 
 
-                            <select th:name="respuestas" id="" class="selectForm">
+                            <div style="height: 40px; margin-bottom: 2%;">
 
-                                <option value="">Respuesta</option>
-                                <option   th:each="respuesta : ${pregunta.respuestas}" th:value="${respuesta}" th:text="${respuesta}"></option>
+                            <select  th:name="respuestas" id="" class="selectForm dropDownExamen">
+
+                                <option class="dropDownExamen" value="">Respuesta</option>
+                                <option class="dropDownExamen"  th:each="respuesta : ${pregunta.respuestas}" th:value="${respuesta}" th:text="${respuesta}"></option>
 
                             </select>
+
+                            </div>
                             <!--
                             <div style="display: flex;" th:each="respuesta : ${pregunta.respuestas}">
                                     <input  th:name="respuestas" th:value="${respuesta}" type="checkbox"  th:text="${respuesta}" class="opcionesExamen">

@@ -161,9 +161,20 @@
 
                   <div style="display: flex;">
 
-                    <p th:text="${pregunta.enunciado}" > </p>
-                    <p th:text="${pregunta.puntaje}" > </p>
+                    <p th:text="${pregunta.enunciado}" class="inputExamen" type="text"> </p>
+                    <p th:text="${pregunta.puntaje}" class="inputExamen" type="text"> </p>
+                  </div>
 
+                </div>
+
+
+
+
+                <div class="mb-3 row">
+
+
+                  <div>
+                    <p th:text="${pregunta.respuestaCorrecta}" class="inputExamen" type="text"> </p>
                   </div>
 
                 </div>
@@ -172,18 +183,20 @@
                 <div class="mb-3 row">
 
 
-                  <p th:text="|Respuesta Correcta: ${pregunta.respuestaCorrecta}"|> </p>
+                  <div>
+                    <input th:name="respuesta2" type="text" class="form-control inputExamen" placeholder="Respuesta 2">
+                  </div>
 
                 </div>
 
 
-                <div class="mb-3 row">
 
 
 
 
 
-                </div>
+
+
 
 
 
