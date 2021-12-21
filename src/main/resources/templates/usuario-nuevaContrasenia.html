@@ -34,7 +34,7 @@
             <div class="logo">
                 <img th:src="@{/img/logo.png}" alt="" width="60px" height="60px">
 
-                <a class="navbar-brand" href="#" style="color: rgb(255, 254, 254);">Skill Test</a>
+                <a class="navbar-brand" th:href="@{/}" style="color: rgb(255, 254, 254);">Skill Test</a>
             </div>
         </div>
     </nav>
@@ -61,7 +61,7 @@
                 <button class="botonLogin" type="submit">Enviar</button>
             </div>
             <div class="container">
-                <button th:href="@{/login}"  style="width: 20%;"  type="button" class="cancelbtn botonLogin">Cancelar</button>
+                <a th:href="@{/login}"  style="width: 20%;"  type="button" class="cancelbtn botonLogin">Cancelar</a>
             </div>
 
         </form>

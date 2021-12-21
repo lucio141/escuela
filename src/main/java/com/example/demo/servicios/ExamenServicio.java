@@ -3,7 +3,6 @@ package com.example.demo.servicios;
 import com.example.demo.dto.ExamenDTO;
 import com.example.demo.dto.PreguntaDTO;
 import com.example.demo.dto.Top20ExamenesDTO;
-import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
