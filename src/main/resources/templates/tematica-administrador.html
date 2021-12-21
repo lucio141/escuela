@@ -37,7 +37,7 @@
 
 
 
-    <div class="container-fluid seccionesMainTematica">
+    <div  class="container-fluid seccionesMainTematica">
 
       <h1 class="placeholder-glow">
         <span class="placeholder col-12"> </span>
@@ -91,6 +91,24 @@
       </div>
 
 
+
+
+    </div>
+
+    <div th:unless="${tematicasBaja.isEmpty()}" class="container-fluid secciones">
+
+      <h1 class="placeholder-glow">
+        <span class="placeholder col-12"> </span>
+
+        <h1 class="opciones">TEMATICAS ELIMINADAS:</h1>
+
+
+      </h1>
+
+
+
+
+
       <div class="tematicas row" style="display: flex; justify-content: space-around;">
 
         <div class="col-sm-3 " th:each="tematicaBaja : ${tematicasBaja}">
@@ -102,13 +120,13 @@
                   <h3 class="card-title" th:text="${tematicaBaja.nombre}">NOMBRE DE LA TEMATICA</h3>
                 </div>
               </div>
-              
+
               <div th:each="examen : ${tematicaBaja.examen}">
 
                 <div class="examenesDeTematica" th:text="${examen.nombre}">nombre del examen</div>
 
               </div>
-              <!-- 
+              <!--
               <div class="examenesTematica"><h5>Examen Ejemplo</h5> </div>
               <div class="examenesTematica"><h5>Examen ejemplos</h5>  </div>
               <div class="examenesTematica"><h5>Examen ejemplos</h5>  </div>
@@ -127,14 +145,16 @@
         </div>
 
 
-        
+
       </div>
 
 
 
+
+
+
+
     </div>
-
-
 
 
 

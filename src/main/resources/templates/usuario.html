@@ -44,7 +44,7 @@
 
       <div class="row">
 
-        <div class="col-12" th:each="usuario : ${usuario}">
+        <div class="col-6" th:each="usuario : ${usuarios}">
 
           <div class="card w-100 tarjetasMain">
             <div class="card-body">
@@ -53,9 +53,10 @@
               <p th:text=" |Edad:  ${usuario.edad}| " class="card-text"></p>
               <p th:text=" |Mail: ${usuario.mail}|" class="card-text"></p>
               <p th:text=" |Telefono: ${usuario.telefono}|" class="card-text"></p>
+              <p th:text=" |Rol: ${usuario.id}|" class="card-text"></p>
               <br>
               <div style="display: flex; justify-content: flex-start; ">
-              <div style="display: flex; justify-content: space-around; width: 15%;">  
+              <div style="display: flex; justify-content: space-around; width: 15%; margin-left: 8%;">
               <a th:href="@{/usuario/editar/__${usuario.id}__}" class="btn btn-primary botonPrincipales">Editar</a>
 
                 <form method="post" th:action="@{/usuario/eliminar/__${usuario.id}__}">
@@ -65,6 +66,100 @@
               </div>
 
            </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-6" th:each="admin: ${admins}">
+
+          <div class="card w-100 tarjetasMain">
+            <div class="card-body">
+
+              <p th:text=" |Nombre: ${admin.nombre} ${admin.apellido}|" class="card-text"></p>
+              <p th:text=" |Edad:  ${admin.edad}| " class="card-text"></p>
+              <p th:text=" |Mail: ${admin.mail}|" class="card-text"></p>
+              <p th:text=" |Telefono: ${admin.telefono}|" class="card-text"></p>
+              <p th:text=" |Rol: ${admin.rol}|" class="card-text"></p>
+              <br>
+              <div style="display: flex; justify-content: flex-start; ">
+                <div style="display: flex; justify-content: space-around; width: 15%; margin-left: 8%;">
+                  <a th:href="@{/usuario/editar/__${admin.id}__}" class="btn btn-primary botonPrincipales">Editar</a>
+
+                  <form method="post" th:action="@{/usuario/eliminar/__${admin.id}__}">
+                    <button type="submit" class="btn btn-primary botonPrincipales">Dar de baja</button>
+                  </form>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <div th:unless="${usuariosEliminados.isEmpty()  &lt;  usuariosEliminados.isEmpty()}"  class="row">
+
+        <h1 class="placeholder-glow opciones">
+          <span class="placeholder col-12"> </span>
+          USUARIOS ELIMINADOS
+
+        </h1>
+
+
+        <div class="col-6" th:each="usuario : ${usuariosEliminados}">
+
+          <div class="card w-100 tarjetasMain">
+            <div class="card-body">
+
+              <p th:text=" |Nombre: ${usuario.nombre} ${usuario.apellido}|" class="card-text"></p>
+              <p th:text=" |Edad:  ${usuario.edad}| " class="card-text"></p>
+              <p th:text=" |Mail: ${usuario.mail}|" class="card-text"></p>
+              <p th:text=" |Telefono: ${usuario.telefono}|" class="card-text"></p>
+              <p th:text=" |Rol: ${usuario.id}|" class="card-text"></p>
+              <br>
+              <div style="display: flex; justify-content: flex-start; ">
+                <div style="display: flex; justify-content: space-around; width: 15%; margin-left: 8%;">
+                  <a th:href="@{/usuario/editar/__${usuario.id}__}" class="btn btn-primary botonPrincipales">Editar</a>
+
+                  <form method="post" th:action="@{/usuario/darAlta/__${usuario.id}__}">
+                    <button type="submit" class="btn btn-outline-secondary botonPrincipales">Dar Alta</button>
+                  </form>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-6" th:each="admin: ${adminsEliminados}">
+
+          <div class="card w-100 tarjetasMain">
+            <div class="card-body">
+
+              <p th:text=" |Nombre: ${admin.nombre} ${admin.apellido}|" class="card-text"></p>
+              <p th:text=" |Edad:  ${admin.edad}| " class="card-text"></p>
+              <p th:text=" |Mail: ${admin.mail}|" class="card-text"></p>
+              <p th:text=" |Telefono: ${admin.telefono}|" class="card-text"></p>
+              <p th:text=" |Rol: ${admin.rol}|" class="card-text"></p>
+              <br>
+              <div style="display: flex; justify-content: flex-start; ">
+                <div style="display: flex; justify-content: space-around; width: 15%; margin-left: 8%;">
+                  <a th:href="@{/usuario/editar/__${admin.id}__}" class="btn btn-primary botonPrincipales">Editar</a>
+
+                  <form method="post" th:action="@{usuario/darAlta/__${admin.id}__}">
+                    <button type="submit" class="btn btn-outline-secondary botonPrincipales">Dar Alta</button>
+                  </form>
+
+                </div>
+
+              </div>
             </div>
 
           </div>
