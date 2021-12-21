@@ -8,6 +8,7 @@ import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.servicios.CategoriaServicio;
 import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,7 +28,7 @@ public class CategoriaControlador {
     private final TematicaServicio tematicaServicio;
 
     @GetMapping("/admin")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView listarCategorias(HttpServletRequest request, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("categoria-administrador");
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
@@ -46,7 +47,7 @@ public class CategoriaControlador {
     }
 
     @GetMapping("/crear")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearCategoria() {
         ModelAndView mav = new ModelAndView("categoria-formulario");
         mav.addObject("categoria", new Categoria());
@@ -57,7 +58,7 @@ public class CategoriaControlador {
     }
 
     @GetMapping("/editar/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarCategoria(@PathVariable int id, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("categoria-formulario");
 
@@ -75,7 +76,7 @@ public class CategoriaControlador {
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView categoriaDetalle(@PathVariable int id, RedirectAttributes attributes){
         ModelAndView mav = new ModelAndView("categoria-detalle"); //FALTA HTML
 
@@ -91,7 +92,7 @@ public class CategoriaControlador {
     }
 
     @PostMapping("/guardar")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView guardar(@RequestParam String nombre, RedirectAttributes attributes) {
 
         try {
@@ -106,7 +107,7 @@ public class CategoriaControlador {
     }
 
     @PostMapping("/modificar")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@RequestParam int id, @RequestParam String nombre, RedirectAttributes attributes) {
 
         try {
@@ -123,7 +124,7 @@ public class CategoriaControlador {
     }
 
     @PostMapping("/eliminar/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminar(@PathVariable int id, RedirectAttributes attributes) {
 
         try {
@@ -136,7 +137,7 @@ public class CategoriaControlador {
     }
 
     @PostMapping("/darAlta/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView darAlta(@PathVariable int id, RedirectAttributes attributes) {
 
         try {
