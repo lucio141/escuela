@@ -95,6 +95,11 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Transactional
+    public List<UsuarioDTO> mostrarUsuariosPorRol(Rol rol){
+        return Mapper.listaUsuarioEntidadADTO(usuarioRepositorio.mostrarPorRol(rol));
+    }
+
+    @Transactional
     public UsuarioDTO obtenerPorId (Integer id) throws ObjetoNulloExcepcion {
         Usuario usuario = usuarioRepositorio.findById(id).orElse(null);
 
