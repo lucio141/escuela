@@ -98,10 +98,10 @@ public class PreguntaControlador{
 
     @PostMapping("/modificar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView modificar(@RequestParam String enunciado, @RequestParam List<String> respuestas, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, @RequestParam int id, RedirectAttributes attributes) {
+    public RedirectView modificar(@RequestParam String enunciado,@RequestParam String respuesta2, @RequestParam String respuesta3,@RequestParam String respuesta4, @RequestParam String respuestaCorrecta, @RequestParam int puntaje, @RequestParam Examen examen, @RequestParam int id, RedirectAttributes attributes) {
 
         try{
-            preguntaServicio.modificarPregunta(enunciado, respuestas, respuestaCorrecta, puntaje, examen, id);
+            preguntaServicio.modificarPregunta(enunciado, respuesta2, respuesta3, respuesta4,respuestaCorrecta, puntaje, examen, id);
         }catch(ObjetoNulloExcepcion nulo) {
             System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("error", nulo.getMessage());
@@ -113,7 +113,7 @@ public class PreguntaControlador{
             System.out.println(eliminado.getMessage());
         }
 
-        return new RedirectView("/examen/"+ examen.getId() );
+        return new RedirectView("/examen/editarPreguntas/"+ examen.getId());
     }
 
     @PostMapping("/eliminar/{id}")

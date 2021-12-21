@@ -269,6 +269,10 @@ public class Mapper {
         preguntaEditableDTO.setRespuesta2(preguntaDTO.getRespuestas().get(1));
         preguntaEditableDTO.setRespuesta3(preguntaDTO.getRespuestas().get(2));
         preguntaEditableDTO.setRespuesta4(preguntaDTO.getRespuestas().get(3));
+        preguntaEditableDTO.setEnunciado(preguntaDTO.getEnunciado());
+        preguntaEditableDTO.setPuntaje(preguntaDTO.getPuntaje());
+        preguntaEditableDTO.setExamen(preguntaDTO.getExamen());
+        preguntaEditableDTO.setId(preguntaDTO.getId());
         return preguntaEditableDTO;
     }
 }
