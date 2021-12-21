@@ -244,4 +244,22 @@ public class Mapper {
 
         return resultadosDTO;
     }
+
+    public static Tematica tematicaDTOAEntidad(TematicaDTO tematicaDTO){
+        Tematica tematica = new Tematica();
+        tematica.setId(tematicaDTO.getId());
+        tematica.setNombre(tematicaDTO.getNombre());
+        tematica.setExamen(tematicaDTO.getExamen());
+        tematica.setCategoria(tematicaDTO.getCategoria());
+        return tematica;
+    }
+
+    public static TematicaDTO tematicaEntidadADTO(Tematica tematica){
+        TematicaDTO tematicaDTO = new TematicaDTO();
+        tematicaDTO.setId(tematica.getId());
+        tematicaDTO.setNombre(tematica.getNombre());
+        tematicaDTO.setExamen(tematica.getExamen());
+        tematicaDTO.setCategoria(tematica.getCategoria());
+        return tematicaDTO;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.controladores;
 
+import com.example.demo.dto.CategoriaDTO;
 import com.example.demo.dto.ExamenDTO;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
@@ -170,11 +171,12 @@ public class ExamenControlador {
 
         try {
             examenServicio.eliminar(id);
+            return new RedirectView("/examen/editarPreguntas/" + examenServicio.obtenerPorId(id).getTematica().getId());
         } catch (ObjetoNulloExcepcion nulo) {
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
 
-        return new RedirectView("/examen");
+        return new RedirectView("/");
     }
 
     @PostMapping("/recuperar/{id}")
@@ -189,5 +191,21 @@ public class ExamenControlador {
         }
 
         return new RedirectView("/examen");
+    }
+
+    @GetMapping("/editarPreguntas/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView editarPreguntas(@PathVariable int id, RedirectAttributes attributes){
+        ModelAndView mav = new ModelAndView("examen-detalle");
+
+        try{
+            ExamenDTO examenDTO = examenServicio.resolverExamen(id);
+            mav.addObject("examen",examenDTO);
+            mav.addObject("titulo", "Detalle de " + examenDTO.getNombre() + "");
+        }catch( ObjetoNulloExcepcion nulo){
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+        }
+
+        return mav;
     }
 }

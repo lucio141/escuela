@@ -51,8 +51,6 @@ public class ExamenServicio {
         if(!examenAux.equals(examenDTO)){
             if(mostrarExamenesPorAlta(true).contains(examenDTO)) {
                 throw new ObjetoRepetidoExcepcion("Se encontró una pregunta con el mismo enunciado");
-            }else if(mostrarExamenesPorAlta(false).contains(examenDTO)) {
-                throw new ObjetoEliminadoExcepcion("Se encontró una pregunta eliminada con el mismo enunciado");
             }
         }
 
