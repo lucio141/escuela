@@ -18,11 +18,12 @@ public class ErroresControlador implements ErrorController {
         String mensaje="";
         int codigo= response.getStatus();
 
+
         //Hay que corregir los mensajes de errores
 
         switch (codigo){
             case 400:
-                mensaje ="Error la consulta ingresada no es valido";
+                mensaje ="Error la consulta ingresada no es valida";
                 break;
             case 403:
                 mensaje="No posee accesos";
@@ -36,8 +37,8 @@ public class ErroresControlador implements ErrorController {
             default:
                 mensaje="Elol";
         }
-
-
+        mav.addObject("codigo", codigo);
+        mav.addObject("mensaje", mensaje );
         return mav;
 
     }
