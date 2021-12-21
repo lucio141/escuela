@@ -36,11 +36,12 @@
 
                                             <div class="perfil">
 
+                                                <li class="nav-item">
+                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Datos Personales</a>
+                                                </li>
+
                                                                                                 <li class="nav-item">
-                                                                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Notas</a>
-                                                                                                </li>
-                                                                                                <li class="nav-item">
-                                                                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Mis Examenes</a>
+                                                                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__/#notas}"  style="color: white;">Mis Examenes</a>
                                                                                                 </li>
                                                                                                 <li class="nav-item">
                                                                                                     <a class="nav-link  opciones" th:href="@{/usuario}" style="color: white;">Administrar Usuarios</a>
@@ -54,9 +55,7 @@
                                                                                                 <li class="nav-item">
                                                                                                     <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Administrar Examenes</a>
                                                                                                 </li>
-                                                                                                <li class="nav-item">
-                                                                                                    <a class="nav-link  opciones" th:href="@{/usuario/__${session.usuarioEnSesion.id}__}" style="color: white;">Datos Personales</a>
-                                                                                                </li>
+
 
 
                                                                             <li class="nav-item">

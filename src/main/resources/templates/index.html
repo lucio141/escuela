@@ -58,7 +58,7 @@
                         <h5 class="card-title">MIS NOTAS</h5>
                         <p class="card-text">With supporting text below as a natural lead-in to additional content.
                         </p>
-                        <a href="#" class="btn btn-primary botonPrincipales">VER MIS NOTAS</a>
+                        <a th:href="@{/usuario/__${session.usuarioEnSesion.id}__/#notas}" class="btn btn-primary botonPrincipales">VER MIS NOTAS</a>
                     </div>
                 </div>
 
@@ -66,10 +66,10 @@
 
                 <div class="card w-100 tarjetasMain">
                     <div class="card-body">
-                        <h5 class="card-title">MIS EXAMENES</h5>
+                        <h5 class="card-title">EXAMENES MAS POPULARES</h5>
                         <p class="card-text">With supporting text below as a natural lead-in to additional content.
                         </p>
-                        <a href="#" class="btn btn-primary botonPrincipales">VER MIS EXAMENES</a>
+                        <a href="#" class="btn btn-primary botonPrincipales">VER EXAMENES</a>
                     </div>
                 </div>
 

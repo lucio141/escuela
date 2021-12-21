@@ -40,6 +40,7 @@
       <div class="row">
 
 
+
         <div class="col-8">
 
           <div class="card w-100 tarjetasMain">
@@ -85,7 +86,7 @@
 
 
     <!-- HISTORIAL DE EXAMENES -->
-    <div class="container-fluid secciones">
+    <div id="notas" class="container-fluid secciones" >
 
       <h1 class="placeholder-glow">
         <span class="placeholder col-12"> </span>
@@ -100,18 +101,19 @@
       <div class="container-fluid">
 
         <div class="tarjetas">
-          <div class="card text-white  mb-3 tarjetasSecciones" style="width: 18rem;">
+
+          <div class="card text-white  mb-3 tarjetasSecciones" style="width: 18rem;" th:each="resultado : ${usuario.resultados}">
            
             <div class="card-body">
               <div class="opciones" style="display: flex; justify-content: center; margin-bottom: 10%;">  
-              <h5 class="card-title">NOMBRE EXAMEN</h5>
+              <h5 th:text="${resultado.examen.nombre}" class="card-title"></h5>
             </div>
-              <p class="card-text">Dificultad</p>
-              <p class="card-text">Nota alcanzada:</p>
-                <p class="card-text">Tematica</p>
-                  <p class="card-text">Resultado</p>
-                    <p class="card-text">Fecha de realizacion:</p>
-              <a href="#" class="btn btn-outline-secondary botonesSecciones">REPETIR EXAMEN</a>
+              <p  th:text="|DIFICULTAD: ${resultado.examen.dificultad}|" class="card-text">Dificultad</p>
+              <p th:text="|NOTA ALCANZADA: ${resultado.puntajeFinal}%|" class="card-text">Nota alcanzada:</p>
+              <p th:text="${resultado.aprobado == true} ? 'STATUS: APROBADO' : 'STATUS: DESAPROBADO'" class="card-text">Nota alcanzada:</p>
+              <p th:text="|TEMATICA: ${resultado.examen.tematica.nombre}|" class="card-text">Tematica</p>
+              <p th:text="|DURACION: ${resultado.duracion}|" class="card-text">Duracion:</p>
+              <a th:href="@{/examen/realizar/__${resultado.examen.id}__}" class="btn btn-outline-secondary botonesSecciones">REPETIR EXAMEN</a>
             </div>
           </div>
 
