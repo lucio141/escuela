@@ -39,6 +39,10 @@
 
         <h1 class="placeholder-glow">
             <span class="placeholder col-12"> </span>
+            <form th:action="@{/pregunta/crear}">
+                <input type="hidden" th:name="examenId" th:value="${examen.id}"/>
+                <button type="submit" class="btn btn-primary botonPrincipales" sec:authorize="hasRole('ADMIN')">CREAR PREGUNTA</button>
+            </form>
 
         </h1>
         <h1 th:text="|NOMBRE ${examen.nombre}|"></h1>
@@ -48,7 +52,7 @@
 
             <div class="card w-100 tarjetasMain" th:each="pregunta : ${examen.preguntas}  ">
                 <div class="card-body">
-                  <h5 th:text="${examen.nombre}" class="card-title"></h5>
+                    <h5 th:text="${examen.nombre}" class="card-title"></h5>
                     <p  th:text=" |Enunciado: ${pregunta.enunciado}|"   class="card-text">With supporting text below as a natural lead-in to additional content.
                     </p>
                     <p th:text="|PUNTAJE: ${pregunta.puntaje}|"> </p>

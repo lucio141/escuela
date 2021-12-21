@@ -46,6 +46,8 @@
 
         <form th:object="${examen}" th:action="@{/examen/__${accion}__}" method="post">
 
+            <input th:field="*{id}" type="hidden">
+
             <div class="row" style="justify-content: center;">
 
 
@@ -119,7 +121,7 @@
                 </div>
 
                 <div style="width: 47%;">
-                    <a href="#" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CANCELAR</a>
+                    <a href="@{/tematica/__${tematica.id}__}" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CANCELAR</a>
                 </div>
 
             </div>
