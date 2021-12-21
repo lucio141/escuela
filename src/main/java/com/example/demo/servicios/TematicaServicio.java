@@ -3,7 +3,9 @@ package com.example.demo.servicios;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ValidacionCampExcepcion;
 import com.example.demo.repositorios.TematicaRepositorio;
+import com.example.demo.utilidades.Utilidad;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +20,11 @@ public class TematicaServicio {
     private final ExamenServicio examenServicio;
 
     @Transactional
-    public void crearTematica(String nombre){
+    public void crearTematica(String nombre) throws ValidacionCampExcepcion {
         Tematica tematica = new Tematica();
+
+        Utilidad.validacionCadena(nombre);
+
         tematica.setNombre(nombre);
         tematicaRepositorio.save(tematica);
     }

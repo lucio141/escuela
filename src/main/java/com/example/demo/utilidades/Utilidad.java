@@ -45,7 +45,7 @@ public class Utilidad {
     Por ejemplo, validacionCadena(""); devolvería false porque contiene un espacio.
     un caso favorable del ejemplo anterior seria: validacionNombreUsuario("Juan-Carlo"); devuelve true.
     */
-    public void validacionCadena(String cadena) throws ValidacionCampExcepcion {
+    public static void validacionCadena(String cadena) throws ValidacionCampExcepcion {
         Pattern regex = Pattern.compile("^[a-zA-Z\\\\s]*$");
         Matcher matcher = regex.matcher(cadena);
 
@@ -112,7 +112,7 @@ La Edad del usuario debe ser :
         }
         return true;
     }
-    
+
     /*
     descripcion de la validacion
     El numero de telefono debe tener:
