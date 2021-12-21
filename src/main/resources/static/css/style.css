@@ -606,6 +606,33 @@ justify-content: space-around;
 
 
 
+    .botonCrearExamen{
+
+
+        border-radius: 40px !important;
+        box-shadow: #ff51c2 12px 8px 20px !important;
+        background-color: #521d39 !important ;
+        transition: all 400ms ease;
+        margin-bottom: 10%;
+
+
+
+
+
+    }
+
+
+    .botonCrearExamen:hover{
+
+
+        transform: translateY(-4%);
+        box-shadow: #ff51c2 12px 8px 50px !important;
+    }
+
+
+
+
+
 
 
 

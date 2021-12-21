@@ -39,8 +39,23 @@
 
             <h1  class="placeholder-glow opciones">
                 <span class="placeholder col-12"> </span>
-                <h1 th:text="${tematica.nombre}"> </h1>
+
             </h1>
+
+
+            <div style="display: flex;">
+
+                <h1>NOMBRE TEMATICA</h1>
+
+                <div  style="width: 30%; margin-left: 5%; margin-top: 1%;  ">
+                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/examen/crear}" class="btn btn-primary botonCrearExamen" style="width: 100%;">CREAR EXAMEN</a>
+                </div>
+
+
+            </div>
+
+
+
 
 
 
