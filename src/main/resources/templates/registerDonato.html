@@ -148,7 +148,7 @@
 
 
 
-                <select th:field="*{rol}" name="rol" th:value="rolUsuario.id" id="" class="selectForm">
+                <select th:field="*{rol}" name="rol" th:value="rolUsuario" id="" class="selectForm">
 
                   <option value="">Rol</option>
                   <option  th:each="rol : ${roles} " th:value="${rol.id}" th:text="${rol.nombre}"></option>
