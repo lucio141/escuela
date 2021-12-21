@@ -32,7 +32,6 @@ public class ExamenControlador {
     private final TematicaServicio tematicaServicio;
     private final ResultadoServicio resultadoServicio;
 
-
     /*
     @GetMapping("/{id}")
     public ModelAndView mostrarExamen(@PathVariable int id, HttpServletRequest request) {
@@ -70,8 +69,8 @@ public class ExamenControlador {
 
     @GetMapping("/top20")
     public ModelAndView mostrarExamenesMasBuscados(RedirectAttributes attributes) {
-        ModelAndView mav = new ModelAndView("examen");
-        mav.addObject("titulo", "Top20");
+        ModelAndView mav = new ModelAndView("top20");
+        mav.addObject("titulo", "top20");
         try {
             mav.addObject("examenes", examenServicio.mostrarExamenesMasBuscados());
         } catch (ObjetoNulloExcepcion nulo) {
