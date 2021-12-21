@@ -43,23 +43,23 @@
 
            
 
-            <div class="col-3" id="top5" style="margin-top: 5%;">
+            <div class="col-3" id="top5" style="margin-top: 5%;" th:each="examen : ${examenes}">
   
                 <div class="card text-white  mb-3 tarjetaTopMain" style="width: 100%; margin-top: 5%;">
 
 
                   <div class="card-body" style="margin-right: 3%; margin-left: 3%;" >
                       <div style="display: flex; justify-content: center;">  
-                    <h2 class="card-title opciones">NOMBRE DE EXAMEN</h2>
+                    <h2 class="card-title opciones" th:text="${examen.examenDTO.nombre}">NOMBRE DE EXAMEN</h2>
                 </div>
 
                 <DIV style="display: inline;">
 
-                    <div class="card w-100 tarjetaTop" style="width: 49%;">
+                    <div class="card w-100 tarjetaTop" style="width: 49%;" >
                         <div class="card-body">
-                            <h5 class="card-title">Dificultad</h5>
-                            <h5 class="card-title">Tematica</h5>
-                            
+                            <h5 class="card-title" th:text="|DIFICULTAD: ${examen.examenDTO.dificultad}|">Dificultad</h5>
+                            <h5 class="card-title" th:text="|TEMATICA: ${examen.examenDTO.tematica.nombre}|">Tematica</h5>
+                            <h5 class="card-title" th:text="|VECES RESUELTO: ${examen.cantidad}|">Tematica</h5>
                         </div>
 
 
