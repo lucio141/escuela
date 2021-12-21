@@ -121,10 +121,9 @@ public class TematicaControlador {
 
         try{
             tematicaServicio.modificarTematica(nombre,id);
-        }catch( ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+        }catch(ObjetoNulloExcepcion | ValidacionCampExcepcion validacion){
+            attributes.addFlashAttribute("errorValidacion", validacion.getMessage());
         }
-
         return new RedirectView("/tematica/admin");
     }
 

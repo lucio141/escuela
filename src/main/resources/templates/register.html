@@ -35,6 +35,7 @@
 
           <a class="navbar-brand" href="#" style="color: rgb(255, 254, 254);">SchoolHouse</a>
         </div>
+      </div>
     </nav>
 
   </header>
@@ -46,7 +47,7 @@
     <!-- SECCION PRINCIPAL -->
     <div class="container-fluid seccionPrincipal">
 
-      <form action="action_page.php" method="post">
+      <form action="@{/register}" th:object="${register}" method="post">
         <div class="imgcontainer">
           <img th:src= "@{/img/logo.png}" alt="LoginImg" class="loginImg">
         </div>
@@ -54,22 +55,22 @@
         <div class="container">
 
             <label for="name"><b>Nombre</b></label>
-            <input type="text" placeholder="Ingresar nombre" name="name" required>
+            <input type="text" placeholder="Ingresar nombre" name="name" th:field="*{name}" required>
 
             <label for="apell"><b>Apellido</b></label>
-            <input type="text" placeholder="Ingresar apellido" name="apell" required>
+            <input type="text" placeholder="Ingresar apellido" name="apell" th:field="*{apell}" required>
 
             <label for="age"><b>Edad</b></label>
-            <input type="text" placeholder="Ingresar edad" name="age" required>
+            <input type="text" placeholder="Ingresar edad" name="age" th:field="*{age}" required>
 
             <label for="tel"><b>Telefono</b></label>
-            <input type="text" placeholder="Ingresar telefono" name="tel" required>
+            <input type="text" placeholder="Ingresar telefono" name="tel" th:field="*{tel}" required>
 
             <label for="email"><b>Correo Electronico</b></label>
-            <input type="text" placeholder="Ingresar email" name="email" required>
+            <input type="text" placeholder="Ingresar email" name="email" th:field="*{email}" required>
 
             <label for="pass"><b>Contraseña</b></label>
-            <input type="password" placeholder="Ingresar contraseña" name="pass" required>
+            <input type="password" placeholder="Ingresar contraseña" name="pass" th:field="*{pass}" required>
 
 
             <button type="submit">Registrarse</button>

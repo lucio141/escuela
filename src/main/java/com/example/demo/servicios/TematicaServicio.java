@@ -30,8 +30,11 @@ public class TematicaServicio {
     }
 
     @Transactional
-    public void modificarTematica(String nombre,Integer id)throws ObjetoNulloExcepcion{
+    public void modificarTematica(String nombre,Integer id) throws ObjetoNulloExcepcion, ValidacionCampExcepcion {
         Tematica tematica = obtenerPorId(id);
+
+        Utilidad.validacionCadena(nombre);
+
         tematica.setNombre(nombre);
         tematicaRepositorio.save(tematica);
     }
