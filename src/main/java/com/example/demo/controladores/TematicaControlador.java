@@ -3,6 +3,7 @@ package com.example.demo.controladores;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.entidades.Resultado;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ValidacionCampExcepcion;
 import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -104,8 +105,13 @@ public class TematicaControlador {
 
     @PostMapping("/guardar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardarTematicas(@RequestParam String nombre){
-        tematicaServicio.crearTematica(nombre);
+    public RedirectView guardarTematicas(@RequestParam String nombre, RedirectAttributes attributes){
+        try {
+            tematicaServicio.crearTematica(nombre);
+        }catch (ValidacionCampExcepcion validacion){
+            attributes.addFlashAttribute("errorValidacion", validacion.getMessage());
+        }
+
         return new RedirectView("/tematica/admin");
     }
 

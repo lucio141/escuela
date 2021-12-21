@@ -26,7 +26,8 @@ public class UsuarioControlador {
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarUsuarios(){
         ModelAndView mav = new ModelAndView("usuario");//
-        mav.addObject("usuario", usuarioServicio.mostrarUsuariosPorAlta(true));
+        mav.addObject("usuarios", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("USER")));
+        mav.addObject("admins", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("ADMIN")));
         mav.addObject("titulo", "Tabla de Usuarios");
         return mav;
     }

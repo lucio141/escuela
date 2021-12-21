@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 
@@ -30,26 +31,9 @@ public class ExamenControlador {
     private final ExamenServicio examenServicio;
     private final TematicaServicio tematicaServicio;
     private final ResultadoServicio resultadoServicio;
- /*
-    @GetMapping()
-    public ModelAndView mostrarExamenes(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("examen");
-        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
-
-        if(map != null){
-            mav.addObject("errorNulo", map.get("errorNulo"));
-            mav.addObject("padreNulo", map.get("padreNulo"));
-            //mav.addObject("exito", map.get("success"));
-        }
-
-        mav.addObject("titulo", "Examenes");
-        mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(true));
-        mav.addObject("categorias", categoriaServicio.mostrarCategorias());
-        mav.addObject("tematicas", tematicaServicio.mostrarTematicas());
-        return mav;
-    }
 
 
+    /*
     @GetMapping("/{id}")
     public ModelAndView mostrarExamen(@PathVariable int id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
@@ -83,6 +67,19 @@ public class ExamenControlador {
         return mav;
     }
 */
+
+    @GetMapping("/top20")
+    public ModelAndView mostrarExamenesMasBuscados(RedirectAttributes attributes) {
+        ModelAndView mav = new ModelAndView("examen");
+        mav.addObject("titulo", "Top20");
+        try {
+            mav.addObject("examenes", examenServicio.mostrarExamenesMasBuscados());
+        } catch (ObjetoNulloExcepcion nulo) {
+            attributes.addFlashAttribute("error-nulo", nulo);
+        }
+        return mav;
+    }
+
     @GetMapping("/crear")
    // @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearExamen() {

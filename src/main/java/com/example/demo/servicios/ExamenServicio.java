@@ -2,6 +2,7 @@ package com.example.demo.servicios;
 
 import com.example.demo.dto.ExamenDTO;
 import com.example.demo.dto.PreguntaDTO;
+import com.example.demo.dto.Top20ExamenesDTO;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Tematica;
@@ -16,6 +17,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -65,6 +67,16 @@ public class ExamenServicio {
     @Transactional(readOnly = true)
     public List<ExamenDTO> mostrarExamenesPorAlta(Boolean alta) {
         return Mapper.listaExamenEntidadADTO(examenRepositorio.mostrarPorAlta(alta));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Top20ExamenesDTO> mostrarExamenesMasBuscados() throws ObjetoNulloExcepcion {
+        List<Top20ExamenesDTO> top20 = new ArrayList<Top20ExamenesDTO>();
+        List<Integer> cantidades = examenRepositorio.cuentaExamenesMasBuscados();
+        for (Integer id: examenRepositorio.examenesMasBuscados()) {
+            top20.add(new Top20ExamenesDTO(obtenerPorId(id), cantidades.get(examenRepositorio.examenesMasBuscados().indexOf(id))));
+        }
+        return top20;
     }
 
     @Transactional
@@ -130,5 +142,6 @@ public class ExamenServicio {
 
         examenRepositorio.darAlta(id);
     }
+
 }
 
