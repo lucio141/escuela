@@ -1,9 +1,11 @@
 package com.example.demo.controladores;
 
+import com.example.demo.entidades.Categoria;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.entidades.Resultado;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.excepciones.ValidacionCampExcepcion;
+import com.example.demo.servicios.CategoriaServicio;
 import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,7 @@ import java.util.Map;
 public class TematicaControlador {
 
     private final TematicaServicio tematicaServicio;
+    private final CategoriaServicio categoriaServicio;
 /*
     @GetMapping
     //@PreAuthorize("hasRole('ADMIN')")
@@ -67,6 +70,7 @@ public class TematicaControlador {
     public ModelAndView crearTematica(){
         ModelAndView mav = new ModelAndView("tematica-formulario");
         mav.addObject("tematica",new Tematica() );
+        mav.addObject("categorias", categoriaServicio.mostrarCategoriasPorAlta(true));
         mav.addObject("titulo", "Crear Tematica");
         mav.addObject("accion", "guardar");
         return mav;
@@ -105,9 +109,9 @@ public class TematicaControlador {
 
     @PostMapping("/guardar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardarTematicas(@RequestParam String nombre, RedirectAttributes attributes){
+    public RedirectView guardarTematicas(@RequestParam String nombre, RedirectAttributes attributes, @RequestParam(name = "categoria") Categoria categoria){
         try {
-            tematicaServicio.crearTematica(nombre);
+            tematicaServicio.crearTematica(nombre, categoria);
         }catch (ValidacionCampExcepcion validacion){
             attributes.addFlashAttribute("errorValidacion", validacion.getMessage());
         }
