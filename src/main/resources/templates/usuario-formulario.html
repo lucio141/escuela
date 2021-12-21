@@ -60,14 +60,6 @@
                     Inserte su numero de telefono por favor
                 </div>
             </div>  
-            <div class="input-group mb-3 mt-3">
-                <label class="input-group-text" for="inputGroupSelect01">Rol</label>
-                <select class="form-select" id="inputGroupSelect01" th:field="*{rol}">
-                    <option selected value="">Elija un rol...</option>
-                    <option th:each="rol : ${roles}" th:value="${rol.id}" th:value="${usuario.rol}" th:text="${rol.nombre}">
-                    </option>
-                </select>
-            </div>
             <div class="col-12 d-flex justify-content-center">    
                 <button class="btn btn-primary mt-5" type="submit" 
                         th:text="${accion == 'guardar'} ? 'Crear Cliente' : 'Guardar cambios'">Enviar</button>

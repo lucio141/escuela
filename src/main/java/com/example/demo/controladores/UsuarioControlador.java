@@ -1,5 +1,6 @@
 package com.example.demo.controladores;
 
+import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -26,10 +28,13 @@ public class UsuarioControlador {
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarUsuarios(){
         ModelAndView mav = new ModelAndView("usuario");//
-        mav.addObject("usuarios", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("USER"),true));
-        mav.addObject("admins", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("ADMIN"),true));
-        mav.addObject("usuariosEliminados", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("USER"),false));
-        mav.addObject("adminsEliminados", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("ADMIN"),false));
+        mav.addObject("usuarios", usuarioServicio.mostrarUsuariosPorRolYAlta(rolServicio.mostrarPorNombre("USER"),true));
+        mav.addObject("admins", usuarioServicio.mostrarUsuariosPorRolYAlta(rolServicio.mostrarPorNombre("ADMIN"),true));
+        List<UsuarioDTO> usuariosDTOADMIN = usuarioServicio.mostrarUsuariosPorRolYAlta(rolServicio.mostrarPorNombre("ADMIN"),false);
+        List<UsuarioDTO> usuariosDTOUSER = usuarioServicio.mostrarUsuariosPorRolYAlta(rolServicio.mostrarPorNombre("USER"),false);
+        mav.addObject("usuariosEliminados", usuariosDTOADMIN);
+        mav.addObject("adminsEliminados", usuariosDTOUSER);
+        mav.addObject("eliminados", usuariosDTOADMIN.size() + usuariosDTOUSER.size() == 0);
         mav.addObject("titulo", "Tabla de Usuarios");
         return mav;
     }
@@ -137,15 +142,15 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardarUsuario(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam Integer edad, @RequestParam String mail, @RequestParam String telefono, @RequestParam(name = "rol") Rol rol) {
-        usuarioServicio.crearUsuario(nombre, apellido, nombreUsuario, contrasenia, edad, mail, telefono, rol);
+    public RedirectView guardarUsuario(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String nombreUsuario, @RequestParam String contrasenia, @RequestParam Integer edad, @RequestParam String mail, @RequestParam String telefono) {
+        usuarioServicio.crearUsuario(nombre, apellido, nombreUsuario, contrasenia, edad, mail, telefono);
         return new RedirectView("/usuario");
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam(name = "usuarioId") Integer id, @RequestParam String nombre, @RequestParam String apellido,  @RequestParam String nombreUsuario, @RequestParam Integer edad, @RequestParam String telefono, @RequestParam String mail, @RequestParam Rol rol, HttpSession sesion, RedirectAttributes attributes){
+    public RedirectView modificar(@RequestParam(name = "usuarioId") Integer id, @RequestParam String nombre, @RequestParam String apellido,  @RequestParam String nombreUsuario, @RequestParam Integer edad, @RequestParam String telefono, @RequestParam String mail, HttpSession sesion, RedirectAttributes attributes){
         try{
-            usuarioServicio.modificarUsuario(id, nombre, apellido, nombreUsuario, edad, mail, telefono, rol);
+            usuarioServicio.modificarUsuario(id, nombre, apellido, nombreUsuario, edad, mail, telefono);
 
             if((int)sesion.getAttribute("id") == id){
                 return new RedirectView("/usuario/"+id);
@@ -178,6 +183,18 @@ public class UsuarioControlador {
     public RedirectView eliminarUsuario(@PathVariable Integer id, RedirectAttributes attributes){
         try {
             usuarioServicio.eliminar(id);
+        }catch (ObjetoNulloExcepcion nulo) {
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+        }
+
+        return new RedirectView("/usuario");
+    }
+
+    @PostMapping("/cambiarRol/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public RedirectView cambiarRol(@PathVariable Integer id, RedirectAttributes attributes){
+        try {
+            usuarioServicio.modificarRolUsuario(id);
         }catch (ObjetoNulloExcepcion nulo) {
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }

@@ -1,5 +1,6 @@
 package com.example.demo.servicios;
 
+import com.example.demo.entidades.Categoria;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
@@ -20,22 +21,22 @@ public class TematicaServicio {
     private final ExamenServicio examenServicio;
 
     @Transactional
-    public void crearTematica(String nombre) throws ValidacionCampExcepcion {
+    public void crearTematica(String nombre, Categoria categoria) throws ValidacionCampExcepcion {
         Tematica tematica = new Tematica();
 
-        Utilidad.validacionCadena(nombre);
 
         tematica.setNombre(nombre);
+        tematica.setCategoria(categoria);
         tematicaRepositorio.save(tematica);
     }
 
     @Transactional
-    public void modificarTematica(String nombre,Integer id) throws ObjetoNulloExcepcion, ValidacionCampExcepcion {
+    public void modificarTematica(String nombre,Integer id,Categoria categoria) throws ObjetoNulloExcepcion, ValidacionCampExcepcion {
         Tematica tematica = obtenerPorId(id);
 
-        Utilidad.validacionCadena(nombre);
 
         tematica.setNombre(nombre);
+        tematica.setCategoria(categoria);
         tematicaRepositorio.save(tematica);
     }
 
