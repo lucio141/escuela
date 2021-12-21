@@ -95,8 +95,8 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Transactional
-    public List<UsuarioDTO> mostrarUsuariosPorRol(Rol rol){
-        return Mapper.listaUsuarioEntidadADTO(usuarioRepositorio.mostrarPorRol(rol));
+    public List<UsuarioDTO> mostrarUsuariosPorRol(Rol rol,Boolean alta){
+        return Mapper.listaUsuarioEntidadADTO(usuarioRepositorio.mostrarPorRolYAlta(rol,alta));
     }
 
     @Transactional
