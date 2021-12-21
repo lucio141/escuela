@@ -83,6 +83,7 @@ public class TematicaControlador {
 
         try{
             mav.addObject("tematica",tematicaServicio.obtenerPorId(id));
+            mav.addObject("categorias", categoriaServicio.mostrarCategoriasPorAlta(true));
             mav.addObject("titulo", "Editar Tematica");
             mav.addObject("accion", "modificar");
         }catch(ObjetoNulloExcepcion nulo){
@@ -109,7 +110,7 @@ public class TematicaControlador {
 
     @PostMapping("/guardar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardarTematicas(@RequestParam String nombre, RedirectAttributes attributes, @RequestParam(name = "categoria") Categoria categoria){
+    public RedirectView guardarTematicas(@RequestParam String nombre, @RequestParam(name = "categoria") Categoria categoria, RedirectAttributes attributes){
         try {
             tematicaServicio.crearTematica(nombre, categoria);
         }catch (ValidacionCampExcepcion validacion){
@@ -121,10 +122,10 @@ public class TematicaControlador {
 
     @PostMapping("/modificar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView modificar( @RequestParam String nombre,@RequestParam int id, RedirectAttributes attributes){
+    public RedirectView modificar( @RequestParam String nombre,@RequestParam int id, @RequestParam(name = "categoria") Categoria categoria, RedirectAttributes attributes){
 
         try{
-            tematicaServicio.modificarTematica(nombre,id);
+            tematicaServicio.modificarTematica(nombre,id, categoria);
         }catch(ObjetoNulloExcepcion | ValidacionCampExcepcion validacion){
             attributes.addFlashAttribute("errorValidacion", validacion.getMessage());
         }
