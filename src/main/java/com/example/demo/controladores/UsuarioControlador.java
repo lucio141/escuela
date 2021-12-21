@@ -7,6 +7,7 @@ import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.RolServicio;
 import com.example.demo.servicios.UsuarioServicio;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,7 +26,7 @@ public class UsuarioControlador {
     private final RolServicio rolServicio;
 
     @GetMapping
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarUsuarios(){
         ModelAndView mav = new ModelAndView("usuario");//
         mav.addObject("usuarios", usuarioServicio.mostrarUsuariosPorRolYAlta(rolServicio.mostrarPorNombre("USER"),true));
@@ -38,18 +39,9 @@ public class UsuarioControlador {
         mav.addObject("titulo", "Tabla de Usuarios");
         return mav;
     }
-/*
-    @GetMapping("/baja")
-    //@PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView mostrarUsuariosBaja(){
-        ModelAndView mav = new ModelAndView("");// Vista de Usuarios FALTA
-        mav.addObject("usuario", usuarioServicio.mostrarUsuariosPorAlta(false));
-        mav.addObject("titulo", "Tabla de Usuarios Baja");
-        return mav;
-    }
-*/
+
     @GetMapping("/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView obtenerPerfil(@PathVariable int id, RedirectAttributes attributes, HttpSession session){
         ModelAndView mav = new ModelAndView("perfil");
         try{

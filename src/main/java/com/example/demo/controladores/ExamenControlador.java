@@ -11,6 +11,7 @@ import com.example.demo.servicios.ResultadoServicio;
 import com.example.demo.servicios.TematicaServicio;
 import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,7 +31,7 @@ public class ExamenControlador {
     private final ResultadoServicio resultadoServicio;
 
     @GetMapping("/admin")
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarExamenesBaja() {
         ModelAndView mav = new ModelAndView("examen-administrador");
         mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(false));
@@ -52,7 +53,7 @@ public class ExamenControlador {
     }
 
     @GetMapping("/crear")
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearExamen() {
         ModelAndView mav = new ModelAndView("examen-formulario");
         mav.addObject("examen", new Examen());
@@ -64,7 +65,7 @@ public class ExamenControlador {
     }
 
     @GetMapping("/editar/{id}")
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarExamen(@PathVariable int id, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("examen-formulario"); // Falta crear examen formulario que mande el ID
 
@@ -82,7 +83,7 @@ public class ExamenControlador {
     }
 
     @GetMapping("/realizar/{id}")
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView realizarExamen(@PathVariable int id, RedirectAttributes attributes, HttpSession session) {
         ModelAndView mav = new ModelAndView("hacer-examen");
 
@@ -102,7 +103,7 @@ public class ExamenControlador {
     }
 
     @PostMapping("/guardar")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView guardar(@RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
 
         try {
@@ -113,17 +114,17 @@ public class ExamenControlador {
             attributes.addFlashAttribute("error", "No se encontro el Examen");
         }
 
-        return new RedirectView("/pregunta/crear");
+            return new RedirectView("/pregunta/crear");
     }
 
     @PostMapping("/modificar")
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@RequestParam int id, @RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
 
         try {
             examenServicio.modificarExamen(id, dificultad, tematica, notaRequerida, nombre);
-            ExamenDTO examenDTO = examenServicio.obtenerPorId(id);
-            return new RedirectView("/tematica/"+ examenDTO.getTematica().getId());
+            attributes.addFlashAttribute("examen", examenServicio.obtenerPorId(id));
+            return new RedirectView("/examen/{" + id + "}");
         } catch(ObjetoNulloExcepcion nulo) {
             System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("error", nulo.getMessage());
@@ -140,7 +141,7 @@ public class ExamenControlador {
     }
 
     @PostMapping("/eliminar/{id}")
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminar(@PathVariable int id, RedirectAttributes attributes) {
 
         try {
@@ -154,7 +155,7 @@ public class ExamenControlador {
     }
 
     @PostMapping("/recuperar/{id}")
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView recuperar(@PathVariable int id, RedirectAttributes attributes) {
 
         try {
@@ -168,7 +169,7 @@ public class ExamenControlador {
     }
 
     @GetMapping("/editarPreguntas/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarPreguntas(@PathVariable int id, RedirectAttributes attributes){
         ModelAndView mav = new ModelAndView("examen-detalle");
 

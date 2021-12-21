@@ -5,6 +5,7 @@ import com.example.demo.entidades.Resultado;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.ResultadoServicio;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -76,7 +77,7 @@ public class ResultadoControlador {
     }
 
     @PostMapping("/eliminar/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminarResultado(@PathVariable int id, RedirectAttributes attributes) {
         try {
             resultadoServicio.eliminar(id);
@@ -87,7 +88,7 @@ public class ResultadoControlador {
     }
 
     @PostMapping("/recuperar/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView recuperarResultado(@PathVariable int id, RedirectAttributes attributes) {
 
         try {
