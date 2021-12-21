@@ -23,6 +23,8 @@
 
 <header th:fragment="header">
 
+
+
     <nav class="navbar navbar-light  fixed-top" style="background-color: #2E4159;">
 
         <div class="container-fluid" style="background-color: #2E4159; font-size: x-large;">
@@ -94,8 +96,21 @@
 
 
                                                     </nav>
+                                                    <div th:unless="${error.isEmpty()}" class="row" style="justify-content: center; height: 30%; margin-top: 5%;">
 
-                                                </header>
+                                                        <div class="card text-white  mb-3 tarjetasExcepciones col-8" style="margin-top: 2%;">
+                                                  
+                                                            <div class="card-body" style="color: white;">
+                                                              <h5 class="card-title">ERROR</h5>
+                                                              <p class="card-text" th:text="${error}">Descripcion de la excepciones</p>
+                                                            </div>
+                                                  
+                                                          </div>
+                                                  
+                                                  
+                                                    </div>
+                                                  
+ </header>
 
 <footer th:fragment="footer" class="container-fluid">
     <div class="row">

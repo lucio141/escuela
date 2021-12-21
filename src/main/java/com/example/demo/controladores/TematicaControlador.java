@@ -99,7 +99,7 @@ public class TematicaControlador {
         ModelAndView mav = new ModelAndView("tematica");
 
         try{
-            mav.addObject("tematica",tematicaServicio.obtenerPorId(id));
+            mav.addObject("tematica", tematicaServicio.tematicaDetalles(id));
             mav.addObject("resultado", new Resultado());
         }catch( ObjetoNulloExcepcion nulo){
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());

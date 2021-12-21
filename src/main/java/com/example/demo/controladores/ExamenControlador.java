@@ -171,11 +171,12 @@ public class ExamenControlador {
 
         try {
             examenServicio.eliminar(id);
+            return new RedirectView("/examen/editarPreguntas/" + examenServicio.obtenerPorId(id).getTematica().getId());
         } catch (ObjetoNulloExcepcion nulo) {
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
 
-        return new RedirectView("/examen");
+        return new RedirectView("/");
     }
 
     @PostMapping("/recuperar/{id}")
@@ -195,10 +196,10 @@ public class ExamenControlador {
     @GetMapping("/editarPreguntas/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarPreguntas(@PathVariable int id, RedirectAttributes attributes){
-        ModelAndView mav = new ModelAndView("/*HACER PREGUNTA COMO CATEGORIA DETALLE*/");
+        ModelAndView mav = new ModelAndView("examen-detalle");
 
         try{
-            ExamenDTO examenDTO = examenServicio.obtenerPorId(id);
+            ExamenDTO examenDTO = examenServicio.resolverExamen(id);
             mav.addObject("examen",examenDTO);
             mav.addObject("titulo", "Detalle de " + examenDTO.getNombre() + "");
         }catch( ObjetoNulloExcepcion nulo){

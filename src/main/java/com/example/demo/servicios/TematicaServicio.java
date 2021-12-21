@@ -1,12 +1,13 @@
 package com.example.demo.servicios;
 
+import com.example.demo.dto.TematicaDTO;
 import com.example.demo.entidades.Categoria;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.excepciones.ValidacionCampExcepcion;
 import com.example.demo.repositorios.TematicaRepositorio;
-import com.example.demo.utilidades.Utilidad;
+import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,12 +33,10 @@ public class TematicaServicio {
 
     @Transactional
     public void modificarTematica(String nombre,Integer id,Categoria categoria) throws ObjetoNulloExcepcion, ValidacionCampExcepcion {
-        Tematica tematica = obtenerPorId(id);
-
-
-        tematica.setNombre(nombre);
-        tematica.setCategoria(categoria);
-        tematicaRepositorio.save(tematica);
+        TematicaDTO tematicaDTO = obtenerPorId(id);
+        tematicaDTO.setNombre(nombre);
+        tematicaDTO.setCategoria(categoria);
+        tematicaRepositorio.save(Mapper.tematicaDTOAEntidad(tematicaDTO));
     }
 
     @Transactional
@@ -52,21 +51,21 @@ public class TematicaServicio {
     }
 
     @Transactional(readOnly = true)
-    public Tematica obtenerPorId(Integer id)throws ObjetoNulloExcepcion{
-        Tematica tematica = tematicaRepositorio.findById(id).orElse(null);
+    public TematicaDTO obtenerPorId(Integer id)throws ObjetoNulloExcepcion{
+        TematicaDTO tematicaDTO = Mapper.tematicaEntidadADTO(tematicaRepositorio.findById(id).orElse(null));
 
-        if(tematica == null){
+        if(tematicaDTO == null){
             throw new ObjetoNulloExcepcion("No se ha encontrado la tematica");
         }
 
-        return tematica;
+        return tematicaDTO;
     }
 
     @Transactional
     public void eliminar(Integer id) throws ObjetoNulloExcepcion {
-        Tematica t = this.obtenerPorId(id);
+        TematicaDTO tematicaDTO =  Mapper.tematicaEntidadADTO(tematicaRepositorio.findById(id).orElse(null));
 
-        for (Examen examen: t.getExamen()) {
+        for (Examen examen: tematicaDTO.getExamen()) {
             if(examen.getAlta()){
                 examenServicio.eliminar(examen.getId());
             }
@@ -82,5 +81,14 @@ public class TematicaServicio {
 
     public List<Tematica> obtenenetTematicaPorCat(Integer categoriaId){
         return tematicaRepositorio.mostrarPorCategoria(categoriaId);
+    }
+
+    @Transactional
+    public TematicaDTO tematicaDetalles(int id) throws ObjetoNulloExcepcion {
+        TematicaDTO tematicaDTO = obtenerPorId(id);
+
+        tematicaDTO.getExamen().removeIf(e -> !e.getAlta());
+
+        return tematicaDTO;
     }
 }

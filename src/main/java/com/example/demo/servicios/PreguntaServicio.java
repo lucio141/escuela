@@ -49,8 +49,6 @@ public class PreguntaServicio {
 
         if(mostrarPreguntasPorAlta(true).contains(preguntaDTO)) {
             throw new ObjetoRepetidoExcepcion("Se encontró una pregunta con el mismo enunciado");
-        }else if(mostrarPreguntasPorAlta(false).contains(preguntaDTO)) {
-            throw new ObjetoEliminadoExcepcion("Se encontró una pregunta eliminada con el mismo enunciado");
         }
         preguntaRepositorio.save(Mapper.preguntaDTOAEntidad(preguntaDTO));
     }
@@ -68,8 +66,6 @@ public class PreguntaServicio {
         if(!preguntaAux.equals(preguntaDTO)){
             if(mostrarPreguntasPorAlta(true).contains(preguntaDTO)) {
                 throw new ObjetoRepetidoExcepcion("Se encontró una pregunta con el mismo enunciado");
-            }else if(mostrarPreguntasPorAlta(false).contains(preguntaDTO)) {
-                throw new ObjetoEliminadoExcepcion("Se encontró una pregunta eliminada con el mismo enunciado");
             }
         }
 
