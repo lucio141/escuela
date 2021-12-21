@@ -2,6 +2,7 @@ package com.example.demo.servicios;
 
 import com.example.demo.dto.ExamenDTO;
 import com.example.demo.dto.PreguntaDTO;
+import com.example.demo.dto.Top20ExamenesDTO;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Tematica;
@@ -69,10 +70,11 @@ public class ExamenServicio {
     }
 
     @Transactional(readOnly = true)
-    public List<ExamenDTO> mostrarExamenesMasBuscados() throws ObjetoNulloExcepcion {
-        List<ExamenDTO> top20 = new ArrayList<ExamenDTO>();
+    public List<Top20ExamenesDTO> mostrarExamenesMasBuscados() throws ObjetoNulloExcepcion {
+        List<Top20ExamenesDTO> top20 = new ArrayList<Top20ExamenesDTO>();
+        List<Integer> cantidades = examenRepositorio.cuentaExamenesMasBuscados();
         for (Integer id: examenRepositorio.examenesMasBuscados()) {
-            top20.add(obtenerPorId(id));
+            top20.add(new Top20ExamenesDTO(obtenerPorId(id), cantidades.get(examenRepositorio.examenesMasBuscados().indexOf(id))));
         }
         return top20;
     }
@@ -140,7 +142,6 @@ public class ExamenServicio {
 
         examenRepositorio.darAlta(id);
     }
-
 
 }
 
