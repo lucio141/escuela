@@ -65,6 +65,7 @@
                             <a th:href="@{/examen/realizar/__${examen.id}__}" class="btn btn-primary botonPrincipales">COMENZAR EXAMEN</a>
                             <a th:href="@{/examen/editar/__${examen.id}__}" class="btn btn-primary botonPrincipales" sec:authorize="hasRole('ADMIN')">EDITAR EXAMEN</a>
                             <a th:href="@{/examen/eliminar/__${examen.id}__}" class="btn btn-primary botonPrincipales" sec:authorize="hasRole('ADMIN')">ELIMINAR EXAMEN</a>
+                            <a th:href="@{/examen/editarPreguntas/__${examen.id}__}" class="btn btn-primary botonPrincipales" sec:authorize="hasRole('ADMIN')">EDITAR PREGUNTAS</a>
                         </div>
                     </div>
 

@@ -1,5 +1,6 @@
 package com.example.demo.controladores;
 
+import com.example.demo.dto.CategoriaDTO;
 import com.example.demo.dto.ExamenDTO;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
@@ -189,5 +190,21 @@ public class ExamenControlador {
         }
 
         return new RedirectView("/examen");
+    }
+
+    @GetMapping("/editarPreguntas/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView editarPreguntas(@PathVariable int id, RedirectAttributes attributes){
+        ModelAndView mav = new ModelAndView("/*HACER PREGUNTA COMO CATEGORIA DETALLE*/");
+
+        try{
+            ExamenDTO examenDTO = examenServicio.obtenerPorId(id);
+            mav.addObject("examen",examenDTO);
+            mav.addObject("titulo", "Detalle de " + examenDTO.getNombre() + "");
+        }catch( ObjetoNulloExcepcion nulo){
+            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+        }
+
+        return mav;
     }
 }
