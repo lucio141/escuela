@@ -27,8 +27,6 @@
 <header th:replace="fragmentos :: header"></header>
 
 
-
-
   <main>
 
 
@@ -42,9 +40,7 @@
 
       </h1>
     
-      <button style="margin-bottom: 2%;" href="#" class="btn btn-outline-secondary botonesCrear">CREAR EXAMEN</button>
-
-
+      <a style="margin-bottom: 2%;" th:href="@{/examen/crear}" class="btn btn-outline-secondary botonesCrear">CREAR EXAMEN</a>
 
       <div class="tematicas row" style="display: flex; justify-content: space-around;">
 
@@ -58,8 +54,6 @@
                 </div>
               </div>
               
-
-
               <p class="card-text">Dificultad</p>
               <p class="card-text">Nota alcanzada:</p>
                 <p class="card-text">Tematica</p>
