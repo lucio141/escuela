@@ -580,7 +580,29 @@ justify-content: space-around;
 
                 }
 
+.tarjetasExcepciones{
 
+
+        border-radius: 40px !important;
+        box-shadow: #d60505 12px 20px 60px !important;
+        background-color: #e41a1a !important;
+        transition: all 400ms ease;
+        color: rgb(0, 0, 0);
+        margin-bottom: 10%;
+
+
+
+
+
+    }
+
+
+    .tarjetasExcepciones:hover{
+
+    transform: translateY(-3%);
+    box-shadow: #d60505 12px 20px 60px !important;
+
+    }
 
 
 

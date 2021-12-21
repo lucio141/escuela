@@ -103,7 +103,7 @@ public class PreguntaControlador{
             System.out.println(eliminado.getMessage());
         }
 
-        return new RedirectView("/examen/{"+ examen.getId() + "}");
+        return new RedirectView("/examen/"+ examen.getId() );
     }
 
     @PostMapping("/eliminar/{id}")
@@ -112,11 +112,11 @@ public class PreguntaControlador{
 
         try{
             preguntaServicio.eliminar(id);
-            return new RedirectView("/../examen/{" + preguntaServicio.obtenerPorId(id).getExamen().getId() + "}");
+            return new RedirectView("/examen/editarPreguntas/" + preguntaServicio.obtenerPorId(id).getExamen().getId());
         }catch (ObjetoNulloExcepcion nulo){
             System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
-            return new RedirectView("/examen");
+            return new RedirectView("/");
         }
 
     }
