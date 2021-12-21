@@ -150,7 +150,7 @@
             </div>
 
             <!-- CAJA PREGUNTA -->
-            <div  class="card w-100 tarjetasMain" th:each="pregunta : ${examen.preguntas}">
+            <div style="font-size: large;" class="card w-100 tarjetasMain" th:each="pregunta : ${examen.preguntas}">
 
               <div class="card-body">
 
@@ -159,10 +159,18 @@
                 <div class="mb-3 row">
 
 
-                  <div style="display: flex;">
+                  <div >
 
+                    <div>
+                      <p th:text="|PUNTAJE: ${pregunta.puntaje}|" class="inputExamen" type="text"> </p>
+                    </div>
+
+                    <div>
                     <p th:text="${pregunta.enunciado}" class="inputExamen" type="text"> </p>
-                    <p th:text="${pregunta.puntaje}" class="inputExamen" type="text"> </p>
+                    </div>
+
+
+
                   </div>
 
                 </div>
@@ -170,24 +178,24 @@
 
 
 
-                <div class="mb-3 row">
+                <div class="mb-3 row" th:each="respuesta : ${pregunta.respuestas}">
 
 
                   <div>
-                    <p th:text="${pregunta.respuestaCorrecta}" class="inputExamen" type="text"> </p>
+                    <p th:text="${respuesta}" class="inputExamen" type="text"> </p>
                   </div>
 
                 </div>
 
 
-                <div class="mb-3 row">
+                 <!--
+                <form method="post" th:action="@{eliminar/__${pregunta.id}__}">
+
+                  <button type="submit" class="btn btn-primary botonPrincipales">ELIMINAR</button>
+                </form>
+                -->
 
 
-                  <div>
-                    <input th:name="respuesta2" type="text" class="form-control inputExamen" placeholder="Respuesta 2">
-                  </div>
-
-                </div>
 
 
 
