@@ -71,8 +71,6 @@ public class ExamenControlador {
     @GetMapping("/top20")
     public ModelAndView mostrarExamenesMasBuscados(RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("examen");
-
-
         mav.addObject("titulo", "Top20");
         try {
             mav.addObject("examenes", examenServicio.mostrarExamenesMasBuscados());
