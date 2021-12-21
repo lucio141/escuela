@@ -262,4 +262,13 @@ public class Mapper {
         tematicaDTO.setCategoria(tematica.getCategoria());
         return tematicaDTO;
     }
+
+    public static PreguntaEditableDTO preguntaDTOAPreguntaEditableDTO(PreguntaDTO preguntaDTO){
+        PreguntaEditableDTO preguntaEditableDTO = new PreguntaEditableDTO();
+        preguntaEditableDTO.setRespuestaCorrecta(preguntaDTO.getRespuestaCorrecta());
+        preguntaEditableDTO.setRespuesta2(preguntaDTO.getRespuestas().get(1));
+        preguntaEditableDTO.setRespuesta3(preguntaDTO.getRespuestas().get(2));
+        preguntaEditableDTO.setRespuesta4(preguntaDTO.getRespuestas().get(3));
+        return preguntaEditableDTO;
+    }
 }
