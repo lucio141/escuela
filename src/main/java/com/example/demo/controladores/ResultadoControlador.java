@@ -1,5 +1,6 @@
 package com.example.demo.controladores;
 
+import com.example.demo.dto.ResultadoDTO;
 import com.example.demo.entidades.Resultado;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.ResultadoServicio;
@@ -83,11 +84,11 @@ public class ResultadoControlador {
         ModelAndView mav = new ModelAndView("resultados-top");
 
         try {
-            Resultado resultado = resultadoServicio.obtenerPorId(id);
-            mav.addObject("Resultado", resultado);
-            mav.addObject("resultado", resultado);
-            mav.addObject("duracion", resultado.getDuracion() );
-            mav.addObject("top", resultadoServicio.top5(resultado.getExamen().getId()));
+            ResultadoDTO resultadoDTO = resultadoServicio.obtenerPorId(id);
+            mav.addObject("Resultado", resultadoDTO);
+            mav.addObject("resultado", resultadoDTO);
+            mav.addObject("duracion", resultadoDTO.getDuracion() );
+            mav.addObject("top", resultadoServicio.top5(resultadoDTO.getExamen().getId()));
             mav.addObject("titulo", "Editar Resultado");
             mav.addObject("accion", "modificar");
         } catch (ObjetoNulloExcepcion nulo) {
@@ -112,7 +113,11 @@ public class ResultadoControlador {
     @PostMapping("/eliminar/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminarResultado(@PathVariable int id) {
-        resultadoServicio.eliminar(id);
+        try {
+            resultadoServicio.eliminar(id);
+        }catch (ObjetoNulloExcepcion nulo){
+            nulo.printStackTrace();
+        }
         return new RedirectView("/resultado");
     }
 

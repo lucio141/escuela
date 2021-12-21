@@ -60,13 +60,13 @@ public class CategoriaServicio {
 
     @Transactional
     public CategoriaDTO obtenerPorId(int id) throws ObjetoNulloExcepcion {
-        Categoria categoria = categoriaRepositorio.findById(id).orElse(null);
+        CategoriaDTO categoriaDTO = Mapper.categoriaEntidadADTO(categoriaRepositorio.findById(id).orElse(null));
 
-        if (categoria == null) {
+        if (categoriaDTO == null) {
             throw new ObjetoNulloExcepcion("No se encontro la categoria");
         }
 
-        return Mapper.categoriaEntidadADTO(categoria);
+        return categoriaDTO;
     }
 
     @Transactional

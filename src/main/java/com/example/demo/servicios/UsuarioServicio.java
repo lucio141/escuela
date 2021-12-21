@@ -95,6 +95,11 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Transactional
+    public List<UsuarioDTO> mostrarUsuariosPorRol(Rol rol,Boolean alta){
+        return Mapper.listaUsuarioEntidadADTO(usuarioRepositorio.mostrarPorRolYAlta(rol,alta));
+    }
+
+    @Transactional
     public UsuarioDTO obtenerPorId (Integer id) throws ObjetoNulloExcepcion {
         Usuario usuario = usuarioRepositorio.findById(id).orElse(null);
 
@@ -135,7 +140,7 @@ public class UsuarioServicio implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException{
-        Usuario usuario = usuarioRepositorio.findByNombreUsuario(nombreUsuario)
+        Usuario usuario = usuarioRepositorio.findByNombreUsuarioAndAltaTrue(nombreUsuario)
                                             .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE, nombreUsuario)));
 
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
@@ -146,6 +151,7 @@ public class UsuarioServicio implements UserDetailsService {
         try {
             UsuarioDTO usuarioDTO = obtenerPorId(usuario.getId());
             session.setAttribute("id" , usuarioDTO.getId());
+            session.setAttribute("rol" , usuarioDTO.getRol().getNombre());
             session.setAttribute("usuarioEnSesion", usuarioDTO);
         } catch (ObjetoNulloExcepcion nulo) {
             System.out.println("Error");

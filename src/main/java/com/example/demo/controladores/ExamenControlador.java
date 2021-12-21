@@ -1,5 +1,6 @@
 package com.example.demo.controladores;
 
+import com.example.demo.dto.ExamenDTO;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Tematica;
@@ -16,15 +17,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/examen")
@@ -32,34 +29,14 @@ import java.util.Map;
 public class ExamenControlador {
 
     private final ExamenServicio examenServicio;
-    private final CategoriaServicio categoriaServicio;
     private final TematicaServicio tematicaServicio;
     private final ResultadoServicio resultadoServicio;
- /*
-    @GetMapping()
-    public ModelAndView mostrarExamenes(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("examen");
-        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
 
-        if(map != null){
-            mav.addObject("errorNulo", map.get("errorNulo"));
-            mav.addObject("padreNulo", map.get("padreNulo"));
-            //mav.addObject("exito", map.get("success"));
-        }
-
-        mav.addObject("titulo", "Examenes");
-        mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(true));
-        mav.addObject("categorias", categoriaServicio.mostrarCategorias());
-        mav.addObject("tematicas", tematicaServicio.mostrarTematicas());
-        return mav;
-    }
-
-
+    /*
     @GetMapping("/{id}")
     public ModelAndView mostrarExamen(@PathVariable int id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
-
         if(map != null){
             mav.addObject("errorNulo", map.get("errorNulo"));
             mav.addObject("padreNulo", map.get("padreNulo"));
@@ -67,27 +44,38 @@ public class ExamenControlador {
             mav.addObject("errorRepetido", map.get("errorRepetido"));
             //mav.addObject("exito", map.get("success"));
         }
-
         try{
             mav.addObject("titulo", examenServicio.obtenerPorId(id).getNombre());
             mav.addObject("resultados", resultadoServicio.top5(id));
         }catch (ObjetoNulloExcepcion e){
             System.out.println(e.getMessage());
         }
-
-
         return mav;
     }
+*/
 
-    @GetMapping("/baja")
+    @GetMapping("/admin")
    // @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarExamenesBaja() {
-        ModelAndView mav = new ModelAndView(""); //DECIDE DONATO
+        ModelAndView mav = new ModelAndView("examen-administrador");
         mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(false));
         mav.addObject("titulo", "Tabla de examenes baja");
         return mav;
     }
-*/
+
+
+    @GetMapping("/top20")
+    public ModelAndView mostrarExamenesMasBuscados(RedirectAttributes attributes) {
+        ModelAndView mav = new ModelAndView("top20");
+        mav.addObject("titulo", "top20");
+        try {
+            mav.addObject("examenes", examenServicio.mostrarExamenesMasBuscados());
+        } catch (ObjetoNulloExcepcion nulo) {
+            attributes.addFlashAttribute("error-nulo", nulo);
+        }
+        return mav;
+    }
+
     @GetMapping("/crear")
    // @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearExamen() {
@@ -120,24 +108,16 @@ public class ExamenControlador {
 
     @GetMapping("/realizar/{id}")
     // @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView realizarExamen(@PathVariable int id, RedirectAttributes attributes , HttpSession session) {
-        ModelAndView mav = new ModelAndView("hacer-examen"); // Falta crear
+    public ModelAndView realizarExamen(@PathVariable int id, RedirectAttributes attributes, HttpSession session) {
+        ModelAndView mav = new ModelAndView("hacer-examen");
 
         try {
-            Examen examen = examenServicio.obtenerPorId(id);
-            Collections.shuffle(examen.getPreguntas());
-
-            for (Pregunta pregunta : examen.getPreguntas()) {
-                Collections.shuffle(pregunta.getRespuestas());
-            }
-
-            resultadoServicio.crearResultado(examen, (Integer)session.getAttribute("id"));
+            ExamenDTO examenDTO = examenServicio.resolverExamen(id);
+            resultadoServicio.crearResultado(examenDTO, (Integer)session.getAttribute("id"));
             mav.addObject("resultado", resultadoServicio.ObtenerUltimoResultado() );
-            mav.addObject("examen", examen);
+            mav.addObject("examen", examenDTO);
             mav.addObject("dificultades", Dificultad.values());
-
         } catch (ObjetoNulloExcepcion nulo) {
-            System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
         }
 
@@ -158,10 +138,7 @@ public class ExamenControlador {
             attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
         }
 
-            return new RedirectView("/pregunta/crear");// HABLAR CON LUCIO
-
-
-
+            return new RedirectView("/pregunta/crear");
     }
 
     @PostMapping("/modificar")
@@ -185,7 +162,6 @@ public class ExamenControlador {
             System.out.println(eliminado.getMessage());
             return new RedirectView("/examen");
         }
-
     }
 
     @PostMapping("/eliminar/{id}")
@@ -195,7 +171,6 @@ public class ExamenControlador {
         try {
             examenServicio.eliminar(id);
         } catch (ObjetoNulloExcepcion nulo) {
-            nulo.printStackTrace();
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
 

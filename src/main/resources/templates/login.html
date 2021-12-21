@@ -2,7 +2,6 @@
 <html lang="es"  xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" th:href="@{/css/loginRegisterStyle.css}">
@@ -19,8 +18,8 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-  <title>Skill Test</title>
+  <link rel="shortcut icon" th:href="@{/img/logo.png}" type="image/x-icon">
+  <title th:text="${titulo}">SkillTest</title>
 </head>
 
 <body>
@@ -33,8 +32,7 @@
 
         <div class="logo">
           <img th:src="@{/img/logo.png}" alt="" width="60px" height="60px">
-
-          <a class="navbar-brand" href="#" style="color: rgb(255, 254, 254);">Skill Test</a>
+          <a class="navbar-brand" href="@{/login}" style="color: rgb(255, 254, 254);">Skill Test</a>
         </div>
       </div>
     </nav>
@@ -63,91 +61,32 @@
           <input style="color: black;" id="contrasenia" class="inputExamen" type="password" placeholder="Ingresar contraseña" name="contrasenia" required>
       
           <button class="botonLogin" type="submit">Ingresar</button>
-        </div>
-      
-        <div class="container">
-          <button th:href="@{/usuario/crear}"  style="width: 20%;"  type="button" class="cancelbtn botonLogin">Registrarse</button>
-        </div>
-        <div class="container">
-          <button th:href="@{/usuario/confirmarUsuario}"  style="width: 20%;"  type="button" class="cancelbtn botonLogin">Olvide mi clave</button>
+
+          <div class="row" style="margin-top: 2%;">
+
+            <div class="col-6 botonLogin" style="display: flex; justify-content: center;">
+
+              <a th:href="@{/usuario/crear}" class="botonRegister" style="display: flex; justify-content: center; width:100%; margin-top: 2%;" >
+                Registrarse
+              </a>
+
+            </div>
+
+            <div class="col-6 botonLogin" style="display: flex; justify-content: center;">
+
+              <a th:href="@{/usuario/confirmarUsuario}" class="botonRegister" style="display: flex; justify-content: center; width:100%; margin-top: 2%;" >
+                Olvide mi contraseña
+              </a>
+
+            </div>
+          </div>
         </div>
 
       </form>
-
     </div>
   </main>
 
-
-  <footer class="container-fluid">
-
-    <div class="row">
-
-
-      <div class="col-4 contenidoFooter">
-        <div>
-          <a href="Turnos.php" class="opciones">
-            <p>Cursos</p>
-          </a>
-          <a href="obras.php"  class="opciones">
-            <p>Fuentes de informacion</p>
-          </a>
-          <a href="registro.php" class="opciones">
-            <p>Certificados</p>
-          </a>
-          <p class="opciones">@Copyright SchoolHouse™</p>
-        </div>
-
-      </div>
-
-      <div class="col-4 contenidoFooter">
-
-        <div class="opciones">
-          <p> Informacion de contacto: </p>
-          <p>Email: SchoolHouse@gmail.com</p>
-          <p>Telefono: 1166046826 / 42648893</p>
-        </div>
-      </div>
-
-
-      <div class="col-4 contenidoFooter redesSociales">
-
-
-
-        <div class="opciones"> <a href="https://www.facebook.com/enespanol/" target="_blank">
-            <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-            <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_7akxvutj.json" background="transparent"
-              speed="1" style="width: 60px; height: 60px;"  loop autoplay></lottie-player>
-          </a>
-
-        </div>
-
-
-        <div class="opciones"> <a href="https://ar.linkedin.com/" target="_blank">
-            <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-            <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_hdy0htc2.json" background="transparent"
-              speed="1" style="width: 60px; height: 60px;"  loop autoplay></lottie-player>
-          </a>
-        </div>
-
-
-        <div class="opciones"> <a href="https://ar.linkedin.com/" target="_blank">
-          <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-          <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_atjsyyed.json" background="transparent"
-            speed="1" style="width: 60px; height: 60px;"  loop autoplay></lottie-player>
-        </a>
-      </div>
-
-
-
-        <div class="opciones"> <a href="https://ar.linkedin.com/" target="_blank">
-            <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_kq6zs04j.json" background="transparent"
-              speed="1" style="width: 60px; height: 60px;" hover autoplay></lottie-player>
-          </a>
-        </div>
-      </div>
-    </div>
-  </footer>
+  <footer class="container-fluid" th:replace="fragmentos::footer"></footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"

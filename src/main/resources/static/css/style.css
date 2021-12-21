@@ -498,6 +498,7 @@ justify-content: space-around;
 
 
 
+
     }
 
 
@@ -506,7 +507,7 @@ justify-content: space-around;
 
 
          transform: translateY(5%);
-           box-shadow: #ff51c2 12px 1px 70px !important;
+          box-shadow: #ff51c2 12px 1px 70px !important;
 
     }
 
@@ -532,6 +533,55 @@ justify-content: space-around;
 
 
         }
+
+
+
+         .botonRegister{
+
+               background-color: #521d39 !important ;
+               color: rgb(255, 255, 255) !important;
+               text-decoration: none;
+               padding: 2%;
+               border-radius: 100px;
+               margin-top: 1%;
+
+
+
+
+
+            }
+
+            .dropDownExamen{
+
+
+                    background-color: #521d39 !important ;
+                    color: white  !important;
+                    border-radius: 100px  !important;
+                    font-size: large;
+                    border-radius: 30px !important;
+                    transition: all 400ms ease;
+                    background: #521d39 !important ;
+
+
+
+
+
+                }
+
+                .dropDownExamen:hover{
+
+                    transform: translateY(-3%);
+                    text-shadow: #ff51c2 1px 1px !important;
+
+
+
+
+
+
+                }
+
+
+
 
 
 

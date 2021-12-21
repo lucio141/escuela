@@ -1,5 +1,6 @@
 package com.example.demo.repositorios;
 
+import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,7 +21,14 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
     @Query("UPDATE Usuario u SET u.alta = true WHERE u.id = :id")
     void darAlta (@Param("id") Integer id);
 
+    @Query("SELECT u FROM Usuario u WHERE u.rol = :rol and u.alta = :alta")
+    List<Usuario> mostrarPorRolYAlta(@Param("rol")Rol rol, @Param("alta") Boolean alta);
+
     Optional<Usuario> findByNombreUsuario(String nombreUsuario);
 
     Optional<Usuario> findByMail(String mail);
+
+    Optional<Usuario> findByNombreUsuarioAndAltaTrue(String nombreUsuario);
+
+
 }

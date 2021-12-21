@@ -26,7 +26,10 @@ public class UsuarioControlador {
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarUsuarios(){
         ModelAndView mav = new ModelAndView("usuario");//
-        mav.addObject("usuario", usuarioServicio.mostrarUsuariosPorAlta(true));
+        mav.addObject("usuarios", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("USER"),true));
+        mav.addObject("admins", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("ADMIN"),true));
+        mav.addObject("usuariosEliminados", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("USER"),false));
+        mav.addObject("adminsEliminados", usuarioServicio.mostrarUsuariosPorRol(rolServicio.mostrarPorNombre("ADMIN"),false));
         mav.addObject("titulo", "Tabla de Usuarios");
         return mav;
     }
@@ -42,10 +45,15 @@ public class UsuarioControlador {
 
     @GetMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView obtenerPerfil(@PathVariable int id, RedirectAttributes attributes){
+    public ModelAndView obtenerPerfil(@PathVariable int id, RedirectAttributes attributes, HttpSession session){
         ModelAndView mav = new ModelAndView("perfil"); //FALTA HTML
         try{
-            mav.addObject("categoria",usuarioServicio.obtenerPorId(id)) ;
+            if ((int)session.getAttribute("id") != id && !session.getAttribute("rol").equals("ADMIN")){
+                attributes.addFlashAttribute("errorAutorizacion", "No se puede acceder al perfil solicitado");
+                mav.setViewName("redirect:/");
+                return mav;
+            }
+            mav.addObject("usuario",usuarioServicio.obtenerPorId(id));
         }catch( ObjetoNulloExcepcion nulo){
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
@@ -177,7 +185,7 @@ public class UsuarioControlador {
         return new RedirectView("/usuario");
     }
 
-    @PostMapping("/registrar/{id}")
+    @PostMapping("/darAlta/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
     public RedirectView darAltaUsuario (@PathVariable Integer id, RedirectAttributes attributes){
         try {

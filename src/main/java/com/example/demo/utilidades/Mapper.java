@@ -1,12 +1,7 @@
 package com.example.demo.utilidades;
 
-import com.example.demo.dto.CategoriaDTO;
-import com.example.demo.dto.UsuarioDTO;
-import com.example.demo.dto.RolDTO;
-import com.example.demo.dto.UsuarioInformacionDTO;
-import com.example.demo.entidades.Categoria;
-import com.example.demo.entidades.Rol;
-import com.example.demo.entidades.Usuario;
+import com.example.demo.dto.*;
+import com.example.demo.entidades.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,5 +109,139 @@ public class Mapper {
         }
 
         return categoriasDTO;
+    }
+
+    public static Examen examenDTOAEntidad(ExamenDTO examenDTO){
+        Examen examen = new Examen();
+        examen.setId(examenDTO.getId());
+        examen.setDificultad(examenDTO.getDificultad());
+        examen.setNombre(examenDTO.getNombre());
+        examen.setTematica(examenDTO.getTematica());
+        examen.setResultados(examenDTO.getResultados());
+        examen.setPreguntas(examenDTO.getPreguntas());
+        examen.setNotaRequerida(examenDTO.getNotaRequerida());
+        return examen;
+    }
+
+    public static ExamenDTO examenEntidadADTO(Examen examen){
+        ExamenDTO examenDTO = new ExamenDTO();
+        examenDTO.setId(examen.getId());
+        examenDTO.setDificultad(examen.getDificultad());
+        examenDTO.setNombre(examen.getNombre());
+        examenDTO.setTematica(examen.getTematica());
+        examenDTO.setResultados(examen.getResultados());
+        examenDTO.setPreguntas(examen.getPreguntas());
+        examenDTO.setNotaRequerida(examen.getNotaRequerida());
+        return examenDTO;
+    }
+
+    public static List<ExamenDTO> listaExamenEntidadADTO (List<Examen> examenes){
+        List<ExamenDTO> examenesDTO = new ArrayList<>();
+
+        for (Examen examen: examenes) {
+            examenesDTO.add(examenEntidadADTO(examen));
+        }
+
+        return examenesDTO;
+    }
+
+    public static List<Examen> listaExamenDTOAEntidad (List<ExamenDTO> examenesDTO){
+        List<Examen> examenes = new ArrayList<>();
+
+        for (ExamenDTO examenDTO: examenesDTO) {
+            examenes.add(examenDTOAEntidad(examenDTO));
+        }
+
+        return examenes;
+    }
+
+    public static PreguntaDTO preguntaEntidadADTO(Pregunta pregunta){
+        PreguntaDTO preguntaDTO = new PreguntaDTO();
+        preguntaDTO.setId(pregunta.getId());
+        preguntaDTO.setExamen(pregunta.getExamen());
+        preguntaDTO.setEnunciado(pregunta.getEnunciado());
+        preguntaDTO.setRespuestas(pregunta.getRespuestas());
+        preguntaDTO.setRespuestaCorrecta(pregunta.getRespuestaCorrecta());
+        preguntaDTO.setPuntaje(pregunta.getPuntaje());
+        return preguntaDTO;
+    }
+
+    public static Pregunta preguntaDTOAEntidad(PreguntaDTO preguntaDTO){
+        Pregunta pregunta = new Pregunta();
+        pregunta.setId(preguntaDTO.getId());
+        pregunta.setExamen(preguntaDTO.getExamen());
+        pregunta.setEnunciado(preguntaDTO.getEnunciado());
+        pregunta.setRespuestas(preguntaDTO.getRespuestas());
+        pregunta.setRespuestaCorrecta(preguntaDTO.getRespuestaCorrecta());
+        pregunta.setPuntaje(preguntaDTO.getPuntaje());
+        return pregunta;
+    }
+
+    public static List<PreguntaDTO> listaPreguntaEntidadADTO (List<Pregunta> preguntas){
+        List<PreguntaDTO> preguntasDTO = new ArrayList<>();
+
+        for (Pregunta preugunta : preguntas) {
+            preguntasDTO.add(preguntaEntidadADTO(preugunta));
+        }
+
+        return preguntasDTO;
+    }
+
+    public static List<Pregunta> listaPreguntaDTOAEntidad(List<PreguntaDTO> preguntasDTO){
+        List<Pregunta> preguntas = new ArrayList<>();
+
+        for (PreguntaDTO preuguntaDTO : preguntasDTO) {
+            preguntas.add(preguntaDTOAEntidad(preuguntaDTO));
+        }
+
+        return preguntas;
+    }
+
+    public static ResultadoDTO resultadoEntidadADTO(Resultado resultado){
+        ResultadoDTO resultadoDTO = new ResultadoDTO();
+        resultadoDTO.setId(resultado.getId());
+        resultadoDTO.setExamen(resultado.getExamen());
+        resultadoDTO.setUsuario(resultado.getUsuario());
+        resultadoDTO.setRespuestasCorrectas(resultado.getRespuestasCorrectas());
+        resultadoDTO.setRespuestasIncorrectas(resultado.getRespuestasIncorrectas());
+        resultadoDTO.setDuracion(resultado.getDuracion());
+        resultadoDTO.setPuntajeFinal(resultado.getPuntajeFinal());
+        resultadoDTO.setTiempoInicio(resultado.getTiempoInicio());
+        resultadoDTO.setAprobado(resultado.getAprobado());
+        return resultadoDTO;
+    }
+
+    public static Resultado resultadoDTOAEntidad(ResultadoDTO resultadoDTO){
+        Resultado resultado = new Resultado();
+        resultado.setId(resultadoDTO.getId());
+        resultado.setExamen(resultadoDTO.getExamen());
+        resultado.setUsuario(resultadoDTO.getUsuario());
+        resultado.setRespuestasCorrectas(resultadoDTO.getRespuestasCorrectas());
+        resultado.setRespuestasIncorrectas(resultadoDTO.getRespuestasIncorrectas());
+        resultado.setDuracion(resultadoDTO.getDuracion());
+        resultado.setPuntajeFinal(resultadoDTO.getPuntajeFinal());
+        resultado.setTiempoInicio(resultadoDTO.getTiempoInicio());
+        resultado.setAprobado(resultadoDTO.getAprobado());
+        return resultado;
+    }
+
+    public static List<Resultado> listaResultadoDTOAEntidad(List<ResultadoDTO> resultadosDTO){
+        List<Resultado> resultados = new ArrayList<>();
+
+        for (ResultadoDTO resultadoDTO : resultadosDTO) {
+            resultados.add(resultadoDTOAEntidad(resultadoDTO));
+        }
+
+        return resultados;
+    }
+
+    public static List<ResultadoDTO> listaResultadoEntidadADTO(List<Resultado> resultados){
+        List<ResultadoDTO> resultadosDTO = new ArrayList<>();
+
+        for (Resultado resultado : resultados) {
+            resultadosDTO.add(resultadoEntidadADTO(resultado));
+        }
+
+        return resultadosDTO;
     }
 }

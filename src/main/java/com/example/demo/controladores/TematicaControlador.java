@@ -3,13 +3,18 @@ package com.example.demo.controladores;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.entidades.Resultado;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.excepciones.ValidacionCampExcepcion;
 import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Controller
 @AllArgsConstructor
@@ -17,7 +22,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class TematicaControlador {
 
     private final TematicaServicio tematicaServicio;
-
+/*
     @GetMapping
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarTematicas(){
@@ -33,6 +38,27 @@ public class TematicaControlador {
         ModelAndView mav = new ModelAndView("tematicas"); //Falta HTML
         mav.addObject("tematicas",tematicaServicio.mostrarTematicasPorAlta(false));
         mav.addObject("titulo", "Tabla de Tematicas Baja");
+        return mav;
+    }
+*/
+    @GetMapping("/admin")
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView listarTematicas(HttpServletRequest request, RedirectAttributes attributes) {
+        ModelAndView mav = new ModelAndView("tematica-administrador");
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+
+        if(map != null){
+            mav.addObject("errorNulo", map.get("errorNulo"));
+            mav.addObject("padreNulo", map.get("padreNulo"));
+            mav.addObject("errorRepetido", map.get("errorRepetido"));
+            mav.addObject("errorEliminado", map.get("errorEliminado"));
+            //mav.addObject("exito", map.get("success"));
+        }
+
+        mav.addObject("titulo", "Tematicas");
+        mav.addObject("tematicasBaja", tematicaServicio.mostrarTematicasPorAlta(false));
+        mav.addObject("tematicasAlta", tematicaServicio.mostrarTematicasPorAlta(true));
+
         return mav;
     }
 
@@ -79,9 +105,14 @@ public class TematicaControlador {
 
     @PostMapping("/guardar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardarTematicas(@RequestParam String nombre){
-        tematicaServicio.crearTematica(nombre);
-        return new RedirectView("/tematica");
+    public RedirectView guardarTematicas(@RequestParam String nombre, RedirectAttributes attributes){
+        try {
+            tematicaServicio.crearTematica(nombre);
+        }catch (ValidacionCampExcepcion validacion){
+            attributes.addFlashAttribute("errorValidacion", validacion.getMessage());
+        }
+
+        return new RedirectView("/tematica/admin");
     }
 
     @PostMapping("/modificar")
@@ -90,16 +121,15 @@ public class TematicaControlador {
 
         try{
             tematicaServicio.modificarTematica(nombre,id);
-        }catch( ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+        }catch(ObjetoNulloExcepcion | ValidacionCampExcepcion validacion){
+            attributes.addFlashAttribute("errorValidacion", validacion.getMessage());
         }
-
-        return new RedirectView("/tematica");
+        return new RedirectView("/tematica/admin");
     }
 
-    @GetMapping("/registrar/{id}")
+    @PostMapping("/darAlta/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView recuperar( @PathVariable int id, RedirectAttributes attributes){
+    public RedirectView darAlta( @PathVariable int id, RedirectAttributes attributes){
 
         try {
             tematicaServicio.darAlta(id);
@@ -107,7 +137,7 @@ public class TematicaControlador {
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
 
-        return new RedirectView("/tematica");
+        return new RedirectView("/tematica/admin");
     }
 
     @PostMapping("/eliminar/{id}")
@@ -120,6 +150,6 @@ public class TematicaControlador {
             attributes.addFlashAttribute("errorNulo", nulo.getMessage());
         }
 
-        return new RedirectView("/tematica");
+        return new RedirectView("/tematica/admin");
     }
 }

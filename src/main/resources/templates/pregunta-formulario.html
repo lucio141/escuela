@@ -27,8 +27,6 @@
 <header th:replace="fragmentos :: header"></header>
 
 
-
-
   <main>
 
 
@@ -41,7 +39,7 @@
       <h1 class="placeholder-glow">
         <span class="placeholder col-12"> </span>
 
-        <h1 class="opciones">NOMBRE EXAMEN</h1>
+        <h1 class="opciones" th:text ="${examen.nombre}">NOMBRE EXAMEN</h1>
 
 
       </h1>
@@ -73,19 +71,6 @@
                   </div>
 
                 </div>
-
-                <div style="height: 40px; margin-bottom: 2%;">
-
-                  <select th:field="*{dificultad}" name="" id="" class="selectForm">
-
-                    <option value="">Dificultad</option>
-                    <option  th:each="dificultad : ${dificultades} " th:value="${dificultad}" th:text="${dificultad}"></option>
-
-                  </select>
-
-                </div>
-
-
 
 
 
@@ -124,7 +109,7 @@
 
 
                   <div>
-                    <input th:name="respuesta4" type="text" class="form-control inputExamen" placeholder="Respuesta 3">
+                    <input th:name="respuesta4" type="text" class="form-control inputExamen" placeholder="Respuesta 4">
                   </div>
 
                 </div>
@@ -163,7 +148,7 @@
             </div>
 
             <!-- CAJA PREGUNTA -->
-            <div  class="card w-100 tarjetasMain" th:each="pregunta : ${examen.preguntas}">
+            <div style="font-size: large;" class="card w-100 tarjetasMain" th:each="pregunta : ${examen.preguntas}">
 
               <div class="card-body">
 
@@ -172,41 +157,52 @@
                 <div class="mb-3 row">
 
 
-                  <div style="display: flex;">
+                  <div >
 
-                    <p th:text="${pregunta.enunciado}" > </p>
-                    <p th:text="${pregunta.puntaje}" > </p>
+                    <div>
+                      <p th:text="|PUNTAJE: ${pregunta.puntaje}|" class="inputExamen" type="text"> </p>
+                    </div>
+
+                    <div>
+                    <p th:text="${pregunta.enunciado}" class="inputExamen" type="text"> </p>
+                    </div>
+
+
 
                   </div>
 
                 </div>
 
-                <div style="height: 40px; margin-bottom: 2%;">
-
-                  <p th:text="${pregunta.dificultad}"> </p>
-
-                </div>
 
 
 
+                <div class="mb-3 row" th:each="respuesta : ${pregunta.respuestas}">
 
 
-
-                <div class="mb-3 row">
-
-
-                  <p th:text="|Respuesta Correcta: ${pregunta.respuestaCorrecta}"|> </p>
+                  <div>
+                    <p th:text="${respuesta}" class="inputExamen" type="text"> </p>
+                  </div>
 
                 </div>
 
 
-                <div class="mb-3 row">
+                 <!--
+                <form method="post" th:action="@{eliminar/__${pregunta.id}__}">
+
+                  <button type="submit" class="btn btn-primary botonPrincipales">ELIMINAR</button>
+                </form>
+                -->
 
 
 
 
 
-                </div>
+
+
+
+
+
+
 
 
 
@@ -242,7 +238,7 @@
 
       <div style=" display: flex; justify-content: center;">
            <div style=" width: 47%;">
-        <a th:href="@{/index}" onclick id="agregarPregunta" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CANCELAR</a>
+        <a th:href="@{/}" onclick id="agregarPregunta" class="btn btn-primary tarjetasSecciones" style="width: 100%;">CANCELAR</a>
       </div>
     </div>
 
@@ -260,8 +256,7 @@
 
   </main>
 
-
-
+  <footer class="container-fluid" th:replace="fragmentos::footer"></footer>
 
   <script src="javascript.js"></script>
 
