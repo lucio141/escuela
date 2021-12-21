@@ -8,7 +8,6 @@ import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.excepciones.PadreNuloExcepcion;
 import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.PreguntaServicio;
-import com.example.demo.utilidades.Dificultad;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +37,7 @@ public class PreguntaControlador{
             mav.addObject("titulo", "Crear Pregunta");
             mav.addObject("accion", "guardar");
         }catch (ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
             mav.setViewName("redirect:/examen");
         }
 
@@ -55,7 +54,7 @@ public class PreguntaControlador{
             mav.addObject("titulo", "Editar Pregunta");
             mav.addObject("accion", "modificar");
         } catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
             mav.setViewName("redirect:/examen");
         }
 
@@ -69,13 +68,13 @@ public class PreguntaControlador{
         try {
             preguntaServicio.crearPregunta(enunciado, respuesta2, respuesta3, respuesta4, respuestaCorrecta, puntaje, examenId);
         }catch (ObjetoRepetidoExcepcion repetido){
-            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+            attributes.addFlashAttribute("error", repetido.getMessage());
         }catch (ObjetoEliminadoExcepcion eliminado){
-            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+            attributes.addFlashAttribute("error", eliminado.getMessage());
         }catch (ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }catch (PadreNuloExcepcion padre){
-            attributes.addFlashAttribute("padreNulo", padre.getMessage());
+            attributes.addFlashAttribute("error", padre.getMessage());
             return new RedirectView("/examen");
         }
 
@@ -94,12 +93,12 @@ public class PreguntaControlador{
             preguntaServicio.modificarPregunta(enunciado, respuestas, respuestaCorrecta, puntaje, examen, id);
         }catch(ObjetoNulloExcepcion nulo) {
             System.out.println(nulo.getMessage());
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }catch (ObjetoRepetidoExcepcion repetido){
-            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+            attributes.addFlashAttribute("error", repetido.getMessage());
             System.out.println(repetido.getMessage());
         }catch (ObjetoEliminadoExcepcion eliminado){
-            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+            attributes.addFlashAttribute("error", eliminado.getMessage());
             System.out.println(eliminado.getMessage());
         }
 
@@ -115,7 +114,7 @@ public class PreguntaControlador{
             return new RedirectView("/examen/editarPreguntas/" + preguntaServicio.obtenerPorId(id).getExamen().getId());
         }catch (ObjetoNulloExcepcion nulo){
             System.out.println(nulo.getMessage());
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
             return new RedirectView("/");
         }
 

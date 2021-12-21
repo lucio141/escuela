@@ -1,14 +1,11 @@
 package com.example.demo.controladores;
 
-import com.example.demo.dto.CategoriaDTO;
 import com.example.demo.dto.ExamenDTO;
 import com.example.demo.entidades.Examen;
-import com.example.demo.entidades.Pregunta;
 import com.example.demo.entidades.Tematica;
 import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
-import com.example.demo.servicios.CategoriaServicio;
 import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.ResultadoServicio;
 import com.example.demo.servicios.TematicaServicio;
@@ -20,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 
@@ -32,28 +28,6 @@ public class ExamenControlador {
     private final ExamenServicio examenServicio;
     private final TematicaServicio tematicaServicio;
     private final ResultadoServicio resultadoServicio;
-
-    /*
-    @GetMapping("/{id}")
-    public ModelAndView mostrarExamen(@PathVariable int id, HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView();
-        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
-        if(map != null){
-            mav.addObject("errorNulo", map.get("errorNulo"));
-            mav.addObject("padreNulo", map.get("padreNulo"));
-            mav.addObject("errorEliminado", map.get("errorEliminado"));
-            mav.addObject("errorRepetido", map.get("errorRepetido"));
-            //mav.addObject("exito", map.get("success"));
-        }
-        try{
-            mav.addObject("titulo", examenServicio.obtenerPorId(id).getNombre());
-            mav.addObject("resultados", resultadoServicio.top5(id));
-        }catch (ObjetoNulloExcepcion e){
-            System.out.println(e.getMessage());
-        }
-        return mav;
-    }
-*/
 
     @GetMapping("/admin")
    // @PreAuthorize("hasRole('ADMIN')")
@@ -72,7 +46,7 @@ public class ExamenControlador {
         try {
             mav.addObject("examenes", examenServicio.mostrarExamenesMasBuscados());
         } catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("error-nulo", nulo);
+            attributes.addFlashAttribute("error", nulo);
         }
         return mav;
     }
@@ -101,7 +75,7 @@ public class ExamenControlador {
             mav.addObject("titulo", "Editar Examen");
             mav.addObject("accion", "modificar");
         } catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo",nulo.getMessage());
+            attributes.addFlashAttribute("error",nulo.getMessage());
         }
 
         return mav;
@@ -119,7 +93,7 @@ public class ExamenControlador {
             mav.addObject("examen", examenDTO);
             mav.addObject("dificultades", Dificultad.values());
         } catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
+            attributes.addFlashAttribute("error", "No se encontro el Examen");
         }
 
         mav.addObject("titulo", "Realizar Examen");
@@ -136,7 +110,7 @@ public class ExamenControlador {
             attributes.addFlashAttribute("examen", examenServicio.ObtenerUltimoExamen());
         }catch (ObjetoNulloExcepcion nulo){
             System.out.println(nulo.getMessage());
-            attributes.addFlashAttribute("errorNulo", "No se encontro el Examen");
+            attributes.addFlashAttribute("error", "No se encontro el Examen");
         }
 
             return new RedirectView("/pregunta/crear");
@@ -152,14 +126,14 @@ public class ExamenControlador {
             return new RedirectView("/examen/{" + id + "}");
         } catch(ObjetoNulloExcepcion nulo) {
             System.out.println(nulo.getMessage());
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
             return new RedirectView("/examen");
         }catch (ObjetoRepetidoExcepcion repetido){
-            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+            attributes.addFlashAttribute("error", repetido.getMessage());
             System.out.println(repetido.getMessage());
             return new RedirectView("/examen");
         }catch (ObjetoEliminadoExcepcion eliminado){
-            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+            attributes.addFlashAttribute("error", eliminado.getMessage());
             System.out.println(eliminado.getMessage());
             return new RedirectView("/examen");
         }
@@ -173,7 +147,7 @@ public class ExamenControlador {
             examenServicio.eliminar(id);
             return new RedirectView("/examen/editarPreguntas/" + examenServicio.obtenerPorId(id).getTematica().getId());
         } catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return new RedirectView("/");
@@ -187,7 +161,7 @@ public class ExamenControlador {
             examenServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion nulo) {
             System.out.println(nulo.getMessage());
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return new RedirectView("/examen");
@@ -203,7 +177,7 @@ public class ExamenControlador {
             mav.addObject("examen",examenDTO);
             mav.addObject("titulo", "Detalle de " + examenDTO.getNombre() + "");
         }catch( ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return mav;
