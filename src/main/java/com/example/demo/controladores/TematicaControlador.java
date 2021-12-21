@@ -25,25 +25,7 @@ public class TematicaControlador {
 
     private final TematicaServicio tematicaServicio;
     private final CategoriaServicio categoriaServicio;
-/*
-    @GetMapping
-    //@PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView mostrarTematicas(){
-        ModelAndView mav = new ModelAndView("tematicas"); //Falta HTML
-        mav.addObject("tematicas",tematicaServicio.mostrarTematicasPorAlta(true));
-        mav.addObject("titulo", "Tabla de Tematicas");
-        return mav;
-    }
 
-    @GetMapping("/baja")
-    //@PreAuthorize("hasRole('ADMIN')")
-    public  ModelAndView mostrarTematicasBaja(){
-        ModelAndView mav = new ModelAndView("tematicas"); //Falta HTML
-        mav.addObject("tematicas",tematicaServicio.mostrarTematicasPorAlta(false));
-        mav.addObject("titulo", "Tabla de Tematicas Baja");
-        return mav;
-    }
-*/
     @GetMapping("/admin")
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView listarTematicas(HttpServletRequest request, RedirectAttributes attributes) {
@@ -51,10 +33,7 @@ public class TematicaControlador {
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
 
         if(map != null){
-            mav.addObject("errorNulo", map.get("errorNulo"));
-            mav.addObject("padreNulo", map.get("padreNulo"));
-            mav.addObject("errorRepetido", map.get("errorRepetido"));
-            mav.addObject("errorEliminado", map.get("errorEliminado"));
+            mav.addObject("error", map.get("error"));
             //mav.addObject("exito", map.get("success"));
         }
 
@@ -87,7 +66,7 @@ public class TematicaControlador {
             mav.addObject("titulo", "Editar Tematica");
             mav.addObject("accion", "modificar");
         }catch(ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return mav;
@@ -102,7 +81,7 @@ public class TematicaControlador {
             mav.addObject("tematica", tematicaServicio.tematicaDetalles(id));
             mav.addObject("resultado", new Resultado());
         }catch( ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return mav;
@@ -114,7 +93,7 @@ public class TematicaControlador {
         try {
             tematicaServicio.crearTematica(nombre, categoria);
         }catch (ValidacionCampExcepcion validacion){
-            attributes.addFlashAttribute("errorValidacion", validacion.getMessage());
+            attributes.addFlashAttribute("error", validacion.getMessage());
         }
 
         return new RedirectView("/tematica/admin");
@@ -127,7 +106,7 @@ public class TematicaControlador {
         try{
             tematicaServicio.modificarTematica(nombre,id, categoria);
         }catch(ObjetoNulloExcepcion | ValidacionCampExcepcion validacion){
-            attributes.addFlashAttribute("errorValidacion", validacion.getMessage());
+            attributes.addFlashAttribute("error", validacion.getMessage());
         }
         return new RedirectView("/tematica/admin");
     }
@@ -139,7 +118,7 @@ public class TematicaControlador {
         try {
             tematicaServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return new RedirectView("/tematica/admin");
@@ -152,7 +131,7 @@ public class TematicaControlador {
         try {
             tematicaServicio.eliminar(id);
         } catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return new RedirectView("/tematica/admin");

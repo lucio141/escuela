@@ -33,10 +33,7 @@ public class CategoriaControlador {
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
 
         if(map != null){
-            mav.addObject("errorNulo", map.get("errorNulo"));
-            mav.addObject("padreNulo", map.get("padreNulo"));
-            mav.addObject("errorRepetido", map.get("errorRepetido"));
-            mav.addObject("errorEliminado", map.get("errorEliminado"));
+            mav.addObject("error", map.get("error"));
             //mav.addObject("exito", map.get("success"));
         }
 
@@ -52,7 +49,6 @@ public class CategoriaControlador {
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearCategoria() {
         ModelAndView mav = new ModelAndView("categoria-formulario");
-
         mav.addObject("categoria", new Categoria());
         mav.addObject("titulo", "Crear Categoria");
         mav.addObject("accion", "guardar");
@@ -68,7 +64,7 @@ public class CategoriaControlador {
         try {
             mav.addObject("categoria", categoriaServicio.obtenerPorId(id));
         }catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
             mav.setViewName("redirect:/categoria/admin");
             return mav;
         }
@@ -88,7 +84,7 @@ public class CategoriaControlador {
             mav.addObject("categoria",categoriaDTO) ;
             mav.addObject("titulo", "Detalle de " + categoriaDTO.getNombre() + "");
         }catch( ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return mav;
@@ -101,9 +97,9 @@ public class CategoriaControlador {
         try {
             categoriaServicio.crearCategoria(nombre);
         }catch (ObjetoRepetidoExcepcion repetido){
-            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+            attributes.addFlashAttribute("error", repetido.getMessage());
         }catch (ObjetoEliminadoExcepcion eliminado){
-            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+            attributes.addFlashAttribute("error", eliminado.getMessage());
         }
 
         return new RedirectView("/categoria/admin");
@@ -116,11 +112,11 @@ public class CategoriaControlador {
         try {
             categoriaServicio.modificarCategoria(id,nombre);
         }catch (ObjetoRepetidoExcepcion repetido){
-            attributes.addFlashAttribute("errorRepetido", repetido.getMessage());
+            attributes.addFlashAttribute("error", repetido.getMessage());
         }catch (ObjetoEliminadoExcepcion eliminado){
-            attributes.addFlashAttribute("errorEliminado", eliminado.getMessage());
+            attributes.addFlashAttribute("error", eliminado.getMessage());
         }catch (ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return new RedirectView("/categoria/admin");
@@ -133,7 +129,7 @@ public class CategoriaControlador {
         try {
             categoriaServicio.eliminar(id);
         } catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return new RedirectView("/categoria/admin");
@@ -146,7 +142,7 @@ public class CategoriaControlador {
         try {
             categoriaServicio.darAlta(id);
         } catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return new RedirectView("/categoria/admin");

@@ -38,7 +38,7 @@ public class UsuarioControlador {
         mav.addObject("titulo", "Tabla de Usuarios");
         return mav;
     }
-
+/*
     @GetMapping("/baja")
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarUsuariosBaja(){
@@ -47,20 +47,20 @@ public class UsuarioControlador {
         mav.addObject("titulo", "Tabla de Usuarios Baja");
         return mav;
     }
-
+*/
     @GetMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView obtenerPerfil(@PathVariable int id, RedirectAttributes attributes, HttpSession session){
-        ModelAndView mav = new ModelAndView("perfil"); //FALTA HTML
+        ModelAndView mav = new ModelAndView("perfil");
         try{
             if ((int)session.getAttribute("id") != id && !session.getAttribute("rol").equals("ADMIN")){
-                attributes.addFlashAttribute("errorAutorizacion", "No se puede acceder al perfil solicitado");
+                attributes.addFlashAttribute("error", "No se puede acceder al perfil solicitado");
                 mav.setViewName("redirect:/");
                 return mav;
             }
             mav.addObject("usuario",usuarioServicio.obtenerPorId(id));
         }catch( ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
         mav.addObject("titulo", "Mi perfil");
 
@@ -84,7 +84,7 @@ public class UsuarioControlador {
         try {
             if((int)sesion.getAttribute("id") != id && !usuarioServicio.obtenerPorId(id).getRol().toString().equalsIgnoreCase("ADMIN") ){
                 mav.setViewName("redirect:/");
-                attributes.addFlashAttribute("error-autorización", "No se encuentra habilitado para realizar la modificación");
+                attributes.addFlashAttribute("error", "No se encuentra habilitado para realizar la modificación");
                 return mav;
             }
 
@@ -92,7 +92,7 @@ public class UsuarioControlador {
             mav.addObject("rolUsuario", rolServicio.mostrarPorNombre("USUARIO"));
             mav.addObject("usuario", usuarioServicio.obtenerPorId(id));
         }catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         mav.addObject("titulo", "Editar Usuario");
@@ -107,13 +107,13 @@ public class UsuarioControlador {
         try {
             if((int)sesion.getAttribute("id") != id && !usuarioServicio.obtenerPorId(id).getRol().toString().equalsIgnoreCase("ADMIN") ){
                 mav.setViewName("redirect:/");
-                attributes.addFlashAttribute("error-autorización", "No se encuentra habilitado para realizar la modificación");
+                attributes.addFlashAttribute("error", "No se encuentra habilitado para realizar la modificación");
                 return mav;
             }
 
             mav.addObject("usuario", usuarioServicio.obtenerPorId(id));
         } catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         mav.addObject("titulo", "Cambiar Contraseña");
@@ -135,7 +135,7 @@ public class UsuarioControlador {
             usuarioServicio.generarPass(mail);
             attributes.addFlashAttribute("exito", "Se envío un mail a su casilla de correo");
         } catch (ObjetoNulloExcepcion e) {
-            attributes.addFlashAttribute("errorNulo", "No se encontró un usuario con los datos provistos");
+            attributes.addFlashAttribute("error", "No se encontró un usuario con los datos provistos");
         }
 
         return new RedirectView("/login");
@@ -158,7 +158,7 @@ public class UsuarioControlador {
                 return new RedirectView("/usuario");
             }
         }catch (ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
         return new RedirectView("/usuario");
     }
@@ -173,7 +173,7 @@ public class UsuarioControlador {
                     return new RedirectView("/usuario");
                 }
         }catch (ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
         return new RedirectView("/usuario");
     }
@@ -184,7 +184,7 @@ public class UsuarioControlador {
         try {
             usuarioServicio.eliminar(id);
         }catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return new RedirectView("/usuario");
@@ -196,7 +196,7 @@ public class UsuarioControlador {
         try {
             usuarioServicio.modificarRolUsuario(id);
         }catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return new RedirectView("/usuario");
@@ -208,7 +208,7 @@ public class UsuarioControlador {
         try {
             usuarioServicio.darAlta(id);
         }catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
         return new RedirectView("/usuario");
     }
