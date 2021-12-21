@@ -1,5 +1,6 @@
 package com.example.demo.controladores;
 
+import com.example.demo.dto.PreguntaDTO;
 import com.example.demo.entidades.Examen;
 import com.example.demo.entidades.Pregunta;
 import com.example.demo.excepciones.ObjetoEliminadoExcepcion;
@@ -8,6 +9,7 @@ import com.example.demo.excepciones.ObjetoRepetidoExcepcion;
 import com.example.demo.excepciones.PadreNuloExcepcion;
 import com.example.demo.servicios.ExamenServicio;
 import com.example.demo.servicios.PreguntaServicio;
+import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +30,18 @@ public class PreguntaControlador{
 
     @GetMapping("/crear")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView crearPregunta(RedirectAttributes attributes) {
+    public ModelAndView crearPregunta(RedirectAttributes attributes, @RequestParam(name = "examenId",required = false) Integer examenId) {
         ModelAndView mav = new ModelAndView("pregunta-formulario");
 
+
         try{
-            mav.addObject("examen" , examenServicio.ObtenerUltimoExamen());
+            if(examenId != null){
+                System.out.println(examenServicio.obtenerPorId(examenId).toString());
+                mav.addObject("examen" , examenServicio.obtenerPorId(examenId));
+            }else{
+                System.out.println(examenServicio.ObtenerUltimoExamen());
+                mav.addObject("examen" , examenServicio.ObtenerUltimoExamen());
+            }
             mav.addObject("pregunta", new Pregunta());
             mav.addObject("titulo", "Crear Pregunta");
             mav.addObject("accion", "guardar");
@@ -47,10 +56,12 @@ public class PreguntaControlador{
     @GetMapping("/editar/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarPregunta(@PathVariable int id, RedirectAttributes attributes) {
-        ModelAndView mav = new ModelAndView("pregunta-formulario");
+        ModelAndView mav = new ModelAndView("pregunta-editar");
 
         try {
-            mav.addObject("pregunta", preguntaServicio.obtenerPorId(id));
+            PreguntaDTO preguntaDTO = preguntaServicio.obtenerPorId(id);
+            mav.addObject("examen", preguntaDTO.getExamen());
+            mav.addObject("pregunta", Mapper.preguntaDTOAPreguntaEditableDTO(preguntaDTO));
             mav.addObject("titulo", "Editar Pregunta");
             mav.addObject("accion", "modificar");
         } catch (ObjetoNulloExcepcion nulo) {
@@ -75,13 +86,13 @@ public class PreguntaControlador{
             attributes.addFlashAttribute("error", nulo.getMessage());
         }catch (PadreNuloExcepcion padre){
             attributes.addFlashAttribute("error", padre.getMessage());
-            return new RedirectView("/examen");
+            return new RedirectView("/examen/editarPreguntas/"+examenId);
         }
 
         if (accion.equalsIgnoreCase("siguientePregunta")){
             return new RedirectView("/pregunta/crear");
         }else{
-            return new RedirectView("/tematica/"+tematicaId);
+            return new RedirectView("/examen/editarPreguntas/"+examenId);
         }
     }
 

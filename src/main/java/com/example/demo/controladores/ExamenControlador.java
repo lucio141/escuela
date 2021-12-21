@@ -30,7 +30,7 @@ public class ExamenControlador {
     private final ResultadoServicio resultadoServicio;
 
     @GetMapping("/admin")
-   // @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarExamenesBaja() {
         ModelAndView mav = new ModelAndView("examen-administrador");
         mav.addObject("examenes", examenServicio.mostrarExamenesPorAlta(false));
@@ -52,7 +52,7 @@ public class ExamenControlador {
     }
 
     @GetMapping("/crear")
-   // @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearExamen() {
         ModelAndView mav = new ModelAndView("examen-formulario");
         mav.addObject("examen", new Examen());
@@ -64,7 +64,7 @@ public class ExamenControlador {
     }
 
     @GetMapping("/editar/{id}")
-   // @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarExamen(@PathVariable int id, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("examen-formulario"); // Falta crear examen formulario que mande el ID
 
@@ -113,17 +113,17 @@ public class ExamenControlador {
             attributes.addFlashAttribute("error", "No se encontro el Examen");
         }
 
-            return new RedirectView("/pregunta/crear");
+        return new RedirectView("/pregunta/crear");
     }
 
     @PostMapping("/modificar")
-   // @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar(@RequestParam int id, @RequestParam Dificultad dificultad, @RequestParam Tematica tematica, @RequestParam double notaRequerida, @RequestParam String nombre, RedirectAttributes attributes) {
 
         try {
             examenServicio.modificarExamen(id, dificultad, tematica, notaRequerida, nombre);
-            attributes.addFlashAttribute("examen", examenServicio.obtenerPorId(id));
-            return new RedirectView("/examen/{" + id + "}");
+            ExamenDTO examenDTO = examenServicio.obtenerPorId(id);
+            return new RedirectView("/tematica/"+ examenDTO.getTematica().getId());
         } catch(ObjetoNulloExcepcion nulo) {
             System.out.println(nulo.getMessage());
             attributes.addFlashAttribute("error", nulo.getMessage());
@@ -140,7 +140,7 @@ public class ExamenControlador {
     }
 
     @PostMapping("/eliminar/{id}")
-   // @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminar(@PathVariable int id, RedirectAttributes attributes) {
 
         try {
@@ -154,7 +154,7 @@ public class ExamenControlador {
     }
 
     @PostMapping("/recuperar/{id}")
-   // @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public RedirectView recuperar(@PathVariable int id, RedirectAttributes attributes) {
 
         try {
