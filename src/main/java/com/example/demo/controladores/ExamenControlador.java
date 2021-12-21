@@ -162,7 +162,6 @@ public class ExamenControlador {
             System.out.println(eliminado.getMessage());
             return new RedirectView("/examen");
         }
-
     }
 
     @PostMapping("/eliminar/{id}")
