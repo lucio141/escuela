@@ -31,11 +31,12 @@ public class UsuarioServicio implements UserDetailsService {
 
     private final EmailServicio emailServicio;
     private final UsuarioRepositorio usuarioRepositorio;
+    private final RolServicio rolServicio;
     private final BCryptPasswordEncoder encoder;
     private final String MENSAJE = "El nombre de usuario ingresado no existe %s";
 
     @Transactional
-    public void crearUsuario(String nombre, String apellido, String nombreUsuario, String contrasenia, Integer edad, String mail, String telefono, Rol rol){
+    public void crearUsuario(String nombre, String apellido, String nombreUsuario, String contrasenia, Integer edad, String mail, String telefono){
         UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setNombre(nombre);
         usuarioDTO.setApellido(apellido);
@@ -44,13 +45,13 @@ public class UsuarioServicio implements UserDetailsService {
         usuarioDTO.setEdad(edad);
         usuarioDTO.setMail(mail);
         usuarioDTO.setTelefono(telefono);
-        usuarioDTO.setRol(rol);
+        usuarioDTO.setRol(rolServicio.mostrarPorNombre("USER"));
         emailServicio.enviarNuevoUsuario(usuarioDTO);
         usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
     }
 
     @Transactional
-    public void modificarUsuario(Integer id, String nombre, String apellido, String nombreUsuario, Integer edad , String mail, String telefono, Rol rol) throws ObjetoNulloExcepcion{
+    public void modificarUsuario(Integer id, String nombre, String apellido, String nombreUsuario, Integer edad , String mail, String telefono) throws ObjetoNulloExcepcion{
         UsuarioDTO usuarioDTO = obtenerPorId(id);
         usuarioDTO.setNombre(nombre);
         usuarioDTO.setApellido(apellido);
@@ -58,7 +59,19 @@ public class UsuarioServicio implements UserDetailsService {
         usuarioDTO.setEdad(edad);
         usuarioDTO.setMail(mail);
         usuarioDTO.setTelefono(telefono);
-        usuarioDTO.setRol(rol);
+        usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
+    }
+
+    @Transactional
+    public void modificarRolUsuario(Integer id) throws ObjetoNulloExcepcion{
+        UsuarioDTO usuarioDTO = obtenerPorId(id);
+
+        if(usuarioDTO.getRol().getNombre().equalsIgnoreCase("USER")){
+            usuarioDTO.setRol(rolServicio.mostrarPorNombre("ADMIN"));
+        }else{
+            usuarioDTO.setRol(rolServicio.mostrarPorNombre("USER"));
+        }
+
         usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
     }
 
@@ -95,7 +108,7 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Transactional
-    public List<UsuarioDTO> mostrarUsuariosPorRol(Rol rol,Boolean alta){
+    public List<UsuarioDTO> mostrarUsuariosPorRolYAlta(Rol rol,Boolean alta){
         return Mapper.listaUsuarioEntidadADTO(usuarioRepositorio.mostrarPorRolYAlta(rol,alta));
     }
 

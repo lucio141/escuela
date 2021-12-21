@@ -81,5 +81,4 @@ public class RolServicio {
     public Rol mostrarPorNombre(String nombre){
        return rolRepositorio.mostrarPorNombre(nombre);
     }
-
 }
