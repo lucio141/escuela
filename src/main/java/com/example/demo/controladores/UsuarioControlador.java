@@ -41,7 +41,6 @@ public class UsuarioControlador {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView obtenerPerfil(@PathVariable int id, RedirectAttributes attributes, HttpSession session){
         ModelAndView mav = new ModelAndView("perfil");
         try{
@@ -171,7 +170,7 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/eliminar/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminarUsuario(@PathVariable Integer id, RedirectAttributes attributes){
         try {
             usuarioServicio.eliminar(id);
@@ -183,7 +182,7 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/cambiarRol/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView cambiarRol(@PathVariable Integer id, RedirectAttributes attributes){
         try {
             usuarioServicio.modificarRolUsuario(id);
@@ -195,7 +194,7 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/darAlta/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView darAltaUsuario (@PathVariable Integer id, RedirectAttributes attributes){
         try {
             usuarioServicio.darAlta(id);

@@ -14,7 +14,7 @@ public class ErroresControlador implements ErrorController {
 
     @RequestMapping (value = "/error", method= {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView errores(HttpServletResponse response){
-        ModelAndView mav= new ModelAndView("Error");
+        ModelAndView mav= new ModelAndView("errores");
         String mensaje="";
         int codigo= response.getStatus();
 
