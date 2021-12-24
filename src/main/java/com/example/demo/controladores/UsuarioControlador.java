@@ -126,7 +126,6 @@ public class UsuarioControlador {
     public RedirectView generarPass(@RequestParam(name = "mail") String mail, RedirectAttributes attributes){
 
         try {
-            Usuario usuario = usuarioRepositorio.findByMail(mail).orElse(null);
             usuarioServicio.generarPass(mail);
             attributes.addFlashAttribute("exito", "Se envío un mail a su casilla de correo");
         } catch (ObjetoNulloExcepcion e) {
