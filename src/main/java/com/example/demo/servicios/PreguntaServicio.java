@@ -14,6 +14,7 @@ import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,9 +55,16 @@ public class PreguntaServicio {
     }
 
     @Transactional
-    public void modificarPregunta(String enunciado, List<String> respuestas, String respuestaCorrecta, Integer puntaje, Examen examen, Integer id) throws ObjetoNulloExcepcion, ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion {
+    public void modificarPregunta(String enunciado, String respuesta2, String respuesta3, String respuesta4, String respuestaCorrecta, Integer puntaje, Examen examen, Integer id) throws ObjetoNulloExcepcion, ObjetoRepetidoExcepcion, ObjetoEliminadoExcepcion {
         PreguntaDTO preguntaDTO = obtenerPorId(id);
         PreguntaDTO preguntaAux = preguntaDTO;
+
+        List<String> respuestas = new ArrayList<>();
+
+        respuestas.add(respuestaCorrecta);
+        respuestas.add(respuesta2);
+        respuestas.add(respuesta3);
+        respuestas.add(respuesta4);
 
         preguntaDTO.setEnunciado(enunciado);
         preguntaDTO.setRespuestas(respuestas);

@@ -8,6 +8,7 @@ import com.example.demo.excepciones.ValidacionCampExcepcion;
 import com.example.demo.servicios.CategoriaServicio;
 import com.example.demo.servicios.TematicaServicio;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,7 +28,7 @@ public class TematicaControlador {
     private final CategoriaServicio categoriaServicio;
 
     @GetMapping("/admin")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView listarTematicas(HttpServletRequest request, RedirectAttributes attributes) {
         ModelAndView mav = new ModelAndView("tematica-administrador");
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
@@ -45,7 +46,7 @@ public class TematicaControlador {
     }
 
     @GetMapping("/crear")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearTematica(){
         ModelAndView mav = new ModelAndView("tematica-formulario");
         mav.addObject("tematica",new Tematica() );
@@ -56,7 +57,7 @@ public class TematicaControlador {
     }
 
     @GetMapping("/editar/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarTematica(@PathVariable int id, RedirectAttributes attributes){
         ModelAndView mav = new ModelAndView("tematica-formulario");
 
@@ -73,7 +74,6 @@ public class TematicaControlador {
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
     public ModelAndView ingresarTematica(@PathVariable int id, RedirectAttributes attributes){
         ModelAndView mav = new ModelAndView("tematica");
 
@@ -88,7 +88,7 @@ public class TematicaControlador {
     }
 
     @PostMapping("/guardar")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView guardarTematicas(@RequestParam String nombre, @RequestParam(name = "categoria") Categoria categoria, RedirectAttributes attributes){
         try {
             tematicaServicio.crearTematica(nombre, categoria);
@@ -100,7 +100,7 @@ public class TematicaControlador {
     }
 
     @PostMapping("/modificar")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modificar( @RequestParam String nombre,@RequestParam int id, @RequestParam(name = "categoria") Categoria categoria, RedirectAttributes attributes){
 
         try{
@@ -112,7 +112,7 @@ public class TematicaControlador {
     }
 
     @PostMapping("/darAlta/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView darAlta( @PathVariable int id, RedirectAttributes attributes){
 
         try {
@@ -125,7 +125,7 @@ public class TematicaControlador {
     }
 
     @PostMapping("/eliminar/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminar(@PathVariable int id, RedirectAttributes attributes){
 
         try {
