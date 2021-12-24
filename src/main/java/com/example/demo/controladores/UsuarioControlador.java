@@ -4,6 +4,7 @@ import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.entidades.Rol;
 import com.example.demo.entidades.Usuario;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
+import com.example.demo.repositorios.UsuarioRepositorio;
 import com.example.demo.servicios.RolServicio;
 import com.example.demo.servicios.UsuarioServicio;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class UsuarioControlador {
 
     private final UsuarioServicio usuarioServicio;
     private final RolServicio rolServicio;
+    private final UsuarioRepositorio usuarioRepositorio; //PROBAR QUE ONDA
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -41,7 +43,6 @@ public class UsuarioControlador {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView obtenerPerfil(@PathVariable int id, RedirectAttributes attributes, HttpSession session){
         ModelAndView mav = new ModelAndView("perfil");
         try{
@@ -121,13 +122,15 @@ public class UsuarioControlador {
         return mav;
     }
 
-    @PostMapping("/generarPass")
+    @PostMapping("/recuperarPass")
     public RedirectView generarPass(@RequestParam(name = "mail") String mail, RedirectAttributes attributes){
+
         try {
             usuarioServicio.generarPass(mail);
             attributes.addFlashAttribute("exito", "Se envío un mail a su casilla de correo");
         } catch (ObjetoNulloExcepcion e) {
             attributes.addFlashAttribute("error", "No se encontró un usuario con los datos provistos");
+            System.out.println("ERROR ACA");
         }
 
         return new RedirectView("/login");
@@ -171,7 +174,7 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/eliminar/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView eliminarUsuario(@PathVariable Integer id, RedirectAttributes attributes){
         try {
             usuarioServicio.eliminar(id);
@@ -183,7 +186,7 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/cambiarRol/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView cambiarRol(@PathVariable Integer id, RedirectAttributes attributes){
         try {
             usuarioServicio.modificarRolUsuario(id);
@@ -195,7 +198,7 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/darAlta/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView darAltaUsuario (@PathVariable Integer id, RedirectAttributes attributes){
         try {
             usuarioServicio.darAlta(id);

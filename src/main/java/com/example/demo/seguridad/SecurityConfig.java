@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
-                .antMatchers("/login","/usuario/crear","/usuario/guardar","/usuario/confirmarUsuario","/css/*", "/img/*", "/assets/*").permitAll()
+                .antMatchers("/login","/usuario/crear","/usuario/guardar","/usuario/recuperarPass","/usuario/confirmarUsuario","/css/*", "/img/*", "/assets/*").permitAll()
                 .antMatchers("/**").authenticated() //poner permitAll() cuando creemos el 1er usuario, desp poner authenticated()
                 .and()
                 .formLogin()

@@ -76,7 +76,6 @@ public class CategoriaControlador {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView categoriaDetalle(@PathVariable int id, RedirectAttributes attributes){
         ModelAndView mav = new ModelAndView("categoria-detalle"); //FALTA HTML
 

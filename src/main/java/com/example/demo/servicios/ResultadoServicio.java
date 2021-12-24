@@ -59,9 +59,12 @@ public class ResultadoServicio {
         }
 
         int puntajeFinal = Math.round(puntajeAcumulado*100/puntajeTotal);
+
+        System.out.println(puntajeFinal);
         ResultadoDTO resultadoDTO = obtenerPorId(id);
 
         if (resultadoDTO.getPuntajeFinal() == null) {
+
             resultadoDTO.setRespuestasCorrectas(contadorRespuestasCorrectas);
             resultadoDTO.setRespuestasIncorrectas(contadorRespuestasInorrectas);
             resultadoDTO.setPuntajeFinal(puntajeFinal);

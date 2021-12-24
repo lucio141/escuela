@@ -83,7 +83,6 @@ public class ExamenControlador {
     }
 
     @GetMapping("/realizar/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView realizarExamen(@PathVariable int id, RedirectAttributes attributes, HttpSession session) {
         ModelAndView mav = new ModelAndView("hacer-examen");
 
@@ -146,7 +145,7 @@ public class ExamenControlador {
 
         try {
             examenServicio.eliminar(id);
-            return new RedirectView("/examen/editarPreguntas/" + examenServicio.obtenerPorId(id).getTematica().getId());
+            return new RedirectView("/tematica/" + examenServicio.obtenerPorId(id).getTematica().getId());
         } catch (ObjetoNulloExcepcion nulo) {
             attributes.addFlashAttribute("error", nulo.getMessage());
         }

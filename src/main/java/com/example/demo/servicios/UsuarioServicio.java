@@ -90,9 +90,7 @@ public class UsuarioServicio implements UserDetailsService {
     @Transactional
     public void generarPass(String mail) throws ObjetoNulloExcepcion{
         UsuarioDTO usuarioDTO = obtenerPorMail(mail);
-
         String contrasenia = Utilidad.generadorDeCadenas();
-
         usuarioDTO.setContrasenia(encoder.encode(contrasenia));
         emailServicio.enviarCambioPass(Mapper.usuarioDTOAEntidad(usuarioDTO), contrasenia);
     }
@@ -153,22 +151,27 @@ public class UsuarioServicio implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException{
-        UsuarioDTO usuarioDTO = Mapper.usuarioEntidadADTO(usuarioRepositorio.findByNombreUsuarioAndAltaTrue(nombreUsuario)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE, nombreUsuario))));
+        Usuario usuario = usuarioRepositorio.findByNombreUsuarioAndAltaTrue(nombreUsuario)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE, nombreUsuario)));
 
-        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuarioDTO.getRol().getNombre());
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
 
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attributes.getRequest().getSession(true);
 
         try {
+            /*
             session.setAttribute("id" , usuarioDTO.getId());
             session.setAttribute("rol" , usuarioDTO.getRol().getNombre());
             session.setAttribute("usuarioEnSesion", usuarioDTO);
+            */
+            session.setAttribute("id" , usuario.getId());
+            session.setAttribute("rol" , usuario.getRol().getNombre());
+            session.setAttribute("usuarioEnSesion", usuario);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new User(usuarioDTO.getNombreUsuario(), usuarioDTO.getContrasenia(), Collections.singletonList(authority));
+        return new User(usuario.getNombreUsuario(), usuario.getContrasenia(), Collections.singletonList(authority));
     }
 }

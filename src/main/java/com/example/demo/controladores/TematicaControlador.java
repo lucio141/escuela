@@ -74,7 +74,6 @@ public class TematicaControlador {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView ingresarTematica(@PathVariable int id, RedirectAttributes attributes){
         ModelAndView mav = new ModelAndView("tematica");
 
