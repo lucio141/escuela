@@ -30,5 +30,10 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findByNombreUsuarioAndAltaTrue(String nombreUsuario);
 
+    //PRUEBA
+
+    @Query("SELECT u FROM Usuario u WHERE u.mail = :mail")
+    Usuario buscarPorMail(@Param("mail") String mail);
+
 
 }

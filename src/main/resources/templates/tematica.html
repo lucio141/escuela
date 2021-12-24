@@ -20,7 +20,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>SchoolHouse</title>
+    <title>SkillTest</title>
 </head>
 
 <body>
@@ -39,8 +39,23 @@
 
             <h1  class="placeholder-glow opciones">
                 <span class="placeholder col-12"> </span>
-                <h1 th:text="${tematica.nombre}"> </h1>
+
             </h1>
+
+
+            <div style="display: flex;">
+
+                <h1>NOMBRE TEMATICA</h1>
+
+                <div  style="width: 30%; margin-left: 5%; margin-top: 1%;  ">
+                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/examen/crear}" class="btn btn-primary botonCrearExamen" style="width: 100%;">CREAR EXAMEN</a>
+                </div>
+
+
+            </div>
+
+
+
 
 
 
@@ -62,12 +77,15 @@
                             </p>
                             <p th:text=" |Dificultad: ${examen.dificultad}| "> </p>
                             <p th:text=" |Cantidad de Preguntas: ${#lists.size(examen.preguntas)}| "> </p>
-                            <a th:href="@{/examen/realizar/__${examen.id}__}" class="btn btn-primary botonPrincipales">COMENZAR EXAMEN</a>
-                            <a th:href="@{/examen/editar/__${examen.id}__}" class="btn btn-primary botonPrincipales" sec:authorize="hasRole('ADMIN')">EDITAR EXAMEN</a>
+
+                            <div style="display: flex; justify-content: space-between;">
+                                <a th:href="@{/examen/realizar/__${examen.id}__}" class="btn btn-primary botonPrincipales">COMENZAR EXAMEN</a>
+                                <a th:href="@{/examen/editar/__${examen.id}__}" class="btn btn-primary botonPrincipales" sec:authorize="hasRole('ADMIN')">EDITAR EXAMEN</a>
                             <form method="post" th:action="@{/examen/eliminar/__${examen.id}__}">
-                                <button type="submit" class="btn btn-outline-secondary botonesSecciones">ELIMINAR</button>
+                                <button type="submit" class="btn btn-outline-secondary botonPrincipales" sec:authorize="hasRole('ADMIN')">ELIMINAR</button>
                               </form>
                             <a th:href="@{/examen/editarPreguntas/__${examen.id}__}" class="btn btn-primary botonPrincipales" sec:authorize="hasRole('ADMIN')">EDITAR PREGUNTAS</a>
+                        </div>
                         </div>
                     </div>
 

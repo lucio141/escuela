@@ -53,7 +53,7 @@
 
       <div class="tematicas row" style="display: flex; justify-content: space-around;">
 
-        <div class="col-sm-3 " th:each="tematicaAlta : ${tematicasAlta}">
+        <div class="col-sm-3 " th:each="tematicaAlta : ${tematicasAlta}"  style="width: 30%;" >
           <div class="card tarjetasSecciones">
             <div class="card-body">
 
@@ -62,18 +62,16 @@
                   <h3 class="card-title" th:text="${tematicaAlta.nombre}">NOMBRE DE LA TEMATICA</h3>
                 </div>
               </div>
-              
+              <h4  th:text="|Categoria: ${tematicaAlta.categoria.nombre}|"></h4>
+              <h4> Examenes de esta tematica:</h4>
               <div th:each="examen : ${tematicaAlta.examen}">
 
                 <div class="examenesDeTematica" th:text="${examen.nombre}">nombre del examen</div>
 
               </div>
-              <!-- 
-              <div class="examenesTematica"><h5>Examen Ejemplo</h5> </div>
-              <div class="examenesTematica"><h5>Examen ejemplos</h5>  </div>
-              <div class="examenesTematica"><h5>Examen ejemplos</h5>  </div>
-              -->
-              <div style="display: flex; justify-content: space-around; margin-top: 2%;">  
+
+              <div style="display: flex; justify-content: space-around; margin-top: 4%;">
+
                 <a th:href="@{editar/__${tematicaAlta.id}__}" class="btn btn-outline-secondary botonesSecciones">EDITAR</a>
 
                 <form method="post" th:action="@{eliminar/__${tematicaAlta.id}__}">
@@ -122,17 +120,14 @@
                   <h3 class="card-title" th:text="${tematicaBaja.nombre}">NOMBRE DE LA TEMATICA</h3>
                 </div>
               </div>
+              <h4  th:text="|Categoria: ${tematicaBaja.categoria.nombre}|"></h4>
+              <h4> Examenes de esta tematica:</h4>
 
               <div th:each="examen : ${tematicaBaja.examen}">
-
-                <div class="examenesDeTematica" th:text="${examen.nombre}">nombre del examen</div>
+                <div class="examenesDeTematica" th:text="|-${examen.nombre}|">nombre del examen</div>
 
               </div>
-              <!--
-              <div class="examenesTematica"><h5>Examen Ejemplo</h5> </div>
-              <div class="examenesTematica"><h5>Examen ejemplos</h5>  </div>
-              <div class="examenesTematica"><h5>Examen ejemplos</h5>  </div>
-              -->
+
               <div style="display: flex; justify-content: space-around; margin-top: 2%;">
                 <a th:href="@{editar/__${tematicaBaja.id}__}" class="btn btn-outline-secondary botonesSecciones">EDITAR</a>
 

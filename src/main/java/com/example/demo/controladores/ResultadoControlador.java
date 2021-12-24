@@ -5,6 +5,7 @@ import com.example.demo.entidades.Resultado;
 import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.servicios.ResultadoServicio;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,25 +21,6 @@ public class ResultadoControlador {
 
     private final ResultadoServicio resultadoServicio;
 
- /*
-    @GetMapping
-    public ModelAndView mostrarResultado() {
-        ModelAndView mav = new ModelAndView("");//falta crear
-        mav.addObject("resultados", resultadoServicio.mostrarResultadosPorAlta(true));
-        mav.addObject("titulo", "Tabla de Resultados");
-        return mav;
-    }
-
-    @GetMapping("/eliminados")
-    //@PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView mostrarResultadoeliminados() {
-        ModelAndView mav = new ModelAndView("");//falta crear
-        mav.addObject("resultados", resultadoServicio.mostrarResultadosPorAlta(false));
-        mav.addObject("titulo", "Tabla de Resultados dados de baja");
-        return mav;
-    }
-*/
-
     @GetMapping("/crear")
     public ModelAndView crearResultado() {
         ModelAndView mav = new ModelAndView("");//falta crear
@@ -47,22 +29,6 @@ public class ResultadoControlador {
         mav.addObject("accion", "guardar");
         return mav;
     }
-
-/*
-    @PostMapping("/guardar")
-    public RedirectView guardarResultado(HttpSession session,@RequestParam(value="examen") Integer examenId) {
-
-        try {
-            resultadoServicio.crearResultado(examenId,  (Integer)session.getAttribute("id"));
-            return new RedirectView("/tematica");
-        }catch(ObjetoNulloExcepcion e){
-            e.getMessage();
-        }
-        return new RedirectView("/tematica");
-    }
-
- */
-
 
     @GetMapping("/editar/{id}")
     public ModelAndView editarResultado(@PathVariable int id, RedirectAttributes attributes) {
@@ -73,7 +39,7 @@ public class ResultadoControlador {
             mav.addObject("titulo", "Editar Resultado");
             mav.addObject("accion", "modificar");
         }catch (ObjetoNulloExcepcion nulo){
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return mav;
@@ -92,7 +58,7 @@ public class ResultadoControlador {
             mav.addObject("titulo", "Editar Resultado");
             mav.addObject("accion", "modificar");
         } catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return mav;
@@ -104,31 +70,31 @@ public class ResultadoControlador {
         try {
             resultadoServicio.modificarResultado(resultadoId,respuestas,examenId);
         } catch (ObjetoNulloExcepcion nulo) {
-            attributes.addFlashAttribute("errorNulo", nulo.getMessage());
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return new RedirectView("/resultado/mostrar/"+resultadoId);
     }
 
     @PostMapping("/eliminar/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView eliminarResultado(@PathVariable int id) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public RedirectView eliminarResultado(@PathVariable int id, RedirectAttributes attributes) {
         try {
             resultadoServicio.eliminar(id);
         }catch (ObjetoNulloExcepcion nulo){
-            nulo.printStackTrace();
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
         return new RedirectView("/resultado");
     }
 
     @PostMapping("/recuperar/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
-    public RedirectView recuperarResultado(@PathVariable int id) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public RedirectView recuperarResultado(@PathVariable int id, RedirectAttributes attributes) {
 
         try {
             resultadoServicio.darAlta(id);
-        } catch (ObjetoNulloExcepcion e) {
-            e.printStackTrace();
+        } catch (ObjetoNulloExcepcion nulo) {
+            attributes.addFlashAttribute("error", nulo.getMessage());
         }
 
         return new RedirectView("/resultado");

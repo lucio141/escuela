@@ -83,18 +83,30 @@ public class UsuarioServicio implements UserDetailsService {
             usuarioDTO.setContrasenia(encoder.encode(contrasenia1));
             usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
         }else{
-            System.out.println("No se pudo cambiar la contraseña");
+            throw new ObjetoNulloExcepcion("Error al modificar contraseña");
         }
     }
 
     @Transactional
     public void generarPass(String mail) throws ObjetoNulloExcepcion{
-        Usuario usuario = obtenerPorMail(mail);
+        UsuarioDTO usuarioDTO = obtenerPorMail(mail);
+
+        Usuario usuarioAux = usuarioRepositorio.buscarPorMail(mail);
+
+        if (usuarioAux == null){
+            System.out.println("ES NULO CAPO!");
+        }
+
+        System.out.print("************************************************************************************************");
+        System.out.println(usuarioDTO.getNombreUsuario());
+        System.out.println(usuarioAux.getNombreUsuario());
+        System.out.print("************************************************************************************************");
+
 
         String contrasenia = Utilidad.generadorDeCadenas();
 
-        usuario.setContrasenia(encoder.encode(contrasenia));
-        emailServicio.enviarCambioPass(usuario, contrasenia);
+        usuarioDTO.setContrasenia(encoder.encode(contrasenia));
+        emailServicio.enviarCambioPass(Mapper.usuarioDTOAEntidad(usuarioDTO), contrasenia);
     }
 
     @Transactional
@@ -114,24 +126,24 @@ public class UsuarioServicio implements UserDetailsService {
 
     @Transactional
     public UsuarioDTO obtenerPorId (Integer id) throws ObjetoNulloExcepcion {
-        Usuario usuario = usuarioRepositorio.findById(id).orElse(null);
+        UsuarioDTO usuarioDTO = Mapper.usuarioEntidadADTO(usuarioRepositorio.findById(id).orElse(null));
 
-        if (usuario == null) {
-            throw new ObjetoNulloExcepcion("");
+        if (usuarioDTO == null) {
+            throw new ObjetoNulloExcepcion("No se encontro el usuario");
         }
 
-        return Mapper.usuarioEntidadADTO(usuario);
+        return usuarioDTO;
     }
 
     @Transactional
-    public Usuario obtenerPorMail (String mail) throws ObjetoNulloExcepcion {
-        Usuario usuario = usuarioRepositorio.findByMail(mail).orElse(null);
+    public UsuarioDTO obtenerPorMail (String mail) throws ObjetoNulloExcepcion {
+        UsuarioDTO usuarioDTO = Mapper.usuarioEntidadADTO(usuarioRepositorio.findByMail(mail).orElse(null));
 
-        if (usuario == null) {
-            throw new ObjetoNulloExcepcion("");
+        if (usuarioDTO == null) {
+            throw new ObjetoNulloExcepcion("No se encontro el usuario");
         }
 
-        return usuario;
+        return usuarioDTO;
     }
 
     @Transactional
@@ -154,7 +166,7 @@ public class UsuarioServicio implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException{
         Usuario usuario = usuarioRepositorio.findByNombreUsuarioAndAltaTrue(nombreUsuario)
-                                            .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE, nombreUsuario)));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE, nombreUsuario)));
 
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
 
@@ -162,12 +174,16 @@ public class UsuarioServicio implements UserDetailsService {
         HttpSession session = attributes.getRequest().getSession(true);
 
         try {
-            UsuarioDTO usuarioDTO = obtenerPorId(usuario.getId());
+            /*
             session.setAttribute("id" , usuarioDTO.getId());
             session.setAttribute("rol" , usuarioDTO.getRol().getNombre());
             session.setAttribute("usuarioEnSesion", usuarioDTO);
-        } catch (ObjetoNulloExcepcion nulo) {
-            System.out.println("Error");
+            */
+            session.setAttribute("id" , usuario.getId());
+            session.setAttribute("rol" , usuario.getRol().getNombre());
+            session.setAttribute("usuarioEnSesion", usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return new User(usuario.getNombreUsuario(), usuario.getContrasenia(), Collections.singletonList(authority));
