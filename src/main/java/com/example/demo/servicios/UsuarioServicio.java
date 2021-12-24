@@ -90,23 +90,10 @@ public class UsuarioServicio implements UserDetailsService {
     @Transactional
     public void generarPass(String mail) throws ObjetoNulloExcepcion{
         UsuarioDTO usuarioDTO = obtenerPorMail(mail);
-
-        Usuario usuarioAux = usuarioRepositorio.buscarPorMail(mail);
-
-        if (usuarioAux == null){
-            System.out.println("ES NULO CAPO!");
-        }
-
-        System.out.print("************************************************************************************************");
-        System.out.println(usuarioDTO.getNombreUsuario());
-        System.out.println(usuarioAux.getNombreUsuario());
-        System.out.print("************************************************************************************************");
-
-
         String contrasenia = Utilidad.generadorDeCadenas();
-
         usuarioDTO.setContrasenia(encoder.encode(contrasenia));
         emailServicio.enviarCambioPass(Mapper.usuarioDTOAEntidad(usuarioDTO), contrasenia);
+        usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
     }
 
     @Transactional
