@@ -65,7 +65,7 @@ public class ResultadoControlador {
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam(name="resultadoId") int resultadoId, @RequestParam("respuestas") List<String> respuestas,@RequestParam(name="examenId") int examenId, RedirectAttributes attributes) {
+    public RedirectView modificar(@RequestParam(name="resultadoId") int resultadoId, @RequestParam(name="respuestas") List<String> respuestas,@RequestParam(name="examenId") int examenId, RedirectAttributes attributes) {
 
         try {
             resultadoServicio.modificarResultado(resultadoId,respuestas,examenId);
