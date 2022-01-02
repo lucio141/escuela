@@ -8,6 +8,7 @@ import com.example.demo.excepciones.ObjetoNulloExcepcion;
 import com.example.demo.repositorios.ResultadoRepositorio;
 import com.example.demo.utilidades.Mapper;
 import lombok.AllArgsConstructor;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,27 +41,60 @@ public class ResultadoServicio {
     public void modificarResultado(int id, List<String> respuestas, int examenId) throws ObjetoNulloExcepcion {
         short contadorRespuestasCorrectas = 0;
         short contadorRespuestasInorrectas = 0;
+        short contadorRespuestasInorrectasAux = 0;
         int puntajeAcumulado = 0;
         int puntajeTotal = 0;
 
         ExamenDTO examenDTO = examenServicio.obtenerPorId(examenId);
         List<PreguntaDTO> preguntasDTO = Mapper.listaPreguntaEntidadADTO(examenDTO.getPreguntas());
+/*
+
+    ESTO NUNCA DABA
 
         for (int i=0; i< preguntasDTO.size(); i++ ){
 
             puntajeTotal += preguntasDTO.get(i).getPuntaje();
 
-            if ( preguntasDTO.get(i).getRespuestaCorrecta().equalsIgnoreCase(respuestas.get(i))){
+            System.out.println("***********************************************************************************************");
+            System.out.println("El valor de i es de : " + i);
+            System.out.println(preguntasDTO.get(i).getRespuestaCorrecta() + " = " + respuestas.get(i));
+            System.out.println("***********************************************************************************************");
+
+            if (preguntasDTO.get(i).getRespuestaCorrecta().equalsIgnoreCase(respuestas.get(i))){
                 contadorRespuestasCorrectas++;
                 puntajeAcumulado += preguntasDTO.get(i).getPuntaje();
             }else{
                 contadorRespuestasInorrectas++;
             }
         }
+*/
+        for (int i=0; i< preguntasDTO.size(); i++){
+            puntajeTotal += preguntasDTO.get(i).getPuntaje();
+            contadorRespuestasInorrectasAux = 0;
+            for (int j=0; j< respuestas.size(); j++) {
+
+                System.out.println("***********************************************************************************************");
+                System.out.println(preguntasDTO.get(i).getRespuestaCorrecta() + " = " + respuestas.get(j));
+                System.out.println("***********************************************************************************************");
+
+                if (preguntasDTO.get(i).getRespuestaCorrecta().equalsIgnoreCase(respuestas.get(j))){
+                    contadorRespuestasCorrectas++;
+                    puntajeAcumulado += preguntasDTO.get(i).getPuntaje();
+                }else{
+                    contadorRespuestasInorrectasAux++;
+                }
+            }
+            if (contadorRespuestasInorrectasAux == respuestas.size()){
+                contadorRespuestasInorrectas++;
+            }
+        }
 
         int puntajeFinal = Math.round(puntajeAcumulado*100/puntajeTotal);
 
-        System.out.println(puntajeFinal);
+        System.out.println("**********************************************************************************************************************");
+        System.out.println("EL PUNTAJE FINAL ES DE: " + puntajeFinal);
+        System.out.println("**********************************************************************************************************************");
+
         ResultadoDTO resultadoDTO = obtenerPorId(id);
 
         if (resultadoDTO.getPuntajeFinal() == null) {
@@ -71,6 +105,9 @@ public class ResultadoServicio {
             resultadoDTO.setAprobado(puntajeFinal>examenDTO.getNotaRequerida());
             resultadoDTO.setDuracion(diferenciaTiempo(resultadoDTO.getTiempoInicio(), LocalDateTime.now()));
             resultadoRepositorio.save(Mapper.resultadoDTOAEntidad(resultadoDTO));
+            System.out.println("**********************************************************************************************************************");
+            System.out.println("EL PUNTAJE FUE GUARDADO CON EXITO");
+            System.out.println("**********************************************************************************************************************");
         }
     }
 
@@ -124,7 +161,6 @@ public class ResultadoServicio {
         Long minutos = Math.abs(duracion.toMinutes());
         Long segundos = Math.abs(duracion.minusMinutes(duracion.toMinutes()).getSeconds());
 
-        //System.out.printf("%d:%02d%n", minutos , segundos);
         diferencia = String.format("%d:%02d%n", minutos , segundos);
 
         if (Integer.parseInt(diferencia.substring(0, 1)) > 59){
