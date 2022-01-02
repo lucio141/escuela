@@ -93,6 +93,7 @@ public class UsuarioServicio implements UserDetailsService {
         String contrasenia = Utilidad.generadorDeCadenas();
         usuarioDTO.setContrasenia(encoder.encode(contrasenia));
         emailServicio.enviarCambioPass(Mapper.usuarioDTOAEntidad(usuarioDTO), contrasenia);
+        usuarioRepositorio.save(Mapper.usuarioDTOAEntidad(usuarioDTO));
     }
 
     @Transactional
