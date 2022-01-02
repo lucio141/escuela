@@ -48,6 +48,9 @@ public class ResultadoServicio {
         ExamenDTO examenDTO = examenServicio.obtenerPorId(examenId);
         List<PreguntaDTO> preguntasDTO = Mapper.listaPreguntaEntidadADTO(examenDTO.getPreguntas());
 /*
+
+    ESTO NUNCA DABA
+
         for (int i=0; i< preguntasDTO.size(); i++ ){
 
             puntajeTotal += preguntasDTO.get(i).getPuntaje();
