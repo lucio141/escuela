@@ -113,7 +113,11 @@ public class ResultadoServicio {
 
     @Transactional
     public List<ResultadoDTO> mostrarResultados() {
-        return Mapper.listaResultadoEntidadADTO(resultadoRepositorio.findAll());
+       List<ResultadoDTO> resultados = Mapper.listaResultadoEntidadADTO(resultadoRepositorio.findAll());
+
+        resultados.removeIf(r -> r.getPuntajeFinal()==null);
+
+       return resultados;
     }
 
     @Transactional(readOnly = true)
