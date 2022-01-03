@@ -118,6 +118,7 @@ public class UsuarioServicio implements UserDetailsService {
         if (usuarioDTO == null) {
             throw new ObjetoNulloExcepcion("No se encontro el usuario");
         }
+        usuarioDTO.getResultados().removeIf(r -> r.getPuntajeFinal()==null);
 
         return usuarioDTO;
     }
